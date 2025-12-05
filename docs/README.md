@@ -25,7 +25,7 @@ El archivo `CNAME` contiene el subdominio configurado: `nebula.bdh-entertainment
    - GitHub automáticamente detectará el archivo CNAME
 
 2. **En tu Proveedor de DNS:**
-   - Agrega un registro CNAME que apunte `nebula.bdh-entertainment.com` a `blixdarkhorse.github.io`
+   - Agrega un registro CNAME que apunte `nebula.bdh-entertainment.com` a `{tu-usuario}.github.io` (reemplaza `{tu-usuario}` con tu nombre de usuario de GitHub)
    - O agrega registros A que apunten a las IPs de GitHub Pages:
      ```
      185.199.108.153
