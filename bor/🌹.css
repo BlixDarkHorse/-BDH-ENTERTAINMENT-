@@ -154,11 +154,16 @@ label.cover-box, label.masonry-item, label.trailer-box { display: block; cursor:
 #page-inicio .mini-slider:hover .cover-box { animation-play-state: paused; }
 #page-inicio .mini-slider .cover-box { animation: marquee 10s linear infinite; }
 @media (max-width: 768px) {
-    .slogan-top, .header-top { display: none !important; }
-    header { padding: 5px 10px; }
-    nav { gap: 8px; justify-content: space-around; width: 100%; }
-    nav label { font-size: 0.9rem; padding: 8px; border-bottom: none; }
-    main { margin-top: 60px; padding: 10px; }
+    .slogan-top, .logo-container { display: none !important; }
+    .header-top { flex-direction: row; justify-content: center; padding: 5px 0; width: 100%; }
+    .search-login { width: 100%; justify-content: center; gap: 5px; }
+    .search-login input[type="text"] { flex: 1; min-width: 0; padding: 6px; font-size: 0.9rem; }
+    .btn-login { font-size: 0.8rem; padding: 6px 10px; white-space: nowrap; }
+    header { padding: 5px; }
+    nav { gap: 5px; justify-content: flex-start; width: 100%; flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; }
+    nav::-webkit-scrollbar { display: none; }
+    nav label { font-size: 0.8rem; padding: 8px 10px; border-bottom: none; white-space: nowrap; flex: 0 0 auto; }
+    main { margin-top: 90px; padding: 10px; }
     .home-layout, .originals-layout { display: flex; flex-direction: column; }
     .home-left-void, .originals-left-void { display: none; }
     .home-right-data, .originals-right-data { padding: 10px; width: 100%; overflow-y: visible; }
@@ -179,7 +184,6 @@ label.cover-box, label.masonry-item, label.trailer-box { display: block; cursor:
     .masonry-content { column-count: auto; display: flex; flex-direction: row; overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 20px; gap: 15px; scrollbar-width: none; }
     .masonry-content::-webkit-scrollbar { display: none; }
     .masonry-item { flex: 0 0 85vw; scroll-snap-align: center; height: 60vh !important; margin-bottom: 0; box-shadow: 0 10px 20px rgba(0,0,0,1); }
-    .masonry-item:nth-of-type(n+16) { display: none !important; }
     .ep-grid { grid-template-columns: repeat(2, 1fr); }
     .mini-slider { overflow-x: auto; scroll-snap-type: x mandatory; display: flex; scrollbar-width: none; }
     .mini-slider::-webkit-scrollbar { display: none; }
