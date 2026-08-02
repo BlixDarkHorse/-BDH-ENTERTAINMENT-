@@ -155,31 +155,39 @@ label.cover-box, label.masonry-item, label.trailer-box { display: block; cursor:
 #page-inicio .mini-slider .cover-box { animation: marquee 10s linear infinite; }
 @media (max-width: 768px) {
     header { padding: 10px; }
-    .header-top { flex-direction: column; gap: 15px; }
+    .header-top { flex-direction: column; gap: 10px; }
     .logo-container h1 { font-size: 1.5rem; }
-    nav { gap: 10px; }
-    nav label { font-size: 0.75rem; padding: 5px; border-bottom: none; }
-    main { margin-top: 200px; padding: 10px; }
+    nav { gap: 8px; }
+    nav label { font-size: 0.9rem; padding: 5px; border-bottom: none; }
+    main { margin-top: 150px; padding: 10px; }
     .home-layout, .originals-layout { display: flex; flex-direction: column; }
     .home-left-void, .originals-left-void { display: none; }
-    .home-right-data, .originals-right-data { padding: 20px 10px; width: 100%; overflow-y: visible; }
-    .home-title-zone h1, .hero-title { font-size: 2.5rem; }
+    .home-right-data, .originals-right-data { padding: 10px; width: 100%; overflow-y: visible; }
+    .home-title-zone h1, .hero-title { font-size: 2.2rem; }
+    .home-title-zone .description { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
     .trailer-info h3 { font-size: 1.5rem; }
     .trailer-box { height: 250px; }
     .masonry-content { column-count: 2; }
-    .h-1 { height: 120px; }
-    .h-2 { height: 180px; }
-    .h-3 { height: 240px; }
-    .h-4 { height: 300px; }
-    .modal-content { padding: 20px; width: 95%; max-height: 95vh; margin: auto; }
-    .ep-grid { grid-template-columns: repeat(3, 1fr); }
+    .h-1 { height: 160px; }
+    .h-2 { height: 220px; }
+    .h-3 { height: 280px; }
+    .h-4 { height: 340px; }
+    .modal-content { padding: 15px; width: 95%; max-height: 95vh; margin: auto; }
+    .ep-grid { grid-template-columns: repeat(2, 1fr); }
     .bdh-contenedor-maestro { width: 100%; height: auto; }
     .bdh-panel { position: relative; height: auto; }
 }
 @media (max-width: 480px) {
     .masonry-content { column-count: 1; }
     .ep-grid { grid-template-columns: repeat(2, 1fr); }
-    .mini-slider .cover-box { flex: 0 0 100px; height: 150px; }
+    .mini-slider .cover-box { flex: 0 0 130px; height: 190px; }
+    .home-title-zone .description { -webkit-line-clamp: 2; }
+    .home-title-zone .subtitle { font-size: 1.1rem; }
+    .home-title-zone { margin-bottom: 30px; }
+    .h-1 { height: 200px; }
+    .h-2 { height: 280px; }
+    .h-3 { height: 360px; }
+    .h-4 { height: 440px; }
 }
 @keyframes marquee {
     0% { transform: translateX(0); }
