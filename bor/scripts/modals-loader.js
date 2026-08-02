@@ -11,13 +11,21 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!label) return;
     e.preventDefault();
 
-    // Find image inside label and extract numeric id from filename
+    // Extract numeric id from alt attribute, fallback to filename if needed
     const img = label.querySelector('img');
     if (!img) return;
-    const src = img.getAttribute('src') || '';
-    const m = src.match(/(\d+)\.[a-zA-Z]{2,4}$/);
-    if (!m) return;
-    const id = m[1];
+    
+    let id;
+    const alt = img.getAttribute('alt') || '';
+    const altMatch = alt.match(/(\d+)/);
+    if (altMatch) {
+      id = altMatch[1];
+    } else {
+      const src = img.getAttribute('src') || '';
+      const m = src.match(/(\d+)\.[a-zA-Z]{2,4}$/);
+      if (!m) return;
+      id = m[1];
+    }
     const modalId = 'modal-' + id;
 
     // If already injected, open it
