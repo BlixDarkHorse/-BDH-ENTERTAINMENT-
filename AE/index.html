@@ -962,6 +962,13 @@
             scopes: ["User.Read", "Files.Read", "offline_access"],
             redirectUri: "http://localhost:8000/INDEX.HTML"
         };
+        const AZURE_CONFIG = {
+        appName: "BLAZAR ONEDRIVE FRAMEBUFFER NODE V2",
+        clientId: "086679a9-80fa-48f3-9b00-054cdbb19137",
+        tenantId: "common",
+        scopes: ["User.Read", "Files.Read", "offline_access"],
+        redirectUri: "https://ent.universobdh.me/AE/" // ← Ruta exacta de producción
+        };
 
         let azureToken = localStorage.getItem('azure_access_token') || null;
 
