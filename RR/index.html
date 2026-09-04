@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ROUSE ROOM | Universo BDH</title>
+    <style>
+        /* =========================================================
+           VARIABLES GLOBALES (UNIVERSO BDH)
+           ========================================================= */
+        :root {
+            --gold: #c9a646;
+            --gold-soft: #7c6d39;
+            --gold-deep: #8d631e;
+            --panel-dark: rgba(19, 13, 19, 0.95);
+            --bg-dark: rgba(43, 2, 10, 1);
+            --text: #d2a827;
+            --accent-magenta: rgba(255, 0, 212, 0.68);
+            --shadow-gold: 0 0 15px rgba(201, 166, 70, 0.15);
+            --glass-bg: linear-gradient(180deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.6));
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--bg-dark);
+            background-image: radial-gradient(circle at 50% 0%, #1a150b 0%, var(--bg-dark) 80%);
+            color: var(--text);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* =========================================================
+           LAYOUT PRINCIPAL (SPLITTER)
+           ========================================================= */
+        .workspace {
+            display: flex;
+            height: 100%;
+            width: 100%;
+        }
+
+        .panel {
+            background: var(--panel-dark);
+            border-right: 1px solid var(--gold-deep);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .panel-left { width: 20%; min-width: 200px; resize: horizontal; }
+        .panel-center { flex: 1; min-width: 400px; border-right: 1px solid var(--gold-deep); display: flex; flex-direction: column; }
+        .panel-right { width: 25%; min-width: 250px; }
+
+        /* =========================================================
+           MOTORES LÓGICOS DE PESTAÑAS (CSS PURO)
+           ========================================================= */
+        .tab-radio { display: none; }
+        .tab-header {
+            display: flex;
+            background: rgba(0,0,0,0.5);
+            border-bottom: 1px solid var(--gold-soft);
+        }
+        .tab-label {
+            flex: 1;
+            padding: 10px;
+            text-align: center;
+            font-size: 0.75rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            transition: 0.3s;
+        }
+        .tab-label:hover { color: var(--gold); background: rgba(255,255,255,0.05); }
+
+        /* Lógica Panel Izquierdo */
+        #repo-web:checked ~ .tab-header label[for="repo-web"],
+        #repo-desktop:checked ~ .tab-header label[for="repo-desktop"],
+        #repo-current:checked ~ .tab-header label[for="repo-current"] {
+            border-bottom: 2px solid var(--gold);
+            color: var(--gold);
+            background: linear-gradient(180deg, transparent, rgba(201,166,70,0.1));
+        }
+
+        .tab-content { display: none; flex: 1; overflow-y: auto; padding: 10px; }
+        
+        #repo-web:checked ~ .content-area #content-web,
+        #repo-desktop:checked ~ .content-area #content-desktop,
+        #repo-current:checked ~ .content-area #content-current { display: block; }
+
+        /* Lógica Panel Central (Editor vs Render) */
+        #center-editor:checked ~ .tab-header label[for="center-editor"],
+        #center-render:checked ~ .tab-header label[for="center-render"] {
+            border-bottom: 2px solid var(--accent-magenta);
+            color: #fff;
+            text-shadow: 0 0 10px var(--accent-magenta);
+        }
+
+        #center-editor:checked ~ .center-content-area #view-editor,
+        #center-render:checked ~ .center-content-area #view-render { display: flex; }
+
+        /* =========================================================
+           COMPONENTES INTERNOS
+           ========================================================= */
+        .pointer-item {
+            padding: 8px;
+            border: 1px solid rgba(201,166,70,0.2);
+            margin-bottom: 5px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            background: rgba(0,0,0,0.3);
+            border-left: 3px solid var(--gold-soft);
+        }
+        .pointer-item:hover { border-left-color: var(--accent-magenta); background: rgba(255,0,212,0.1); }
+
+        .editor-textarea {
+            flex: 1;
+            background: #0f0a0f;
+            color: #dcdcdc;
+            border: none;
+            padding: 15px;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.9rem;
+            resize: none;
+            outline: none;
+        }
+
+        .render-frame {
+            flex: 1;
+            border: none;
+            background: #fff; /* Fondo blanco por defecto para renders web */
+        }
+
+        /* Panel Derecho: Agentes */
+        .agent-btn {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 10px;
+            background: rgba(0,0,0,0.4);
+            border: 1px solid var(--gold-deep);
+            color: var(--gold);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .agent-btn:hover {
+            background: rgba(201, 166, 70, 0.15);
+            border-color: var(--gold);
+            box-shadow: var(--shadow-gold);
+        }
+
+        /* =========================================================
+           VENTANAS FRAMELESS (GLASSMORPHISM)
+           ========================================================= */
+        .frameless-popup {
+            display: none; /* Controlado por JS */
+            position: absolute;
+            top: 20%;
+            left: 30%;
+            width: 400px;
+            height: 500px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 0, 212, 0.35);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.8), 0 0 15px rgba(255, 0, 212, 0.15);
+            z-index: 100;
+            flex-direction: column;
+        }
+
+        .popup-header {
+            background: rgba(0,0,0,0.5);
+            padding: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 0, 212, 0.35);
+            cursor: move; /* Indica que es arrastrable */
+        }
+
+        .popup-title { font-size: 0.8rem; letter-spacing: 0.1em; color: #fff; text-shadow: 0 0 5px var(--accent-magenta); }
+        
+        .close-btn {
+            background: none; border: none; color: var(--gold-soft); cursor: pointer; font-size: 1rem;
+        }
+        .close-btn:hover { color: red; }
+
+        .popup-body {
+            flex: 1;
+            padding: 10px;
+            overflow-y: auto;
+            color: #ccc;
+            font-size: 0.85rem;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="workspace">
+        <!-- ================= PANEL IZQUIERDO ================= -->
+        <div class="panel panel-left">
+            <input type="radio" name="repo-tabs" id="repo-web" class="tab-radio" checked>
+            <input type="radio" name="repo-tabs" id="repo-desktop" class="tab-radio">
+            <input type="radio" name="repo-tabs" id="repo-current" class="tab-radio">
+
+            <div class="tab-header">
+                <label for="repo-web" class="tab-label">🌐 Web</label>
+                <label for="repo-desktop" class="tab-label">💻 Dsk</label>
+                <label for="repo-current" class="tab-label">⚡ Proy</label>
+            </div>
+
+            <div class="content-area" style="display:flex; flex:1; flex-direction:column; overflow:hidden;">
+                <div id="content-web" class="tab-content">
+                    <div class="pointer-item" onclick="loadPointer('ui_glass.VTHA')">🔗 ui_glass.VTHA</div>
+                    <div class="pointer-item" onclick="loadPointer('core_engine.VTHA')">🔗 core_engine.VTHA</div>
+                </div>
+                <div id="content-desktop" class="tab-content">
+                    <div class="pointer-item">🔗 sys_monitor.VTHA</div>
+                </div>
+                <div id="content-current" class="tab-content">
+                    <div class="pointer-item">📁 index.html (Editando)</div>
+                    <div class="pointer-item">📁 🌹.css</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= PANEL CENTRAL ================= -->
+        <div class="panel panel-center">
+            <input type="radio" name="center-tabs" id="center-editor" class="tab-radio" checked>
+            <input type="radio" name="center-tabs" id="center-render" class="tab-radio">
+
+            <div class="tab-header">
+                <label for="center-editor" class="tab-label">📝 Editor (RAW)</label>
+                <label for="center-render" class="tab-label">🔥 RENEGADE ROOM</label>
+            </div>
+
+            <div class="center-content-area" style="display:flex; flex:1; flex-direction:column; overflow:hidden;">
+                <!-- EDITOR -->
+                <div id="view-editor" class="tab-content" style="padding:0; display:flex; flex-direction:column;">
+                    <textarea id="code-editor" class="editor-textarea" onkeyup="updateRender()"><h1 style="color:red;">Test ROUSE ROOM</h1></textarea>
+                </div>
+                <!-- RENDERIZADOR -->
+                <div id="view-render" class="tab-content" style="padding:0; display:none; flex-direction:column;">
+                    <iframe id="render-frame" class="render-frame"></iframe>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= PANEL DERECHO ================= -->
+        <div class="panel panel-right" style="padding: 15px;">
+            <h3 style="font-size: 0.9rem; margin-bottom: 15px; color: var(--gold-soft); border-bottom: 1px solid var(--gold-deep); padding-bottom: 5px;">📜 Historial Sesión</h3>
+            <div style="height: 150px; overflow-y: auto; font-size: 0.75rem; color: #888; margin-bottom: 20px;">
+                > ROUSE ROOM Init... OK<br>
+                > Punteros Cargados: 2<br>
+                > IA Core: Standby...
+            </div>
+
+            <h3 style="font-size: 0.9rem; margin-bottom: 15px; color: var(--gold-soft); border-bottom: 1px solid var(--gold-deep); padding-bottom: 5px;">🤖 Sinergia IA</h3>
+            <button class="agent-btn" onclick="openAgent('Agent Alpha - Arquitecto')">Alpha</button>
+            <button class="agent-btn" onclick="openAgent('Agent Beta - Lógica')">Beta</button>
+            <button class="agent-btn" onclick="openAgent('Agent Gamma - Diseño')">Gamma</button>
+            <button class="agent-btn" onclick="openAgent('Agent Omega - Crítico')">Omega</button>
+        </div>
+    </div>
+
+    <!-- ================= VENTANA FRAMELESS (POP-UP) ================= -->
+    <div id="agent-popup" class="frameless-popup">
+        <div class="popup-header" id="popup-drag-handle">
+            <span class="popup-title" id="agent-title">Nombre IA</span>
+            <button class="close-btn" onclick="closeAgent()">✖</button>
+        </div>
+        <div class="popup-body">
+            <p style="color: var(--gold-soft);">> Interfaz sináptica conectada.</p>
+            <div style="margin-top: 10px; padding: 10px; background: rgba(0,0,0,0.5); border-left: 2px solid var(--accent-magenta);">
+                Esperando directrices, SOBER... LORD BDH.
+            </div>
+            <!-- Input falso para UI -->
+            <input type="text" style="width:100%; margin-top: auto; position:absolute; bottom:10px; left:0; width: calc(100% - 20px); margin: 0 10px; background: rgba(0,0,0,0.8); border: 1px solid var(--gold-deep); color: white; padding: 8px;" placeholder="Ingresar comando...">
+        </div>
+    </div>
+
+    <script>
+        // --- 1. RENDERIZADO AL INSTANTE (RENEGADE ROOM) ---
+        function updateRender() {
+            const code = document.getElementById('code-editor').value;
+            const iframe = document.getElementById('render-frame');
+            // Inyección directa al iframe (Renderizado en vivo)
+            iframe.srcdoc = code; 
+        }
+
+        // --- 2. INVOCACIÓN DE PUNTEROS (.VTHA) ---
+        function loadPointer(pointerName) {
+            const codeArea = document.getElementById('code-editor');
+            codeArea.value = `<!-- Puntero Invocado: ${pointerName} -->\n<style>\n  /* Estilos importados abstractamente */\n  body { background: #111; color: #fff; }\n</style>\n<div>\n  Elemento invocado sin copiar el origen.\n</div>`;
+            updateRender();
+            // Cambiar vista a renderizador automáticamente si se desea
+            document.getElementById('center-render').checked = true;
+        }
+
+        // --- 3. LÓGICA DE VENTANA FRAMELESS (AGENTES) ---
+        const popup = document.getElementById('agent-popup');
+        const agentTitle = document.getElementById('agent-title');
+
+        function openAgent(name) {
+            agentTitle.innerText = name;
+            popup.style.display = 'flex';
+        }
+
+        function closeAgent() {
+            popup.style.display = 'none';
+        }
+
+        // Funcionalidad Drag & Drop básica para el popup
+        let isDragging = false, xOffset = 0, yOffset = 0, initialX, initialY;
+        const handle = document.getElementById('popup-drag-handle');
+
+        handle.addEventListener("mousedown", dragStart);
+        document.addEventListener("mouseup", dragEnd);
+        document.addEventListener("mousemove", drag);
+
+        function dragStart(e) {
+            initialX = e.clientX - xOffset;
+            initialY = e.clientY - yOffset;
+            if (e.target === handle || e.target.parentNode === handle) isDragging = true;
+        }
+
+        function dragEnd() { initialX = currentX; initialY = currentY; isDragging = false; }
+
+        function drag(e) {
+            if (isDragging) {
+                e.preventDefault();
+                currentX = e.clientX - initialX;
+                currentY = e.clientY - initialY;
+                xOffset = currentX;
+                yOffset = currentY;
+                setTranslate(currentX, currentY, popup);
+            }
+        }
+
+        function setTranslate(xPos, yPos, el) {
+            el.style.transform = "translate3d(" + xPos + "px, " + yPos + "px, 0)";
+        }
+
+        // Inicializar render
+        updateRender();
+    </script>
+</body>
+</html>
