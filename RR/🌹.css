@@ -1,0 +1,251 @@
+           /* =========================================================
+           VARIABLES GLOBALES (UNIVERSO BDH)
+           ========================================================= */
+                :root {
+                    --gold: #4e3d0d;
+                    --gold-soft: #3a3008d4;
+                    --gold-deep: #a51d7f81;
+                    --panel-dark: rgba(19, 13, 19, 0.95);
+                    --bg-dark: rgba(0, 0, 0, 0.522);
+                    --text: #000000;
+                    --accent-magenta: rgba(255, 0, 212, 0.68);
+                    --shadow-gold: 0 0 15px rgba(201, 166, 70, 0.15);
+                    --glass-bg: linear-gradient(180deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.6));
+                }
+
+                * {
+                    box-sizing: border-box;
+                    margin: 0;
+                    padding: 0;
+                }
+
+                body {
+                    background-color: var(--bg-dark);
+                    background-image: radial-gradient(circle at 50% 0%, #1a150b 0%, var(--bg-dark) 80%);
+                    color: var(--text);
+                    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                    height: 100vh;
+                    overflow: hidden;
+                    display: flex;
+                    flex-direction: column;
+                }
+
+                /* =========================================================
+           LAYOUT PRINCIPAL (SPLITTER)
+           ========================================================= */
+                .workspace {
+                    display: flex;
+                    height: 100%;
+                    width: 100%;
+                }
+
+                .panel {
+                    background: var(--panel-dark);
+                    border-right: 1px solid var(--gold-deep);
+                    display: flex;
+                    flex-direction: column;
+                    overflow: hidden;
+                }
+
+                .panel-left {
+                    width: 20%;
+                    min-width: 200px;
+                    resize: horizontal; vertical-align: auto;
+                }
+
+                .panel-center {
+                    flex: 1;
+                    min-width: 400px;
+                    border-right: 1px solid var(--gold-deep);
+                    display: flex;
+                    flex-direction: column;
+                    resize: horizontal; vertical-align: auto;
+                }
+
+                .panel-right {
+                    width: 25%;
+                    min-width: 250px;
+                }
+
+                /* =========================================================
+           MOTORES LÓGICOS DE PESTAÑAS (CSS PURO)
+           ========================================================= */
+                .tab-radio {
+                    display: none;
+                }
+
+                .tab-header {
+                    display: flex;
+                    background: rgba(0, 0, 0, 0.5);
+                    border-bottom: 1px solid var(--gold-soft);
+                }
+
+                .tab-label {
+                    flex: 1;
+                    padding: 10px;
+                    text-align: center;
+                    font-size: 0.75rem;
+                    font-weight: bold;
+                    text-transform: uppercase;
+                    letter-spacing: 0.1em;
+                    cursor: pointer;
+                    border-bottom: 2px solid transparent;
+                    transition: 0.3s;
+                }
+
+                .tab-label:hover {
+                    color: var(--gold);
+                    background: rgba(255, 255, 255, 0.05);
+                }
+
+                /* Lógica Panel Izquierdo */
+                #repo-web:checked~.tab-header label[for="repo-web"],
+                #repo-desktop:checked~.tab-header label[for="repo-desktop"],
+                #repo-current:checked~.tab-header label[for="repo-current"] {
+                    border-bottom: 2px solid var(--gold);
+                    color: var(--gold);
+                    background: linear-gradient(180deg, transparent, rgba(201, 166, 70, 0.1));
+                }
+
+                .tab-content {
+                    display: none;
+                    flex: 1;
+                    overflow-y: auto;
+                    padding: 10px;
+                }
+
+                #repo-web:checked~.content-area #content-web,
+                #repo-desktop:checked~.content-area #content-desktop,
+                #repo-current:checked~.content-area #content-current {
+                    display: block;
+                }
+
+                /* Lógica Panel Central (Editor vs Render) */
+                #center-editor:checked~.tab-header label[for="center-editor"],
+                #center-render:checked~.tab-header label[for="center-render"] {
+                    border-bottom: 2px solid var(--accent-magenta);
+                    color: #00000041;
+                    text-shadow: 0 0 10px var(--accent-magenta);
+                }
+
+                #center-editor:checked~.center-content-area #view-editor,
+                #center-render:checked~.center-content-area #view-render {
+                    display: flex;
+                }
+
+                /* =========================================================
+           COMPONENTES INTERNOS
+           ========================================================= */
+                .pointer-item {
+                    padding: 8px;
+                    border: 1px solid rgba(205, 13, 160, 0.532);
+                    margin-bottom: 5px;
+                    font-size: 0.8rem;
+                    cursor: pointer;
+                    background: rgba(0, 0, 0, 0.3);
+                    border-left: 3px solid var(--gold-soft);
+                }
+
+                .pointer-item:hover {
+                    border-left-color: var(--accent-magenta);
+                    background: rgba(255, 0, 212, 0.1);
+                }
+
+                .editor-textarea {
+                    flex: 1;
+                    background: rgba(0, 0, 0, 0.1);
+                    background-image: url('2.PLO');
+                    border: none;
+                    padding: 15px;
+                    font-family: 'Courier New', Courier, monospace;
+                    font-size: 0.9rem;
+                    resize: none;
+                    outline: none;
+                }
+
+                .render-frame {
+                    flex: 1;
+                    border: none;
+                    background: #00000000;
+                    /* Fondo blanco por defecto para renders web */
+                }
+
+                /* Panel Derecho: Agentes */
+                .agent-btn {
+                    display: block;
+                    width: 100%;
+                    padding: 12px;
+                    margin-bottom: 10px;
+                    background-image: url('1.PLO');
+                    background: rgba(0, 0, 0, 0.4);
+                    border: 1px solid var(--gold-deep);
+                    color: var(--gold);
+                    text-transform: uppercase;
+                    letter-spacing: 0.1em;
+                    cursor: pointer;
+                    transition: all 0.3s ease;
+                }
+
+                .agent-btn:hover {
+                    background: rgba(201, 166, 70, 0.15);
+                    border-color: var(--gold);
+                    box-shadow: var(--shadow-gold);
+                }
+
+                /* =========================================================
+           VENTANAS FRAMELESS (GLASSMORPHISM)
+           ========================================================= */
+                .frameless-popup {
+                    display: none;
+                    /* Controlado por JS */
+                    position: absolute;
+                    top: 20%;
+                    left: 30%;
+                    width: 400px;
+                    height: 500px;
+                    background: var(--glass-bg);
+                    backdrop-filter: blur(12px);
+                    -webkit-backdrop-filter: blur(12px);
+                    border: 1px solid rgba(255, 0, 212, 0.35);
+                    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8), 0 0 15px rgba(255, 0, 212, 0.15);
+                    z-index: 100;
+                    flex-direction: column;
+                }
+
+                .popup-header {
+                    background: rgba(0, 0, 0, 0.5);
+                    padding: 10px;
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    border-bottom: 1px solid rgba(255, 0, 212, 0.35);
+                    cursor: move;
+                    /* Indica que es arrastrable */
+                }
+
+                .popup-title {
+                    font-size: 0.8rem;
+                    letter-spacing: 0.1em;
+                    color: #fff;
+                    text-shadow: 0 0 5px var(--accent-magenta);
+                }
+
+                .close-btn {
+                    background: none;
+                    border: none;
+                    color: var(--gold-soft);
+                    cursor: pointer;
+                    font-size: 1rem;
+                }
+
+                .close-btn:hover {
+                    color: rgb(54, 1, 52);
+                }
+
+                .popup-body {
+                    flex: 1;
+                    padding: 10px;
+                    overflow-y: auto;
+                    color: #0000001a;
+                    font-size: 0.85rem;
+                }
