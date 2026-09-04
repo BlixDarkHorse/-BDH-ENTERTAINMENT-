@@ -1,251 +1,374 @@
-           /* =========================================================
-           VARIABLES GLOBALES (UNIVERSO BDH)
-           ========================================================= */
-                :root {
-                    --gold: #4e3d0d;
-                    --gold-soft: #3a3008d4;
-                    --gold-deep: #a51d7f81;
-                    --panel-dark: rgba(19, 13, 19, 0.95);
-                    --bg-dark: rgba(0, 0, 0, 0.522);
-                    --text: #000000;
-                    --accent-magenta: rgba(255, 0, 212, 0.68);
-                    --shadow-gold: 0 0 15px rgba(201, 166, 70, 0.15);
-                    --glass-bg: linear-gradient(180deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.6));
-                }
+/* =========================================================
+   VARIABLES GLOBALES (UNIVERSO BDH)
+   ========================================================= */
+:root {
+    --gold: rgba(99, 61, 1, 0.77);
+    --gold-bright: #c900c6;
+    --gold-soft: #8a7333;
+    --gold-deep: #4a3b10;
+    --panel-dark: rgba(12, 6, 14, 0.438);
+    --bg-dark: #05020662;
+    --text: #e2d4a8;
+    --accent-magenta: #ff00d4;
+    --accent-magenta-glow: rgba(255, 0, 212, 0.4);
+    --shadow-gold: 0 0 15px rgba(201, 166, 70, 0.25);
+    --glass-bg: linear-gradient(135deg, rgba(25, 10, 25, 0.7), rgba(5, 2, 8, 0.9));
+}
 
-                * {
-                    box-sizing: border-box;
-                    margin: 0;
-                    padding: 0;
-                }
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
 
-                body {
-                    background-color: var(--bg-dark);
-                    background-image: radial-gradient(circle at 50% 0%, #1a150b 0%, var(--bg-dark) 80%);
-                    color: var(--text);
-                    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-                    height: 100vh;
-                    overflow: hidden;
-                    display: flex;
-                    flex-direction: column;
-                }
+body {
+    background-color: var(--bg-dark);
+    background-image: 
+        radial-gradient(circle at 50% 0%, rgba(255, 0, 212, 0.08) 0%, transparent 70%),
+        radial-gradient(circle at 50% 100%, rgba(201, 166, 70, 0.05) 0%, var(--bg-dark) 90%);
+    color: var(--text);
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
 
-                /* =========================================================
-           LAYOUT PRINCIPAL (SPLITTER)
-           ========================================================= */
-                .workspace {
-                    display: flex;
-                    height: 100%;
-                    width: 100%;
-                }
+/* Scrollbars Personalizados BDH */
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.5);
+}
+::-webkit-scrollbar-thumb {
+    background: var(--gold-soft);
+    border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: var(--accent-magenta);
+}
 
-                .panel {
-                    background: var(--panel-dark);
-                    border-right: 1px solid var(--gold-deep);
-                    display: flex;
-                    flex-direction: column;
-                    overflow: hidden;
-                }
+/* =========================================================
+   LAYOUT PRINCIPAL (WORKSPACE)
+   ========================================================= */
+.workspace {
+    display: flex;
+    height: 100vh;
+    width: 100vw;
+    backdrop-filter: blur(8px);
+}
 
-                .panel-left {
-                    width: 20%;
-                    min-width: 200px;
-                    resize: horizontal; vertical-align: auto;
-                }
+.panel {
+    background: var(--panel-dark);
+    border-right: 1px solid rgba(201, 166, 70, 0.2);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    box-shadow: inset 0 0 20px rgba(0,0,0,0.8);
+}
 
-                .panel-center {
-                    flex: 1;
-                    min-width: 400px;
-                    border-right: 1px solid var(--gold-deep);
-                    display: flex;
-                    flex-direction: column;
-                    resize: horizontal; vertical-align: auto;
-                }
+.panel-left {
+    width: 22%;
+    min-width: 220px;
+    resize: horizontal;
+}
 
-                .panel-right {
-                    width: 25%;
-                    min-width: 250px;
-                }
+.panel-center {
+    flex: 1;
+    min-width: 400px;
+    border-right: 1px solid rgba(201, 166, 70, 0.2);
+    display: flex;
+    flex-direction: column;
+}
 
-                /* =========================================================
-           MOTORES LÓGICOS DE PESTAÑAS (CSS PURO)
-           ========================================================= */
-                .tab-radio {
-                    display: none;
-                }
+.panel-right {
+    width: 25%;
+    min-width: 260px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
 
-                .tab-header {
-                    display: flex;
-                    background: rgba(0, 0, 0, 0.5);
-                    border-bottom: 1px solid var(--gold-soft);
-                }
+/* =========================================================
+   PESTAÑAS Y CONTROLADORES CSS
+   ========================================================= */
+.tab-radio {
+    display: none;
+}
 
-                .tab-label {
-                    flex: 1;
-                    padding: 10px;
-                    text-align: center;
-                    font-size: 0.75rem;
-                    font-weight: bold;
-                    text-transform: uppercase;
-                    letter-spacing: 0.1em;
-                    cursor: pointer;
-                    border-bottom: 2px solid transparent;
-                    transition: 0.3s;
-                }
+.tab-header {
+    display: flex;
+    background: rgba(0, 0, 0, 0.6);
+    border-bottom: 1px solid rgba(201, 166, 70, 0.25);
+}
 
-                .tab-label:hover {
-                    color: var(--gold);
-                    background: rgba(255, 255, 255, 0.05);
-                }
+.tab-label {
+    flex: 1;
+    padding: 12px 8px;
+    text-align: center;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--gold-soft);
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    transition: all 0.25s ease;
+}
 
-                /* Lógica Panel Izquierdo */
-                #repo-web:checked~.tab-header label[for="repo-web"],
-                #repo-desktop:checked~.tab-header label[for="repo-desktop"],
-                #repo-current:checked~.tab-header label[for="repo-current"] {
-                    border-bottom: 2px solid var(--gold);
-                    color: var(--gold);
-                    background: linear-gradient(180deg, transparent, rgba(201, 166, 70, 0.1));
-                }
+.tab-label:hover {
+    color: var(--gold-bright);
+    background: rgba(201, 166, 70, 0.08);
+}
 
-                .tab-content {
-                    display: none;
-                    flex: 1;
-                    overflow-y: auto;
-                    padding: 10px;
-                }
+/* Lógica Panel Izquierdo */
+#repo-web:checked ~ .tab-header label[for="repo-web"],
+#repo-desktop:checked ~ .tab-header label[for="repo-desktop"],
+#repo-current:checked ~ .tab-header label[for="repo-current"] {
+    border-bottom: 2px solid var(--gold-bright);
+    color: var(--gold-bright);
+    background: linear-gradient(180deg, transparent, rgba(201, 166, 70, 0.15));
+    text-shadow: 0 0 8px rgba(201, 166, 70, 0.5);
+}
 
-                #repo-web:checked~.content-area #content-web,
-                #repo-desktop:checked~.content-area #content-desktop,
-                #repo-current:checked~.content-area #content-current {
-                    display: block;
-                }
+.content-area, .center-content-area {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    overflow: hidden;
+    position: relative;
+}
 
-                /* Lógica Panel Central (Editor vs Render) */
-                #center-editor:checked~.tab-header label[for="center-editor"],
-                #center-render:checked~.tab-header label[for="center-render"] {
-                    border-bottom: 2px solid var(--accent-magenta);
-                    color: #00000041;
-                    text-shadow: 0 0 10px var(--accent-magenta);
-                }
+.tab-content {
+    display: none;
+    flex: 1;
+    overflow-y: auto;
+    padding: 12px;
+}
 
-                #center-editor:checked~.center-content-area #view-editor,
-                #center-render:checked~.center-content-area #view-render {
-                    display: flex;
-                }
+#repo-web:checked ~ .content-area #content-web,
+#repo-desktop:checked ~ .content-area #content-desktop,
+#repo-current:checked ~ .content-area #content-current {
+    display: block;
+}
 
-                /* =========================================================
-           COMPONENTES INTERNOS
-           ========================================================= */
-                .pointer-item {
-                    padding: 8px;
-                    border: 1px solid rgba(205, 13, 160, 0.532);
-                    margin-bottom: 5px;
-                    font-size: 0.8rem;
-                    cursor: pointer;
-                    background: rgba(0, 0, 0, 0.3);
-                    border-left: 3px solid var(--gold-soft);
-                }
+/* Lógica Panel Central */
+#center-editor:checked ~ .tab-header label[for="center-editor"],
+#center-render:checked ~ .tab-header label[for="center-render"] {
+    border-bottom: 2px solid var(--accent-magenta);
+    color: #fff;
+    text-shadow: 0 0 10px var(--accent-magenta);
+    background: linear-gradient(180deg, transparent, rgba(255, 0, 212, 0.15));
+}
 
-                .pointer-item:hover {
-                    border-left-color: var(--accent-magenta);
-                    background: rgba(255, 0, 212, 0.1);
-                }
+#center-editor:checked ~ .center-content-area #view-editor,
+#center-render:checked ~ .center-content-area #view-render {
+    display: flex;
+}
 
-                .editor-textarea {
-                    flex: 1;
-                    background: rgba(0, 0, 0, 0.1);
-                    background-image: url('2.PLO');
-                    border: none;
-                    padding: 15px;
-                    font-family: 'Courier New', Courier, monospace;
-                    font-size: 0.9rem;
-                    resize: none;
-                    outline: none;
-                }
+/* =========================================================
+   COMPONENTES DE CODIFICACIÓN Y RENDER
+   ========================================================= */
+.pointer-item {
+    padding: 10px 12px;
+    border: 1px solid rgba(255, 0, 212, 0.2);
+    margin-bottom: 8px;
+    font-size: 0.8rem;
+    font-family: monospace;
+    color: var(--text);
+    cursor: pointer;
+    background: rgba(0, 0, 0, 0.4);
+    border-left: 3px solid var(--gold);
+    border-radius: 2px;
+    transition: all 0.2s ease;
+}
 
-                .render-frame {
-                    flex: 1;
-                    border: none;
-                    background: #00000000;
-                    /* Fondo blanco por defecto para renders web */
-                }
+.pointer-item:hover {
+    border-left-color: var(--accent-magenta);
+    border-color: var(--accent-magenta);
+    background: rgba(255, 0, 212, 0.12);
+    box-shadow: 0 0 10px rgba(255, 0, 212, 0.2);
+    transform: translateX(3px);
+}
 
-                /* Panel Derecho: Agentes */
-                .agent-btn {
-                    display: block;
-                    width: 100%;
-                    padding: 12px;
-                    margin-bottom: 10px;
-                    background-image: url('1.PLO');
-                    background: rgba(0, 0, 0, 0.4);
-                    border: 1px solid var(--gold-deep);
-                    color: var(--gold);
-                    text-transform: uppercase;
-                    letter-spacing: 0.1em;
-                    cursor: pointer;
-                    transition: all 0.3s ease;
-                }
+.view-pane {
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+}
 
-                .agent-btn:hover {
-                    background: rgba(201, 166, 70, 0.15);
-                    border-color: var(--gold);
-                    box-shadow: var(--shadow-gold);
-                }
+.editor-textarea {
+    flex: 1;
+    width: 100%;
+    height: 100%;
+    background: rgba(5, 2, 8, 0.95);
+    color: #00ffcc;
+    border: none;
+    padding: 20px;
+    font-family: 'Consolas', 'Fira Code', 'Courier New', monospace;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    resize: none;
+    outline: none;
+    box-shadow: inset 0 0 15px rgba(0,0,0,0.9);
+}
 
-                /* =========================================================
-           VENTANAS FRAMELESS (GLASSMORPHISM)
-           ========================================================= */
-                .frameless-popup {
-                    display: none;
-                    /* Controlado por JS */
-                    position: absolute;
-                    top: 20%;
-                    left: 30%;
-                    width: 400px;
-                    height: 500px;
-                    background: var(--glass-bg);
-                    backdrop-filter: blur(12px);
-                    -webkit-backdrop-filter: blur(12px);
-                    border: 1px solid rgba(255, 0, 212, 0.35);
-                    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8), 0 0 15px rgba(255, 0, 212, 0.15);
-                    z-index: 100;
-                    flex-direction: column;
-                }
+.render-frame {
+    flex: 1;
+    width: 100%;
+    height: 100%;
+    border: none;
+    background: #ffffff;
+}
 
-                .popup-header {
-                    background: rgba(0, 0, 0, 0.5);
-                    padding: 10px;
-                    display: flex;
-                    justify-content: space-between;
-                    align-items: center;
-                    border-bottom: 1px solid rgba(255, 0, 212, 0.35);
-                    cursor: move;
-                    /* Indica que es arrastrable */
-                }
+/* =========================================================
+   PANEL DERECHO Y AGENTES
+   ========================================================= */
+.panel-section {
+    border: 1px solid rgba(201, 166, 70, 0.2);
+    padding: 15px;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 4px;
+}
 
-                .popup-title {
-                    font-size: 0.8rem;
-                    letter-spacing: 0.1em;
-                    color: #fff;
-                    text-shadow: 0 0 5px var(--accent-magenta);
-                }
+.panel-title {
+    font-size: 0.85rem;
+    margin-bottom: 12px;
+    color: var(--gold-bright);
+    border-bottom: 1px solid rgba(201, 166, 70, 0.3);
+    padding-bottom: 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+}
 
-                .close-btn {
-                    background: none;
-                    border: none;
-                    color: var(--gold-soft);
-                    cursor: pointer;
-                    font-size: 1rem;
-                }
+.log-box {
+    height: 120px;
+    overflow-y: auto;
+    font-family: monospace;
+    font-size: 0.75rem;
+    color: var(--gold-soft);
+    line-height: 1.6;
+}
 
-                .close-btn:hover {
-                    color: rgb(54, 1, 52);
-                }
+.agent-btn {
+    display: block;
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 8px;
+    background: rgba(0, 0, 0, 0.6);
+    border: 1px solid var(--gold-soft);
+    color: var(--gold-bright);
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    cursor: pointer;
+    border-radius: 3px;
+    transition: all 0.3s ease;
+}
 
-                .popup-body {
-                    flex: 1;
-                    padding: 10px;
-                    overflow-y: auto;
-                    color: #0000001a;
-                    font-size: 0.85rem;
-                }
+.agent-btn:hover {
+    background: rgba(255, 0, 212, 0.15);
+    border-color: var(--accent-magenta);
+    color: #fff;
+    box-shadow: 0 0 12px var(--accent-magenta-glow);
+}
+
+/* =========================================================
+   VENTANAS FRAMELESS (GLASSMORPHISM)
+   ========================================================= */
+.frameless-popup {
+    display: none;
+    position: fixed;
+    top: 20%;
+    left: 35%;
+    width: 420px;
+    height: 480px;
+    background: var(--glass-bg);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid var(--accent-magenta);
+    box-shadow: 0 20px 50px rgba(0,0,0,0.9), 0 0 20px var(--accent-magenta-glow);
+    border-radius: 6px;
+    z-index: 1000;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.popup-header {
+    background: rgba(0, 0, 0, 0.8);
+    padding: 12px 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--accent-magenta);
+    cursor: move;
+}
+
+.popup-title {
+    font-size: 0.85rem;
+    font-weight: bold;
+    letter-spacing: 0.12em;
+    color: #fff;
+    text-shadow: 0 0 8px var(--accent-magenta);
+}
+
+.close-btn {
+    background: none;
+    border: none;
+    color: var(--gold);
+    cursor: pointer;
+    font-size: 1.1rem;
+    transition: color 0.2s;
+}
+
+.close-btn:hover {
+    color: #060104d7;
+}
+
+.popup-body {
+    flex: 1;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    position: relative;
+}
+
+.status-msg {
+    color: var(--gold-bright);
+    font-family: monospace;
+    font-size: 0.8rem;
+}
+
+.prompt-card {
+    padding: 12px;
+    background: rgba(0, 0, 0, 0.6);
+    border-left: 3px solid var(--accent-magenta);
+    border-radius: 2px;
+    color: var(--text);
+    font-size: 0.85rem;
+}
+
+.popup-input {
+    width: calc(100% - 30px);
+    position: absolute;
+    bottom: 15px;
+    left: 15px;
+    background: rgba(0, 0, 0, 0.85);
+    border: 1px solid var(--gold-soft);
+    color: #fff;
+    padding: 10px;
+    border-radius: 3px;
+    outline: none;
+    font-size: 0.85rem;
+}
+
+.popup-input:focus {
+    border-color: var(--accent-magenta);
+    box-shadow: 0 0 8px var(--accent-magenta-glow);
+}
