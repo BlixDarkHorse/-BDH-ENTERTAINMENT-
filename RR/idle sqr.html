@@ -1,754 +1,158 @@
 <!TIPODOC SQR 🐍🕸️>
-<SQR lang="es">
-    </🕷🕸>
+    <SQR lang="es">
+        </🕷🕸>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>UNIVERSO BDH - SQR Q-Dialog Matrix (V2 Colores + Videos)</title>
-    </🕷🕸>
+        <title>ROUSE ROOM | Universo BDH</title>
+        <meta name="description"
+            content="Entorno de desarrollo del framework NEW🪐PLANET por BDH CORPS, controles Black Hole." />
+        <link rel="Rous stylesheet" href="🌹.css">
+        </🕷🕸>
+        </🛸>
+        </🌹>
+        </🐛🦇>
 
-    </🛸>
-        </🌹></🐛🦇><body style="background-image: url('3.png'); background-size: cover; background-position: Absolute;">
-        <style>
-            body {
-                min-height: 100vh;
-                margin: 0;
-                padding: 0;
-                background-color: #050505;
-                color: gold;
-                font-family: 'Old English Text MT', 'Times New Roman', serif;
-                overflow-x: hidden;
-                cursor: crosshair;
-                position: relative;
-            }
+        <body style="background-color: rgba(0, 0, 0, 0); background-image: url('5.PLO'); background-size: cover; background-position: relative; background-repeat: no-repeat;"></body>
+       <main class="workspace">
+        <!-- ================= PANEL IZQUIERDO ================= -->
+        <div class="panel panel-left">
+            <input type="radio" name="repo-tabs" id="repo-web" class="tab-radio" checked>
+            <input type="radio" name="repo-tabs" id="repo-desktop" class="tab-radio">
+            <input type="radio" name="repo-tabs" id="repo-current" class="tab-radio">
 
-            body.animacion-activa::before {
-                content: "";
-                position: fixed;
-                top: 0; left: 0; right: 0; bottom: 0;
-                background: linear-gradient(45deg, rgba(138, 43, 226, 0.1), rgba(139, 0, 0, 0.2), rgba(218, 165, 32, 0.05), rgba(0, 0, 0, 0.9));
-                background-size: 400% 400%;
-                animation: gradientShift 15s ease infinite;
-                z-index: -1;
-                pointer-events: none;
-            }
+            <div class="tab-header">
+                <label for="repo-web" class="tab-label">🌐 Web</label>
+                <label for="repo-desktop" class="tab-label">💻 Dsk</label>
+                <label for="repo-current" class="tab-label">⚡ Proy</label>
+            </div>
 
-            @keyframes gradientShift {
-                0% { background-position: 0% 50%; }
-                50% { background-position: 100% 50%; }
-                100% { background-position: 0% 50%; }
-            }
-
-            .coords-display {
-                position: fixed;
-                bottom: 15px;
-                left: 15px;
-                background: rgba(10, 10, 10, 0.8);
-                padding: 8px 15px;
-                font-size: 16px;
-                font-family: 'Courier New', Courier, monospace;
-                border: 1px solid gold;
-                border-radius: 4px;
-                z-index: 1002;
-                color: #FFFACD;
-                box-shadow: 0 0 10px rgba(218, 165, 32, 0.3);
-                pointer-events: none;
-            }
-
-            #notification-center {
-                position: fixed;
-                top: 20px;
-                right: 20px;
-                display: flex;
-                flex-direction: column;
-                gap: 10px;
-                z-index: 9999;
-                pointer-events: none;
-            }
-
-            .notif-mensaje {
-                background: rgba(10, 0, 0, 0.9);
-                border-left: 4px solid red;
-                color: #fff;
-                padding: 15px 20px;
-                font-family: 'Courier New', Courier, monospace;
-                font-size: 14px;
-                box-shadow: 0 5px 15px rgba(0,0,0,0.8);
-                animation: slideIn 0.3s ease-out forwards;
-            }
-
-            @keyframes slideIn {
-                from { transform: translateX(100%); opacity: 0; }
-                to { transform: translateX(0); opacity: 1; }
-            }
-
-            .interactive-box {
-                position: absolute;
-                width: 150px;
-                height: 150px;
-                background-color: rgba(20, 5, 5, 0.85);
-                border: 2px solid gold;
-                cursor: move;
-                resize: both;
-                overflow: hidden;
-                display: flex;
-                flex-direction: column;
-                justify-content: center;
-                align-items: center;
-                color: #FFFACD;
-                text-align: center;
-                box-shadow: 0 0 15px rgba(218, 165, 32, 0.4);
-                z-index: 10;
-                transition: box-shadow 0.3s;
-            }
-
-            .interactive-box.inestable {
-                border: 2px dashed #ff00d4;
-                box-shadow: 0 0 20px #ff00d4;
-                animation: pulseInestable 1s infinite alternate;
-            }
-
-            @keyframes pulseInestable {
-                from { box-shadow: 0 0 10px #ff00d4; }
-                to { box-shadow: 0 0 25px #ff00d4; }
-            }
-
-            .interactive-box:hover {
-                box-shadow: 0 0 25px rgba(255, 0, 0, 0.6);
-            }
-
-            .box-content {
-                width: 100%;
-                height: 100%;
-                pointer-events: none;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                padding: 10px;
-                box-sizing: border-box;
-                word-wrap: break-word;
-                z-index: 2;
-            }
-
-            .interactive-box img,
-            .interactive-box video,
-            .interactive-box iframe {
-                width: 100%;
-                height: 100%;
-                object-fit: cover;
-                position: absolute;
-                top: 0; left: 0;
-                z-index: 0;
-                opacity: 0.9;
-            }
-
-            .interactive-box iframe {
-                border: none;
-            }
-
-            .delete-btn {
-                position: absolute;
-                top: -10px;
-                right: -10px;
-                width: 25px;
-                height: 25px;
-                background: #8b0000;
-                color: gold;
-                font-size: 14px;
-                font-weight: bold;
-                border: 1px solid gold;
-                cursor: pointer;
-                border-radius: 50%;
-                z-index: 20;
-                font-family: Arial, sans-serif;
-            }
-            .delete-btn:hover { background: red; transform: scale(1.2); }
-
-            .upload-btn {
-                position: absolute;
-                bottom: 5px;
-                background: rgba(0,0,0,0.7);
-                color: gold;
-                border: 1px solid gold;
-                font-size: 10px;
-                padding: 3px 8px;
-                cursor: pointer;
-                z-index: 20;
-                font-family: 'Courier New', Courier, monospace;
-            }
-            .upload-btn:hover { background: gold; color: #000; }
-
-            /* Q-DIALOG */
-            #q-dialog {
-                display: none;
-                position: absolute;
-                background: rgba(10, 10, 12, 0.95);
-                border: 1px solid gold;
-                box-shadow: 0 0 20px rgba(0,0,0,0.9);
-                z-index: 10000;
-                min-width: 220px;
-                flex-direction: column;
-                font-family: 'Courier New', Courier, monospace;
-            }
-
-            .q-option {
-                padding: 12px 15px;
-                color: #ccc;
-                font-size: 13px;
-                cursor: pointer;
-                border-bottom: 1px solid #222;
-                transition: 0.2s;
-                text-transform: uppercase;
-                text-align: left;
-                background: transparent;
-                border-left: none; border-right: none; border-top: none;
-                width: 100%;
-            }
-
-            .q-option:hover {
-                background: rgba(218, 165, 32, 0.2);
-                color: gold;
-                border-left: 3px solid red;
-            }
-            .q-option:last-child { border-bottom: none; }
-
-            .q-option.q-warning {
-                color: red;
-                font-weight: bold;
-            }
-
-            /* ELEMENTOS Q-DIALOG */
-            .bdh-banner { position: absolute; top: 0; left: 0; width: 100%; height: 80px; background: rgba(20, 5, 5, 0.7); border-bottom: 2px solid red; z-index: 5; display: flex; align-items: center; justify-content: center; cursor: move; }
-            .bdh-footer { position: absolute; bottom: 0; left: 0; width: 100%; height: 60px; background: rgba(10, 10, 10, 0.9); border-top: 2px solid gold; z-index: 5; display: flex; align-items: center; justify-content: center; cursor: move; }
-            .bdh-tabs { position: absolute; width: 300px; height: 200px; background: rgba(15,15,15,0.9); border: 1px solid gold; z-index: 10; cursor: move; resize: both; overflow: hidden; }
-            .bdh-tab-header { display: flex; background: #000; border-bottom: 1px solid gold; }
-            .bdh-tab-btn { flex: 1; padding: 5px; color: gold; background: transparent; border: none; border-right: 1px solid gold; cursor: pointer; }
-        </style>
-        </Estilo🌹>
-
-        <input type="file" id="imageLoader" accept="image/*" style="display: none;">
-        <input type="file" id="bgLoader" accept="image/*" style="display: none;">
-        <input type="file" id="videoLoader" accept="video/*" style="display: none;">
-        <input type="color" id="boxColorPicker" style="display: none;" value="#140505">
-
-        <div class="coords-display" id="coordsDisplay">X: 0 | Y: 0</div>
-        <div id="notification-center"></div>
-
-        <div id="q-dialog">
-            <button class="q-option" id="q-bg">Agregar fondo o cambiar</button>
-            <button class="q-option" id="q-tabs">Agregar pestañas</button>
-            <button class="q-option" id="q-text">Agregar cuadro de texto</button>
-            <button class="q-option" id="q-dup">Duplicar cuadro (solo tamaño)</button>
-            <button class="q-option" id="q-scroll">Agregar barra de desplazamiento</button>
-            <button class="q-option" id="q-banner">Agregar banner con alpha channel</button>
-            <button class="q-option" id="q-footer">Agregar pie de pagina</button>
-            <button class="q-option" id="q-boxcolor">Color de fondo (cuadro)</button>
-            <button class="q-option" id="q-video">Video / Link de video (cuadro)</button>
-            <button class="q-option" id="q-color">Quitar cambio de colores</button>
-            <button class="q-option q-warning" id="q-save">Guardar nuevo SQR</button>
+            <div class="content-area">
+                <div id="content-web" class="tab-content">
+                    <div class="pointer-item" onclick="loadPointer('ui_glass.VTHA')">🔗 ui_glass.VTHA</div>
+                    <div class="pointer-item" onclick="loadPointer('core_engine.VTHA')">🔗 core_engine.VTHA</div>
+                </div>
+                <div id="content-desktop" class="tab-content">
+                    <div class="pointer-item">🔗 sys_monitor.VTHA</div>
+                </div>
+                <div id="content-current" class="tab-content">
+                    <div class="pointer-item">📁 index.html (Editando)</div>
+                    <div class="pointer-item">📁 🌹.css</div>
+                </div>
+            </div>
         </div>
 
-        <script>
-            const coordsDisplay = document.getElementById("coordsDisplay");
-            const imageLoader = document.getElementById("imageLoader");
-            const bgLoader = document.getElementById("bgLoader");
-            const videoLoader = document.getElementById("videoLoader");
-            const boxColorPicker = document.getElementById("boxColorPicker");
-            const qDialog = document.getElementById("q-dialog");
+        <!-- ================= PANEL CENTRAL ================= -->
+        <div class="panel panel-center">
+            <input type="radio" name="center-tabs" id="center-editor" class="tab-radio" checked>
+            <input type="radio" name="center-tabs" id="center-render" class="tab-radio">
 
-            let targetBoxForImage = null;
-            let targetBoxForVideo = null;
-            let selectedBox = null;
-            let lastX = 0; let lastY = 0;
-            let nodoPendiente = false;
+            <div class="tab-header">
+                <label for="center-editor" class="tab-label">📝 Editor (RAW)</label>
+                <label for="center-render" class="tab-label">🔥 RENEGADE ROOM</label>
+            </div>
 
-            document.body.classList.add('animacion-activa');
+            <div class="center-content-area">
+                <!-- EDITOR -->
+                <div id="view-editor" class="tab-content view-pane">
+                    <textarea id="code-editor" class="editor-textarea" onkeyup="updateRender()"><h1 style="color: #ff00d4; text-shadow: 0 0 10px #ff00d4;">ROUSE ROOM - UNIVERSO BDH</h1>
+<p style="color: #ffd700;">Entorno activo y funcional.</p></textarea>
+                </div>
+                <!-- RENDERIZADOR -->
+                <div id="view-render" class="tab-content view-pane">
+                    <iframe id="render-frame" class="render-frame" title="Visor Renegade Room"></iframe>
+                </div>
+            </div>
+        </div>
 
-            document.addEventListener("mousemove", (e) => {
-                coordsDisplay.textContent = `X: ${e.pageX} | Y: ${e.pageY}`;
-            });
+        <!-- ================= PANEL DERECHO ================= -->
+        <div class="panel panel-right">
+            <div class="panel-section">
+                <h3 class="panel-title">📜 Historial Sesión</h3>
+                <div class="log-box">
+                    > ROUSE ROOM Init... OK<br>
+                    > Punteros Cargados: 2<br>
+                    > IA Core: Standby...
+                </div>
+            </div>
 
-            function notify(mensaje) {
-                const container = document.getElementById('notification-center');
-                const notif = document.createElement('div');
-                notif.classList.add('notif-mensaje');
-                notif.textContent = `[SQR]: ${mensaje}`;
-                container.appendChild(notif);
-                setTimeout(() => {
-                    notif.style.opacity = '0';
-                    setTimeout(() => notif.remove(), 300);
-                }, 3000);
-            }
+            <div class="panel-section">
+                <h3 class="panel-title">🤖 Sinergia IA</h3>
+                <button class="agent-btn" onclick="openAgent('Agent Alpha - Arquitecto')">Alpha</button>
+                <button class="agent-btn" onclick="openAgent('Agent Beta - Lógica')">Beta</button>
+                <button class="agent-btn" onclick="openAgent('Agent Gamma - Diseño')">Gamma</button>
+                <button class="agent-btn" onclick="openAgent('Agent Omega - Crítico')">Omega</button>
+            </div>
+        </div>
+    </main>
 
-            function setSelectedBoxFromEventTarget(target) {
-                const box = target?.closest?.('.interactive-box') || null;
-                selectedBox = box;
-            }
+    <!-- ================= VENTANA FRAMELESS (POP-UP) ================= -->
+    <div id="agent-popup" class="frameless-popup">
+        <div class="popup-header" id="popup-drag-handle">
+            <span class="popup-title" id="agent-title">Nombre IA</span>
+            <button class="close-btn" onclick="closeAgent()">✖</button>
+        </div>
+        <div class="popup-body">
+            <p class="status-msg">> Interfaz sináptica conectada.</p>
+            <div class="prompt-card">
+                Esperando directrices, LORD BDH.
+            </div>
+            <input type="text" class="popup-input" placeholder="Ingresar comando...">
+        </div>
+    </div>
 
-            function clearBoxMedia(box) {
-                if (!box) return;
-                const img = box.querySelector('img');
-                if (img) img.remove();
-                const video = box.querySelector('video');
-                if (video) video.remove();
-                const iframe = box.querySelector('iframe');
-                if (iframe) iframe.remove();
-            }
+    <script>
+        function updateRender() {
+            const code = document.getElementById('code-editor').value;
+            const iframe = document.getElementById('render-frame');
+            iframe.srcdoc = code;
+        }
 
-            function ensureBoxContentCleared(box) {
-                const contentDiv = box?.querySelector('.box-content');
-                if (contentDiv) contentDiv.innerText = '';
-            }
+        function loadPointer(pointerName) {
+            const codeArea = document.getElementById('code-editor');
+            codeArea.value = `<!-- Puntero Invocado: ${pointerName} -->\n<style>\n  body { background: #080308; color: #ffd700; font-family: sans-serif; padding: 20px; }\n  h2 { color: #ff00d4; text-shadow: 0 0 8px #ff00d4; }\n</style>\n<div>\n  <h2>Puntero ${pointerName} Activo</h2>\n  <p>Ejecución limpia desde RAM sin alteración de origen.</p>\n</div>`;
+            updateRender();
+            document.getElementById('center-render').checked = true;
+        }
 
-            function setBoxBgColor(box, color) {
-                if (!box) return;
-                box.style.backgroundColor = color;
-                notify(`Color del cuadro alterado: ${color}`);
-            }
+        const popup = document.getElementById('agent-popup');
+        const agentTitle = document.getElementById('agent-title');
 
-            function safeUrl(raw) {
-                try {
-                    const url = new URL(raw);
-                    if (url.protocol !== 'http:' && url.protocol !== 'https:') return null;
-                    return url;
-                } catch {
-                    return null;
-                }
-            }
+        function openAgent(name) {
+            agentTitle.innerText = name;
+            popup.style.display = 'flex';
+        }
 
-            function youtubeToEmbed(urlObj) {
-                const host = urlObj.hostname.replace(/^www\./, '').toLowerCase();
-                if (host === 'youtu.be') {
-                    const id = urlObj.pathname.replace('/', '').trim();
-                    if (!id) return null;
-                    return `https://www.youtube.com/embed/${encodeURIComponent(id)}`;
-                }
-                if (host === 'youtube.com' || host === 'm.youtube.com') {
-                    const v = urlObj.searchParams.get('v');
-                    if (v) return `https://www.youtube.com/embed/${encodeURIComponent(v)}`;
-                    if (urlObj.pathname.startsWith('/embed/')) return urlObj.toString();
-                }
-                return null;
-            }
+        function closeAgent() {
+            popup.style.display = 'none';
+        }
 
-            function setBoxMediaFromUrl(box, rawUrl) {
-                if (!box) return;
-                const urlObj = safeUrl(rawUrl);
-                if (!urlObj) {
-                    notify('Link inválido: usa http/https.');
-                    return;
-                }
+        let isDragging = false, currentX, currentY, initialX, initialY, xOffset = 0, yOffset = 0;
+        const handle = document.getElementById('popup-drag-handle');
 
-                clearBoxMedia(box);
-                ensureBoxContentCleared(box);
+        handle.addEventListener("mousedown", dragStart);
+        document.addEventListener("mouseup", dragEnd);
+        document.addEventListener("mousemove", drag);
 
-                const lower = urlObj.pathname.toLowerCase();
-                const isDirectVideo = lower.endsWith('.mp4') || lower.endsWith('.webm') || lower.endsWith('.ogg');
+        function dragStart(e) {
+            initialX = e.clientX - xOffset;
+            initialY = e.clientY - yOffset;
+            if (e.target === handle || handle.contains(e.target)) isDragging = true;
+        }
 
-                if (isDirectVideo) {
-                    const video = document.createElement('video');
-                    video.src = urlObj.toString();
-                    video.controls = true;
-                    video.playsInline = true;
-                    box.appendChild(video);
-                    box.dataset.mediaType = 'video-url';
-                    box.dataset.mediaSrc = urlObj.toString();
-                    notify('Video por link inyectado.');
-                    return;
-                }
+        function dragEnd() { initialX = currentX; initialY = currentY; isDragging = false; }
 
-                const yt = youtubeToEmbed(urlObj);
-                const iframe = document.createElement('iframe');
-                iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
-                iframe.allowFullscreen = true;
-                iframe.referrerPolicy = 'no-referrer';
-                iframe.src = yt || urlObj.toString();
-                box.appendChild(iframe);
-
-                box.dataset.mediaType = yt ? 'youtube-embed' : 'iframe-url';
-                box.dataset.mediaSrc = iframe.src;
-                notify(yt ? 'YouTube embed inyectado.' : 'Link embebido (iframe) inyectado.');
-            }
-
-            document.addEventListener("contextmenu", (e) => {
+        function drag(e) {
+            if (isDragging) {
                 e.preventDefault();
-                lastX = e.pageX;
-                lastY = e.pageY;
-                setSelectedBoxFromEventTarget(e.target);
-                qDialog.style.display = "flex";
-                qDialog.style.left = `${lastX}px`;
-                qDialog.style.top = `${lastY}px`;
-            });
-
-            document.addEventListener("click", (e) => {
-                // click izquierdo sobre un cuadro => lo selecciona
-                if (e.target?.closest?.('.interactive-box')) {
-                    selectedBox = e.target.closest('.interactive-box');
-                }
-
-                if (!qDialog.contains(e.target)) {
-                    qDialog.style.display = "none";
-                }
-            });
-
-            document.getElementById("q-bg").addEventListener("click", () => {
-                bgLoader.click();
-                qDialog.style.display = "none";
-            });
-
-            bgLoader.addEventListener("change", (e) => {
-                if(e.target.files.length > 0) {
-                    const reader = new FileReader();
-                    reader.onload = (event) => {
-                        document.body.style.backgroundImage = `url('${event.target.result}')`;
-                        notify("Fondo espacial alterado.");
-                    };
-                    reader.readAsDataURL(e.target.files[0]);
-                }
-            });
-
-            document.getElementById("q-tabs").addEventListener("click", () => {
-                let tabContainer = document.createElement("div");
-                tabContainer.classList.add("bdh-tabs");
-                tabContainer.style.left = `${lastX}px`; tabContainer.style.top = `${lastY}px`;
-                tabContainer.innerHTML = `
-                    <div class="bdh-tab-header">
-                        <button class="bdh-tab-btn">Tab 1</button>
-                        <button class="bdh-tab-btn">Tab 2</button>
-                    </div>
-                    <div style="padding: 10px;">Contenido Alpha</div>
-                `;
-                tabContainer.appendChild(createDeleteBtn(tabContainer));
-                enableDrag(tabContainer);
-                document.body.appendChild(tabContainer);
-                notify("Contenedor de pestañas instanciado.");
-                qDialog.style.display = "none";
-            });
-
-            document.getElementById("q-text").addEventListener("click", () => {
-                iniciarCreacionNodo(lastX, lastY);
-                qDialog.style.display = "none";
-            });
-
-            document.getElementById('q-dup').addEventListener('click', () => {
-                if (!selectedBox) {
-                    notify('Selecciona (o click derecho) un cuadro primero.');
-                    qDialog.style.display = 'none';
-                    return;
-                }
-
-                const rect = selectedBox.getBoundingClientRect();
-                const centerX = rect.left + window.scrollX + (rect.width / 2);
-                const centerY = rect.top + window.scrollY + (rect.height / 2);
-                iniciarCreacionNodo(centerX, centerY, { width: rect.width, height: rect.height });
-                notify('Duplicado (solo tamaño) instanciado.');
-                qDialog.style.display = 'none';
-            });
-
-            document.getElementById("q-scroll").addEventListener("click", () => {
-                if(document.body.style.overflowY === "hidden") {
-                    document.body.style.overflowY = "auto";
-                    notify("Scroll inyectado en el lienzo.");
-                } else {
-                    document.body.style.overflowY = "hidden";
-                    notify("Scroll purgado.");
-                }
-                qDialog.style.display = "none";
-            });
-
-            document.getElementById("q-banner").addEventListener("click", () => {
-                let banner = document.createElement("div");
-                banner.classList.add("bdh-banner");
-                banner.innerHTML = `<h2 style="margin:0; text-shadow: 2px 2px 0 #000;">BANNER ALPHA BDH</h2>`;
-                banner.appendChild(createDeleteBtn(banner));
-                enableDrag(banner);
-                document.body.appendChild(banner);
-                notify("Banner superior instanciado.");
-                qDialog.style.display = "none";
-            });
-
-            document.getElementById("q-footer").addEventListener("click", () => {
-                let footer = document.createElement("div");
-                footer.classList.add("bdh-footer");
-                footer.innerHTML = `<p style="margin:0;">Lienzo BDH - Todos los derechos reservados</p>`;
-                footer.appendChild(createDeleteBtn(footer));
-                enableDrag(footer);
-                document.body.appendChild(footer);
-                notify("Pie de página instanciado.");
-                qDialog.style.display = "none";
-            });
-
-            document.getElementById("q-boxcolor").addEventListener("click", () => {
-                if (!selectedBox) {
-                    notify('Selecciona (o click derecho) un cuadro primero.');
-                    qDialog.style.display = 'none';
-                    return;
-                }
-                const current = getComputedStyle(selectedBox).backgroundColor;
-                // intenta setear el picker a un valor aproximado si ya es rgba()
-                if (current && current.startsWith('rgb')) {
-                    // no convertimos exacto; dejamos el valor del picker como esté
-                }
-                boxColorPicker.click();
-                qDialog.style.display = "none";
-            });
-
-            boxColorPicker.addEventListener('input', () => {
-                if (!selectedBox) return;
-                setBoxBgColor(selectedBox, boxColorPicker.value);
-                selectedBox.dataset.bg = boxColorPicker.value;
-            });
-
-            document.getElementById("q-video").addEventListener("click", () => {
-                if (!selectedBox) {
-                    notify('Selecciona (o click derecho) un cuadro primero.');
-                    qDialog.style.display = 'none';
-                    return;
-                }
-
-                const raw = prompt('Video: pega un link (YouTube o .mp4/.webm) o escribe LOCAL para subir archivo:', '');
-                if (raw === null) {
-                    qDialog.style.display = 'none';
-                    return;
-                }
-
-                if (raw.trim().toUpperCase() === 'LOCAL') {
-                    targetBoxForVideo = selectedBox;
-                    videoLoader.click();
-                    qDialog.style.display = 'none';
-                    return;
-                }
-
-                if (!raw.trim()) {
-                    notify('No se ingresó link.');
-                    qDialog.style.display = 'none';
-                    return;
-                }
-
-                setBoxMediaFromUrl(selectedBox, raw.trim());
-                qDialog.style.display = 'none';
-            });
-
-            document.getElementById("q-color").addEventListener("click", () => {
-                document.body.classList.toggle("animacion-activa");
-                notify("Entropía de colores alterada.");
-                qDialog.style.display = "none";
-            });
-
-            document.getElementById("q-save").addEventListener("click", () => {
-                if (nodoPendiente) {
-                    notify("Error: Nodo inestable. Ánclalo con doble clic.");
-                    return;
-                }
-
-                let manifest = `<!TIPODOC VTHA 🐍🕸️>\n<VTHA_CONFIG>\n`;
-
-                const bg = document.body.style.backgroundImage.replace(/url\(['"]?|['"]?\)/g, '');
-                manifest += `    <LIENZO fondo="${bg}" scroll="${document.body.style.overflowY}" />\n`;
-
-                document.querySelectorAll('.interactive-box, .bdh-banner, .bdh-footer, .bdh-tabs').forEach(el => {
-                    const type = el.className.split(' ')[0];
-                    const x = el.style.left;
-                    const y = el.style.top;
-                    const w = el.style.width || "auto";
-                    const h = el.style.height || "auto";
-                    const content = el.querySelector('.box-content') ? el.querySelector('.box-content').innerText : "";
-
-                    const bgColor = el.dataset.bg || el.style.backgroundColor || '';
-                    const mediaType = el.dataset.mediaType || 'null';
-                    const mediaSrc = el.dataset.mediaSrc || 'null';
-
-                    const img = el.querySelector('img') ? el.querySelector('img').src : "null";
-
-                    manifest += `    <NODO tipo="${type}" x="${x}" y="${y}" w="${w}" h="${h}" bg="${bgColor}" img="${img}" mediaType="${mediaType}" mediaSrc="${mediaSrc}">${content}</NODO>\n`;
-                });
-
-                manifest += `</VTHA_CONFIG>\n</🐍🕸️🖤🔥🚀>`;
-
-                const blob = new Blob([manifest], { type: "text/plain;charset=utf-8" });
-                const enlace = document.createElement("a");
-                enlace.href = URL.createObjectURL(blob);
-                enlace.download = `Manifiesto_BDH_${Date.now()}.vtha`;
-                enlace.click();
-                notify("Manifiesto VTHA compilado y descargado.");
-                qDialog.style.display = "none";
-            });
-
-            document.addEventListener("click", (event) => {
-                // No crear nodo si clickeas sobre cosas ya existentes
-                if (
-                    event.target.closest('.interactive-box') ||
-                    event.target.classList.contains("delete-btn") ||
-                    event.target.classList.contains("upload-btn") ||
-                    event.target.closest("#q-dialog") ||
-                    event.target.classList.contains("bdh-tab-btn") ||
-                    event.target.closest(".bdh-banner") ||
-                    event.target.closest(".bdh-footer") ||
-                    event.target.closest(".bdh-tabs")
-                ) {
-                    return;
-                }
-
-                if(qDialog.style.display === "none" || qDialog.style.display === "") {
-                    iniciarCreacionNodo(event.pageX, event.pageY);
-                }
-            });
-
-            function createDeleteBtn(box) {
-                let deleteBtn = document.createElement("button");
-                deleteBtn.classList.add("delete-btn");
-                deleteBtn.innerText = "X";
-                deleteBtn.onclick = (e) => {
-                    e.stopPropagation();
-                    if (box.classList.contains("inestable")) {
-                        nodoPendiente = false;
-                    }
-                    if (selectedBox === box) selectedBox = null;
-                    box.remove();
-                    notify("Elemento purgado.");
-                };
-                return deleteBtn;
+                currentX = e.clientX - initialX;
+                currentY = e.clientY - initialY;
+                xOffset = currentX;
+                yOffset = currentY;
+                popup.style.transform = `translate3d(${currentX}px, ${currentY}px, 0)`;
             }
+        }
 
-            function iniciarCreacionNodo(x, y, options = {}) {
-                if (nodoPendiente) {
-                    notify("Bloqueo Activo: Tienes un nodo inestable en el ratón. Dale doble clic para anclarlo primero.");
-                    return;
-                }
-
-                let box = document.createElement("div");
-                box.classList.add("interactive-box");
-                box.classList.add("inestable");
-                nodoPendiente = true;
-
-                const rawWidth = Number.isFinite(options.width) ? options.width : 150;
-                const rawHeight = Number.isFinite(options.height) ? options.height : 150;
-                const finalWidth = Math.max(40, Math.round(rawWidth));
-                const finalHeight = Math.max(40, Math.round(rawHeight));
-                box.style.width = `${finalWidth}px`;
-                box.style.height = `${finalHeight}px`;
-
-                box.style.left = `${x - (finalWidth / 2)}px`;
-                box.style.top = `${y - (finalHeight / 2)}px`;
-
-                let contentDiv = document.createElement("div");
-                contentDiv.classList.add("box-content");
-                contentDiv.innerText = "NODO INESTABLE (Doble Clic para Anclar)";
-                box.appendChild(contentDiv);
-
-                box.appendChild(createDeleteBtn(box));
-
-                let uploadBtn = document.createElement("button");
-                uploadBtn.classList.add("upload-btn");
-                uploadBtn.innerText = "IMG";
-                uploadBtn.onclick = (e) => {
-                    e.stopPropagation();
-                    targetBoxForImage = box;
-                    imageLoader.click();
-                };
-                box.appendChild(uploadBtn);
-
-                box.ondblclick = (e) => {
-                    e.stopPropagation();
-                    if(box.classList.contains("inestable")) {
-                        let newText = prompt("Ingresa el texto maestro para anclar este nodo:", "TEXTO BDH");
-                        if(newText !== null) {
-                            contentDiv.innerText = newText;
-                            box.classList.remove("inestable");
-                            nodoPendiente = false;
-                            box.onmousedown = null;
-                            box.style.cursor = "default";
-                            notify("Nodo soldado a la matriz. Ya no puede moverse.");
-                        }
-                    }
-                };
-
-                enableDrag(box);
-                document.body.appendChild(box);
-                selectedBox = box;
-                notify("Nodo inestable instanciado. Ánclalo con doble clic.");
-            }
-
-            function enableDrag(element) {
-                element.onmousedown = function(e) {
-                    if (
-                        e.target.classList.contains("delete-btn") ||
-                        e.target.classList.contains("upload-btn") ||
-                        e.target.tagName === "BUTTON" ||
-                        e.target.tagName === "VIDEO" ||
-                        e.target.tagName === "IFRAME"
-                    ) return;
-
-                    document.querySelectorAll('.interactive-box, .bdh-tabs, .bdh-banner, .bdh-footer').forEach(b => b.style.zIndex = 10);
-                    element.style.zIndex = 100;
-
-                    let shiftX = e.clientX - element.getBoundingClientRect().left;
-                    let shiftY = e.clientY - element.getBoundingClientRect().top;
-
-                    function moveAt(pageX, pageY) {
-                        element.style.left = pageX - shiftX + 'px';
-                        element.style.top = pageY - shiftY + 'px';
-                    }
-
-                    function onMouseMove(event) {
-                        moveAt(event.pageX, event.pageY);
-                    }
-
-                    document.addEventListener('mousemove', onMouseMove);
-
-                    document.onmouseup = function() {
-                        document.removeEventListener('mousemove', onMouseMove);
-                        document.onmouseup = null;
-                    };
-                };
-                element.ondragstart = () => false;
-            }
-
-            imageLoader.addEventListener("change", function(e) {
-                if (targetBoxForImage && e.target.files.length > 0) {
-                    const reader = new FileReader();
-                    reader.onload = function(event) {
-                        clearBoxMedia(targetBoxForImage);
-                        ensureBoxContentCleared(targetBoxForImage);
-
-                        const img = document.createElement("img");
-                        img.src = event.target.result;
-                        targetBoxForImage.appendChild(img);
-
-                        targetBoxForImage.dataset.mediaType = 'image';
-                        targetBoxForImage.dataset.mediaSrc = img.src;
-
-                        notify("Materia visual inyectada.");
-                        targetBoxForImage = null;
-                        imageLoader.value = "";
-                    };
-                    reader.readAsDataURL(e.target.files[0]);
-                }
-            });
-
-            videoLoader.addEventListener('change', (e) => {
-                if (targetBoxForVideo && e.target.files.length > 0) {
-                    const file = e.target.files[0];
-                    const reader = new FileReader();
-                    reader.onload = (event) => {
-                        clearBoxMedia(targetBoxForVideo);
-                        ensureBoxContentCleared(targetBoxForVideo);
-
-                        const video = document.createElement('video');
-                        video.src = event.target.result;
-                        video.controls = true;
-                        video.playsInline = true;
-                        targetBoxForVideo.appendChild(video);
-
-                        targetBoxForVideo.dataset.mediaType = 'video-local';
-                        targetBoxForVideo.dataset.mediaSrc = file.name;
-
-                        notify('Video local inyectado.');
-                        targetBoxForVideo = null;
-                        videoLoader.value = '';
-                    };
-                    reader.readAsDataURL(file);
-                }
-            });
-        </script>
-    </🛸Cuerpo>
-</🐍🕸️🖤🔥🚀>
+        updateRender();
+    </script>
+ </🛸>
+ </🐍🕸️🖤🔥🚀>
