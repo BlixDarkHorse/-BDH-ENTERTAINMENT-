@@ -1,4 +1,108 @@
 /* =========================================================
+   MODO TRANSPARENCIA TOTAL PANEL IZQUIERDO
+   ========================================================= */
+
+/* Variables */
+:root{
+    --panel-dark: rgba(0,0,0,0);
+    --bg-dark: rgba(0,0,0,0);
+}
+
+/* Panel izquierdo completamente transparente */
+.panel-left{
+    background: transparent !important;
+    background-color: transparent !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    box-shadow: none !important;
+}
+
+/* Todo lo contenido dentro */
+.panel-left *{
+    background-color: transparent !important;
+}
+
+/* Encabezado de pestañas */
+.panel-left .tab-header{
+    background: transparent !important;
+    border-bottom: 1px solid rgba(201,166,70,.25);
+}
+
+/* Pestañas */
+.panel-left .tab-label{
+    background: transparent !important;
+}
+
+/* Hover */
+.panel-left .tab-label:hover{
+    background: transparent !important;
+    color: var(--gold-bright);
+}
+
+/* Pestaña activa */
+#repo-web:checked ~ .tab-header label[for="repo-web"],
+#repo-desktop:checked ~ .tab-header label[for="repo-desktop"],
+#repo-current:checked ~ .tab-header label[for="repo-current"]{
+
+    background: transparent !important;
+
+    border-bottom: 2px solid var(--gold-bright);
+
+    color: var(--gold-bright);
+
+    text-shadow:
+        0 0 8px rgba(201,166,70,.5),
+        0 0 15px rgba(201,166,70,.3);
+}
+
+/* Área de contenido */
+.panel-left .content-area,
+.panel-left .tab-content{
+    background: transparent !important;
+}
+
+/* Elementos de repositorio */
+.pointer-item{
+
+    background: transparent !important;
+
+    border: 1px solid rgba(255,0,212,.20);
+
+    border-left: 3px solid rgba(99,61,1,.77);
+
+    color: var(--text);
+}
+
+/* Hover de items */
+.pointer-item:hover{
+
+    background: transparent !important;
+
+    border-color: var(--accent-magenta);
+
+    border-left-color: var(--accent-magenta);
+
+    box-shadow:
+        0 0 10px rgba(255,0,212,.25);
+
+    transform: translateX(3px);
+}
+
+/* Scroll interno transparente */
+.panel-left ::-webkit-scrollbar-track{
+    background: transparent;
+}
+
+/* Eliminar cualquier sombra oscura heredada */
+.panel-left,
+.panel-left .content-area,
+.panel-left .tab-content,
+.panel-left .tab-header,
+.panel-left .pointer-item{
+
+    box-shadow: none !important;
+}
+/* =========================================================
    VARIABLES GLOBALES (UNIVERSO BDH)
    ========================================================= */
 :root {
