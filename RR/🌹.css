@@ -1,122 +1,15 @@
-/* =========================================================
-   MODO TRANSPARENCIA TOTAL PANEL IZQUIERDO
-   ========================================================= */
-
-/* Variables */
-:root{
-    --panel-dark: rgba(0,0,0,0);
-    --bg-dark: rgba(0,0,0,0);
-}
-
-/* Panel izquierdo completamente transparente */
-.panel-left{
-    background: transparent !important;
-    background-color: transparent !important;
-    backdrop-filter: none !important;
-    -webkit-backdrop-filter: none !important;
-    box-shadow: none !important;
-}
-
-/* Todo lo contenido dentro */
-.panel-left *{
-    background-color: transparent !important;
-}
-
-/* Encabezado de pestañas */
-.panel-left .tab-header{
-    background: transparent !important;
-    border-bottom: 1px solid rgba(201,166,70,.25);
-}
-
-/* Pestañas */
-.panel-left .tab-label{
-    background: transparent !important;
-}
-
-/* Hover */
-.panel-left .tab-label:hover{
-    background: transparent !important;
-    color: var(--gold-bright);
-}
-
-/* Pestaña activa */
-#repo-web:checked ~ .tab-header label[for="repo-web"],
-#repo-desktop:checked ~ .tab-header label[for="repo-desktop"],
-#repo-current:checked ~ .tab-header label[for="repo-current"]{
-
-    background: transparent !important;
-
-    border-bottom: 2px solid var(--gold-bright);
-
-    color: var(--gold-bright);
-
-    text-shadow:
-        0 0 8px rgba(201,166,70,.5),
-        0 0 15px rgba(201,166,70,.3);
-}
-
-/* Área de contenido */
-.panel-left .content-area,
-.panel-left .tab-content{
-    background: transparent !important;
-}
-
-/* Elementos de repositorio */
-.pointer-item{
-
-    background: transparent !important;
-
-    border: 1px solid rgba(255,0,212,.20);
-
-    border-left: 3px solid rgba(99,61,1,.77);
-
-    color: var(--text);
-}
-
-/* Hover de items */
-.pointer-item:hover{
-
-    background: transparent !important;
-
-    border-color: var(--accent-magenta);
-
-    border-left-color: var(--accent-magenta);
-
-    box-shadow:
-        0 0 10px rgba(255,0,212,.25);
-
-    transform: translateX(3px);
-}
-
-/* Scroll interno transparente */
-.panel-left ::-webkit-scrollbar-track{
-    background: transparent;
-}
-
-/* Eliminar cualquier sombra oscura heredada */
-.panel-left,
-.panel-left .content-area,
-.panel-left .tab-content,
-.panel-left .tab-header,
-.panel-left .pointer-item{
-
-    box-shadow: none !important;
-}
-/* =========================================================
-   VARIABLES GLOBALES (UNIVERSO BDH)
-   ========================================================= */
 :root {
-    --gold: rgba(99, 61, 1, 0.77);
-    --gold-bright: #c900c6;
-    --gold-soft: #8a7333;
-    --gold-deep: #4a3b10;
-    --panel-dark: rgba(12, 6, 14, 0.438);
-    --bg-dark: #05020662;
+    --border-gold: rgba(201, 166, 70, 0.55);
+    --border-gold-soft: rgba(201, 166, 70, 0.25);
+    --border-magenta: rgba(255, 0, 212, 0.55);
+
     --text: #e2d4a8;
+    --gold: #c9a646;
+    --gold-soft: #8a7333;
+    --gold-bright: #c900c6;
+
     --accent-magenta: #ff00d4;
     --accent-magenta-glow: rgba(255, 0, 212, 0.4);
-    --shadow-gold: 0 0 15px rgba(201, 166, 70, 0.25);
-    --glass-bg: linear-gradient(135deg, rgba(25, 10, 25, 0.7), rgba(5, 2, 8, 0.9));
 }
 
 * {
@@ -125,52 +18,64 @@
     padding: 0;
 }
 
-body {
-    background-color: var(--bg-dark);
-    background-image: 
-        radial-gradient(circle at 50% 0%, rgba(255, 0, 212, 0.08) 0%, transparent 70%),
-        radial-gradient(circle at 50% 100%, rgba(201, 166, 70, 0.05) 0%, var(--bg-dark) 90%);
-    color: var(--text);
-    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-    height: 100vh;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-}
+/* =========================================================
+   LIENZO
+   EL SISTEMA NO IMPONE NINGÚN FONDO
+   ========================================================= */
 
-/* Scrollbars Personalizados BDH */
-::-webkit-scrollbar {
-    width: 6px;
-    height: 6px;
-}
-::-webkit-scrollbar-track {
-    background: rgba(0, 0, 0, 0);
-}
-::-webkit-scrollbar-thumb {
-    background: var(--gold-soft);
-    border-radius: 3px;
-}
-::-webkit-scrollbar-thumb:hover {
-    background: var(--accent-magenta);
+html,
+body {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+
+    background: transparent !important;
+    background-color: transparent !important;
+    background-image: none !important;
+
+    color: var(--text);
+
+    font-family: 'Segoe UI',
+                 system-ui,
+                 -apple-system,
+                 sans-serif;
+
+    overflow: hidden;
 }
 
 /* =========================================================
-   LAYOUT PRINCIPAL (WORKSPACE)
+   WORKSPACE
    ========================================================= */
+
 .workspace {
     display: flex;
-    height: 100vh;
     width: 100vw;
-    backdrop-filter: blur(8px);
+    height: 100vh;
+
+    background: transparent !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
 }
 
+/* =========================================================
+   PANELES
+   ========================================================= */
+
 .panel {
-    background: var(--panel-dark);
-    border-right: 1px solid rgba(201, 166, 70, 0.2);
     display: flex;
     flex-direction: column;
+
+    background: transparent !important;
+    background-color: transparent !important;
+
+    border-right: 1px solid var(--border-gold-soft);
+
+    box-shadow: none !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+
     overflow: hidden;
-    box-shadow: inset 0 0 20px rgba(0,0,0,0.8);
 }
 
 .panel-left {
@@ -182,297 +87,399 @@ body {
 .panel-center {
     flex: 1;
     min-width: 400px;
-    border-right: 1px solid rgba(201, 166, 70, 0.2);
-    display: flex;
-    flex-direction: column;
+
+    border-right: 1px solid var(--border-gold-soft);
+
+    background: transparent !important;
 }
 
 .panel-right {
     width: 25%;
     min-width: 260px;
+
     padding: 20px;
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
+
+    background: transparent !important;
 }
 
 /* =========================================================
-   PESTAÑAS Y CONTROLADORES CSS
+   CABECERAS / TABS
    ========================================================= */
-.tab-radio {
-    display: none;
-}
 
 .tab-header {
     display: flex;
-    background: rgba(0, 0, 0, 0.6);
-    border-bottom: 1px solid rgba(201, 166, 70, 0.25);
+
+    background: transparent !important;
+    background-color: transparent !important;
+
+    border-bottom: 1px solid var(--border-gold-soft);
 }
 
 .tab-label {
     flex: 1;
+
     padding: 12px 8px;
+
     text-align: center;
+
     font-size: 0.75rem;
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.12em;
+
     color: var(--gold-soft);
+
     cursor: pointer;
+
+    background: transparent !important;
+
     border-bottom: 2px solid transparent;
-    transition: all 0.25s ease;
 }
 
 .tab-label:hover {
     color: var(--gold-bright);
-    background: rgba(201, 166, 70, 0.08);
+
+    background: transparent !important;
 }
 
-/* Lógica Panel Izquierdo */
+/* TAB ACTIVA */
+
 #repo-web:checked ~ .tab-header label[for="repo-web"],
 #repo-desktop:checked ~ .tab-header label[for="repo-desktop"],
 #repo-current:checked ~ .tab-header label[for="repo-current"] {
+
     border-bottom: 2px solid var(--gold-bright);
+
     color: var(--gold-bright);
-    background: linear-gradient(180deg, transparent, rgba(201, 166, 70, 0.15));
+
+    background: transparent !important;
+
     text-shadow: 0 0 8px rgba(201, 166, 70, 0.5);
 }
 
-.content-area, .center-content-area {
+/* =========================================================
+   ÁREAS DE CONTENIDO
+   ========================================================= */
+
+.content-area,
+.center-content-area {
+
     display: flex;
     flex: 1;
     flex-direction: column;
+
     overflow: hidden;
     position: relative;
-}
 
-.tab-content {
-    display: none;
-    flex: 1;
-    overflow-y: auto;
-    padding: 12px;
-}
-
-#repo-web:checked ~ .content-area #content-web,
-#repo-desktop:checked ~ .content-area #content-desktop,
-#repo-current:checked ~ .content-area #content-current {
-    display: block;
-}
-
-/* Lógica Panel Central */
-#center-editor:checked ~ .tab-header label[for="center-editor"],
-#center-render:checked ~ .tab-header label[for="center-render"] {
-    border-bottom: 2px solid var(--accent-magenta);
-    color: #fff;
-    text-shadow: 0 0 10px var(--accent-magenta);
-    background: linear-gradient(180deg, transparent, rgba(255, 0, 212, 0.15));
-}
-
-#center-editor:checked ~ .center-content-area #view-editor,
-#center-render:checked ~ .center-content-area #view-render {
-    display: flex;
+    background: transparent !important;
 }
 
 /* =========================================================
-   COMPONENTES DE CODIFICACIÓN Y RENDER
+   ELEMENTOS DEL PANEL IZQUIERDO
    ========================================================= */
+
 .pointer-item {
+
     padding: 10px 12px;
-    border: 1px solid rgba(255, 0, 212, 0.2);
+
     margin-bottom: 8px;
+
     font-size: 0.8rem;
     font-family: monospace;
+
     color: var(--text);
+
     cursor: pointer;
-    background: rgba(0, 0, 0, 0.4);
+
+    background: transparent !important;
+
+    border: 1px solid var(--border-magenta);
+
     border-left: 3px solid var(--gold);
+
     border-radius: 2px;
+
     transition: all 0.2s ease;
 }
 
 .pointer-item:hover {
+
     border-left-color: var(--accent-magenta);
     border-color: var(--accent-magenta);
-    background: rgba(255, 0, 212, 0.12);
+
+    background: transparent !important;
+
     box-shadow: 0 0 10px rgba(255, 0, 212, 0.2);
+
     transform: translateX(3px);
 }
 
+/* =========================================================
+   EDITOR
+   ========================================================= */
+
 .view-pane {
+
     padding: 0;
+
     display: flex;
     flex-direction: column;
-    height: 100%;
+
     width: 100%;
+    height: 100%;
+
+    background: transparent !important;
 }
 
 .editor-textarea {
+
     flex: 1;
+
     width: 100%;
     height: 100%;
-    background: rgba(5, 2, 8, 0.95);
+
+    background: transparent !important;
+    background-color: transparent !important;
+
     color: #00ffcc;
+
     border: none;
+
     padding: 20px;
-    font-family: 'Consolas', 'Fira Code', 'Courier New', monospace;
+
+    font-family:
+        'Consolas',
+        'Fira Code',
+        'Courier New',
+        monospace;
+
     font-size: 0.95rem;
     line-height: 1.5;
+
     resize: none;
     outline: none;
-    box-shadow: inset 0 0 15px rgba(0,0,0,0.9);
-}
 
-.render-frame {
-    flex: 1;
-    width: 100%;
-    height: 100%;
-    border: none;
-    background: #ffffff;
+    box-shadow: none !important;
 }
 
 /* =========================================================
-   PANEL DERECHO Y AGENTES
+   RENDER
    ========================================================= */
+
+.render-frame {
+
+    flex: 1;
+
+    width: 100%;
+    height: 100%;
+
+    border: none;
+
+    background: transparent !important;
+}
+
+/* =========================================================
+   PANEL DERECHO
+   ========================================================= */
+
 .panel-section {
-    border: 1px solid rgba(201, 166, 70, 0.2);
+
+    border: 1px solid var(--border-gold-soft);
+
     padding: 15px;
-    background: rgba(0, 0, 0, 0.3);
+
+    background: transparent !important;
+    background-color: transparent !important;
+
     border-radius: 4px;
+
+    box-shadow: none !important;
 }
 
 .panel-title {
+
     font-size: 0.85rem;
     margin-bottom: 12px;
+
     color: var(--gold-bright);
-    border-bottom: 1px solid rgba(201, 166, 70, 0.3);
+
+    border-bottom: 1px solid var(--border-gold-soft);
+
     padding-bottom: 6px;
+
     text-transform: uppercase;
     letter-spacing: 0.1em;
 }
 
 .log-box {
+
     height: 120px;
+
     overflow-y: auto;
+
     font-family: monospace;
     font-size: 0.75rem;
+
     color: var(--gold-soft);
+
     line-height: 1.6;
+
+    background: transparent !important;
 }
 
+/* =========================================================
+   BOTONES
+   ========================================================= */
+
 .agent-btn {
+
     display: block;
+
     width: 100%;
+
     padding: 12px;
     margin-bottom: 8px;
-    background: rgba(0, 0, 0, 0.6);
+
+    background: transparent !important;
+
     border: 1px solid var(--gold-soft);
+
     color: var(--gold-bright);
+
     font-weight: bold;
+
     text-transform: uppercase;
     letter-spacing: 0.12em;
+
     cursor: pointer;
+
     border-radius: 3px;
+
     transition: all 0.3s ease;
 }
 
 .agent-btn:hover {
-    background: rgba(255, 0, 212, 0.15);
+
+    background: transparent !important;
+
     border-color: var(--accent-magenta);
+
     color: #fff;
+
     box-shadow: 0 0 12px var(--accent-magenta-glow);
 }
 
 /* =========================================================
-   VENTANAS FRAMELESS (GLASSMORPHISM)
+   POPUPS FRAMELESS
    ========================================================= */
+
 .frameless-popup {
+
     display: none;
+
     position: fixed;
+
     top: 20%;
     left: 35%;
+
     width: 420px;
     height: 480px;
-    background: var(--glass-bg);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
+
+    background: transparent !important;
+    background-color: transparent !important;
+
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+
     border: 1px solid var(--accent-magenta);
-    box-shadow: 0 20px 50px rgba(0,0,0,0.9), 0 0 20px var(--accent-magenta-glow);
+
+    box-shadow: 0 0 20px var(--accent-magenta-glow);
+
     border-radius: 6px;
+
     z-index: 1000;
+
     flex-direction: column;
+
     overflow: hidden;
 }
 
 .popup-header {
-    background: rgba(0, 0, 0, 0.8);
+
+    background: transparent !important;
+
     padding: 12px 15px;
+
     display: flex;
+
     justify-content: space-between;
     align-items: center;
+
     border-bottom: 1px solid var(--accent-magenta);
+
     cursor: move;
 }
 
-.popup-title {
-    font-size: 0.85rem;
-    font-weight: bold;
-    letter-spacing: 0.12em;
-    color: #fff;
-    text-shadow: 0 0 8px var(--accent-magenta);
-}
-
-.close-btn {
-    background: none;
-    border: none;
-    color: var(--gold);
-    cursor: pointer;
-    font-size: 1.1rem;
-    transition: color 0.2s;
-}
-
-.close-btn:hover {
-    color: #060104d7;
-}
-
 .popup-body {
+
     flex: 1;
+
     padding: 15px;
+
     display: flex;
     flex-direction: column;
-    gap: 12px;
-    position: relative;
-}
 
-.status-msg {
-    color: var(--gold-bright);
-    font-family: monospace;
-    font-size: 0.8rem;
+    gap: 12px;
+
+    position: relative;
+
+    background: transparent !important;
 }
 
 .prompt-card {
+
     padding: 12px;
-    background: rgba(0, 0, 0, 0.6);
+
+    background: transparent !important;
+
     border-left: 3px solid var(--accent-magenta);
+
     border-radius: 2px;
+
     color: var(--text);
+
     font-size: 0.85rem;
 }
 
 .popup-input {
+
     width: calc(100% - 30px);
+
     position: absolute;
+
     bottom: 15px;
     left: 15px;
-    background: rgba(0, 0, 0, 0.85);
+
+    background: transparent !important;
+
     border: 1px solid var(--gold-soft);
+
     color: #fff;
+
     padding: 10px;
+
     border-radius: 3px;
+
     outline: none;
+
     font-size: 0.85rem;
 }
 
 .popup-input:focus {
+
+    background: transparent !important;
+
     border-color: var(--accent-magenta);
+
     box-shadow: 0 0 8px var(--accent-magenta-glow);
 }
