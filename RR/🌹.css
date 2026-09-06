@@ -40,7 +40,7 @@ body {
     height: 6px;
 }
 ::-webkit-scrollbar-track {
-    background: rgba(0, 0, 0, 0.5);
+    background: rgba(0, 0, 0, 0);
 }
 ::-webkit-scrollbar-thumb {
     background: var(--gold-soft);
