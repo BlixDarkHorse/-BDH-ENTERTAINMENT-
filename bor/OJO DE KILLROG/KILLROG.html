@@ -56,164 +56,170 @@
         <div class="bh-item" id="bh-speed"><span>Velocidad</span> <span id="bh-speed-val">1.0x</span></div>
     </div>
 
-    <script>
-        // ==========================================
-        // 1. CONFIGURACIÓN MAESTRA DE ACCESO
-        // ==========================================
-        // Pega aquí tu Token de Azure temporal para desplegar los videos de OneDrive
-        const AZURE_MASTER_TOKEN = "PEGA_AQUI_TU_TOKEN_DE_AZURE";
+<script>
+    // ==========================================
+    // 1. MOTOR DE SESIÓN INVISIBLE (BYPASS)
+    // ==========================================
+    // Usa los datos exactos del JSON de Microsoft que me compartiste
+    const CLIENT_ID = "086679a9-80fa-48f3-9b00-054cdbb19137"; 
+    
+    // ⚠️ CRÍTICO: Pega aquí el "refresh_token" más reciente que tengas. 
+    // Debe ser uno nuevo generado hoy para garantizar que dure meses.
+    const REFRESH_TOKEN = "PEGA_AQUI_TODO_EL_TEXTO_DEL_REFRESH_TOKEN";
 
-        // Lista de bases de datos que Killrog debe escanear
-        const DATABASES = [
-            'bases_de_datos/sopranos.jsonl'
-            // Puedes agregar más separadas por comas, ej: 'bases_de_datos/got.jsonl'
-        ];
+    const DATABASES = ['bases_de_datos/sopranos.jsonl'];
+    const statusText = document.getElementById('buffer-status');
+    const contenedor = document.getElementById('contenedor-reproductor');
+    const videoElement = document.getElementById('main-video');
+    const shield = document.getElementById('shield');
+    const blackHole = document.getElementById('black-hole');
+    const wrapper = document.getElementById('reproductor-blazar');
 
-        // Elementos del DOM
-        const statusText = document.getElementById('buffer-status');
-        const contenedor = document.getElementById('contenedor-reproductor');
-        const videoElement = document.getElementById('main-video');
-        const shield = document.getElementById('shield');
-        const blackHole = document.getElementById('black-hole');
-        const wrapper = document.getElementById('reproductor-blazar');
+    // Función que engaña a Microsoft para obtener un pase fresco sin pedir login
+    async function obtenerTokenFresco() {
+        const url = "https://login.microsoftonline.com/common/oauth2/v2.0/token";
+        const params = new URLSearchParams();
+        params.append("client_id", CLIENT_ID);
+        params.append("grant_type", "refresh_token");
+        params.append("refresh_token", REFRESH_TOKEN);
 
-        // ==========================================
-        // 2. MOTOR DE ENRUTAMIENTO (LEE URL Y BUSCA EN DB)
-        // ==========================================
-        window.addEventListener('DOMContentLoaded', async () => {
-            // Extraer "Los.Soprano.1x01.HD720p-lat.mkv" de la URL (?src=...)
-            const urlParams = new URLSearchParams(window.location.search);
-            const targetFileName = urlParams.get('src');
+        const response = await fetch(url, {
+            method: "POST",
+            headers: { "Content-Type": "application/x-www-form-urlencoded" },
+            body: params
+        });
 
-            if (!targetFileName) {
-                statusText.innerText = "Error fáctico: No se recibió parámetro de video (?src=).";
-                return;
-            }
+        if (!response.ok) throw new Error("Refresh Token muerto. Genera uno nuevo.");
+        const data = await response.json();
+        return data.access_token; // Retorna la llave viva de 60 minutos
+    }
 
-            statusText.innerText = "Escaneando bases de datos BDH...";
-            let videoMetadata = null;
+    // ==========================================
+    // 2. ENRUTAMIENTO Y REPRODUCCIÓN (ONEDRIVE)
+    // ==========================================
+    window.addEventListener('DOMContentLoaded', async () => {
+        const urlParams = new URLSearchParams(window.location.search);
+        const targetFileName = urlParams.get('src');
 
-            // Escanear los archivos JSONL para encontrar el ID del video
-            for (const dbPath of DATABASES) {
-                try {
-                    const response = await fetch(dbPath);
-                    if (response.ok) {
-                        const text = await response.text();
-                        const lines = text.split('\n');
-                        for (const line of lines) {
-                            if (line.includes(targetFileName)) {
-                                videoMetadata = JSON.parse(line.trim());
-                                break; // Video encontrado
-                            }
+        if (!targetFileName) {
+            statusText.innerText = "Error fáctico: No se recibió parámetro de video.";
+            return;
+        }
+
+        statusText.innerText = "Escaneando bases de datos de OneDrive...";
+        let videoMetadata = null;
+
+        // Buscar el ID en tu JSONL
+        for (const dbPath of DATABASES) {
+            try {
+                const response = await fetch(dbPath);
+                if (response.ok) {
+                    const text = await response.text();
+                    const lines = text.split('\n');
+                    for (const line of lines) {
+                        if (line.includes(targetFileName)) {
+                            videoMetadata = JSON.parse(line.trim());
+                            break; 
                         }
                     }
-                } catch (e) {
-                    console.warn(`No se pudo leer la DB: ${dbPath}`);
                 }
-                if (videoMetadata) break; // Detener escaneo si ya lo halló
+            } catch (e) {
+                console.warn(`Error al leer DB: ${dbPath}`);
             }
-
-            if (!videoMetadata) {
-                statusText.innerText = "Archivo no indexado en las bases de datos de Killrog.";
-                return;
-            }
-
-            // ==========================================
-            // 3. GENERACIÓN DE STREAM VÍA AZURE
-            // ==========================================
-            statusText.innerText = "Resolviendo stream de OneDrive...";
-            
-            try {
-                // Solicitar enlace directo temporal a Microsoft
-                const streamResponse = await fetch(`https://graph.microsoft.com/v1.0/me/drive/items/${videoMetadata.id}`, {
-                    headers: { 'Authorization': `Bearer ${AZURE_MASTER_TOKEN}` }
-                });
-                
-                if (!streamResponse.ok) throw new Error("Token expirado o inválido.");
-                
-                const data = await streamResponse.json();
-                const downloadUrl = data["@microsoft.graph.downloadUrl"];
-                
-                if (downloadUrl) {
-                    statusText.style.display = 'none';
-                    contenedor.style.display = 'block';
-                    videoElement.src = downloadUrl;
-                    videoElement.play();
-                } else {
-                    throw new Error("OneDrive no proporcionó un enlace de descarga válido.");
-                }
-            } catch (error) {
-                statusText.innerText = "Fallo de autorización. Actualiza el Token de Azure en el código.";
-                console.error(error);
-            }
-        });
-
-        // ==========================================
-        // 4. PROTOCOLOS DE SEGURIDAD Y BLACK HOLE (V2)
-        // ==========================================
-        
-        // Anti-Screenshots (Oscurece el video)
-        document.addEventListener('keyup', (e) => {
-            if (e.key === 'PrintScreen' || (e.ctrlKey && e.key === 'p')) {
-                videoElement.style.filter = 'brightness(0)';
-                showFeedback("CAPTURAS BLOQUEADAS");
-                setTimeout(() => { videoElement.style.filter = 'none'; }, 3000);
-            }
-        });
-
-        // Controles por teclado básicos
-        document.addEventListener('keydown', (e) => {
-            if (e.code === 'Space') { 
-                e.preventDefault(); 
-                videoElement.paused ? videoElement.play() : videoElement.pause(); 
-            }
-            if (e.code === 'ArrowRight') videoElement.currentTime += 5;
-            if (e.code === 'ArrowLeft') videoElement.currentTime -= 5;
-        });
-
-        // Eventos del Black Hole (Clic derecho)
-        contenedor.addEventListener('contextmenu', (e) => {
-            e.preventDefault();
-            const x = e.clientX, y = e.clientY;
-            blackHole.style.left = `${x}px`;
-            blackHole.style.top = `${y}px`;
-            blackHole.classList.add('active');
-        });
-
-        document.addEventListener('click', (e) => {
-            if (!e.target.closest('.black-hole-menu')) blackHole.classList.remove('active');
-        });
-
-        // Opciones del Black Hole
-        document.getElementById('bh-fullscreen').addEventListener('click', () => {
-            !document.fullscreenElement ? wrapper.requestFullscreen() : document.exitFullscreen();
-            blackHole.classList.remove('active');
-        });
-
-        document.getElementById('bh-pip').addEventListener('click', () => {
-            document.pictureInPictureElement ? document.exitPictureInPicture() : videoElement.requestPictureInPicture();
-            blackHole.classList.remove('active');
-        });
-
-        document.getElementById('bh-speed').addEventListener('click', (e) => {
-            const rates = [0.5, 1.0, 1.25, 1.5, 2.0];
-            const current = videoElement.playbackRate;
-            const next = rates[(rates.indexOf(current) + 1) % rates.length];
-            videoElement.playbackRate = next;
-            e.currentTarget.querySelector('#bh-speed-val').innerText = next.toFixed(1) + 'x';
-            showFeedback(`Velocidad: ${next}x`);
-        });
-
-        // Función para mostrar feedback en pantalla
-        function showFeedback(text) {
-            let old = document.querySelector('.v-feedback');
-            if (old) old.remove();
-            const fb = document.createElement('div');
-            fb.className = 'v-feedback';
-            fb.innerText = text;
-            wrapper.appendChild(fb);
-            setTimeout(() => fb.remove(), 1000);
+            if (videoMetadata) break; 
         }
-    </script>
+
+        if (!videoMetadata) {
+            statusText.innerText = "Archivo no indexado.";
+            return;
+        }
+
+        statusText.innerText = "Forzando inicio de sesión oculto...";
+        
+        try {
+            // 1. Pide la llave fresca usando tu refresh token
+            const tokenVivo = await obtenerTokenFresco();
+            
+            // 2. Usa la llave viva para extraer el video del OneDrive
+            const streamResponse = await fetch(`https://graph.microsoft.com/v1.0/me/drive/items/${videoMetadata.id}`, {
+                headers: { 'Authorization': `Bearer ${tokenVivo}` }
+            });
+            
+            if (!streamResponse.ok) throw new Error("Fallo al contactar el clúster de OneDrive.");
+            
+            const data = await streamResponse.json();
+            const downloadUrl = data["@microsoft.graph.downloadUrl"];
+            
+            if (downloadUrl) {
+                statusText.style.display = 'none';
+                contenedor.style.display = 'block';
+                videoElement.src = downloadUrl;
+                videoElement.play();
+            }
+        } catch (error) {
+            statusText.innerText = "Falla de Sistema: " + error.message;
+            console.error(error);
+        }
+    });
+
+    // ==========================================
+    // 3. SEGURIDAD ANTI-PIRATERÍA Y BLACK HOLE
+    // ==========================================
+    document.addEventListener('keyup', (e) => {
+        if (e.key === 'PrintScreen' || (e.ctrlKey && e.key === 'p')) {
+            videoElement.style.filter = 'brightness(0)';
+            showFeedback("CAPTURAS BLOQUEADAS");
+            setTimeout(() => { videoElement.style.filter = 'none'; }, 3000);
+        }
+    });
+
+    document.addEventListener('keydown', (e) => {
+        if (e.code === 'Space') { 
+            e.preventDefault(); 
+            videoElement.paused ? videoElement.play() : videoElement.pause(); 
+        }
+        if (e.code === 'ArrowRight') videoElement.currentTime += 5;
+        if (e.code === 'ArrowLeft') videoElement.currentTime -= 5;
+    });
+
+    contenedor.addEventListener('contextmenu', (e) => {
+        e.preventDefault();
+        blackHole.style.left = `${e.clientX}px`;
+        blackHole.style.top = `${e.clientY}px`;
+        blackHole.classList.add('active');
+    });
+
+    document.addEventListener('click', (e) => {
+        if (!e.target.closest('.black-hole-menu')) blackHole.classList.remove('active');
+    });
+
+    document.getElementById('bh-fullscreen').addEventListener('click', () => {
+        !document.fullscreenElement ? wrapper.requestFullscreen() : document.exitFullscreen();
+        blackHole.classList.remove('active');
+    });
+
+    document.getElementById('bh-pip').addEventListener('click', () => {
+        document.pictureInPictureElement ? document.exitPictureInPicture() : videoElement.requestPictureInPicture();
+        blackHole.classList.remove('active');
+    });
+
+    document.getElementById('bh-speed').addEventListener('click', (e) => {
+        const rates = [0.5, 1.0, 1.25, 1.5, 2.0];
+        const next = rates[(rates.indexOf(videoElement.playbackRate) + 1) % rates.length];
+        videoElement.playbackRate = next;
+        e.currentTarget.querySelector('#bh-speed-val').innerText = next.toFixed(1) + 'x';
+        showFeedback(`Velocidad: ${next}x`);
+    });
+
+    function showFeedback(text) {
+        let old = document.querySelector('.v-feedback');
+        if (old) old.remove();
+        const fb = document.createElement('div');
+        fb.className = 'v-feedback';
+        fb.innerText = text;
+        wrapper.appendChild(fb);
+        setTimeout(() => fb.remove(), 1000);
+    }
+</script>
 </body>
 </html>
