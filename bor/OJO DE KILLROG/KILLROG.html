@@ -56,65 +56,42 @@
 
     window.addEventListener('DOMContentLoaded', async () => {
         const urlParams = new URLSearchParams(window.location.search);
-        const srcParam = urlParams.get('src');
+        const rawSrc = urlParams.get('src');
 
-        if (!srcParam) {
+        if (!rawSrc) {
             statusText.innerText = "Error fáctico: No se recibió parámetro de video.";
             return;
         }
 
-        statusText.innerText = "Conectando al clúster de OneDrive...";
+        // Decodificar la URL por si viene en formato URL-encoded desde la galería
+        const videoUrl = decodeURIComponent(rawSrc);
 
-        try {
-            let downloadUrl = srcParam;
+        statusText.innerText = "Cargando flujo multimedia...";
+        statusText.style.display = 'none';
+        contenedor.style.display = 'block';
 
-            // Si el parámetro recibido es una ruta de archivo o ID en lugar de un enlace directo
-            if (!srcParam.startsWith('http://') && !srcParam.startsWith('https://')) {
-                const token = localStorage.getItem('azure_access_token');
-                if (!token) throw new Error("Falta el token de Azure en localStorage.");
+        videoElement.src = videoUrl;
 
-                // Buscar en el JSONL local el ID real del archivo
-                const response = await fetch('soprano.jsonl');
-                if (!response.ok) throw new Error("No se pudo leer soprano.jsonl");
-                
-                const text = await response.text();
-                let fileId = null;
-                for (const line of text.split('\n')) {
-                    if (line.trim() && line.includes(srcParam)) {
-                        const meta = JSON.parse(line.trim());
-                        fileId = meta.id;
-                        break;
-                    }
-                }
-
-                if (!fileId) throw new Error("El archivo no está indexado en soprano.jsonl");
-
-                // Obtener un enlace de descarga 100% fresco desde Microsoft Graph
-                const graphRes = await fetch(`https://graph.microsoft.com/v1.0/me/drive/items/${fileId}`, {
-                    headers: { 'Authorization': `Bearer ${token}` }
-                });
-                
-                if (!graphRes.ok) throw new Error("Fallo de autorización en Microsoft Graph.");
-                const data = await graphRes.json();
-                downloadUrl = data["@microsoft.graph.downloadUrl"];
-            }
-
-            if (!downloadUrl) throw new Error("No se pudo generar la URL de streaming.");
-
-            // Mostrar el reproductor y arrancar la transmisión
-            statusText.style.display = 'none';
-            contenedor.style.display = 'block';
-            videoElement.src = downloadUrl;
-            
-            videoElement.play().catch(err => {
-                throw new Error("El navegador bloqueó la reproducción automática: " + err.message);
-            });
-
-        } catch (error) {
+        // Capturar errores directos del elemento de video del navegador
+        videoElement.onerror = function() {
             statusText.style.display = 'block';
             contenedor.style.display = 'none';
-            statusText.innerText = "Falla Crítica: " + error.message;
-            console.error(error);
+            statusText.innerText = "Error: El enlace de OneDrive expiró o el navegador bloqueó el stream.";
+            console.error("Código de error de video:", videoElement.error);
+        };
+
+        try {
+            await videoElement.play();
+        } catch (err) {
+            console.warn("Autoplay bloqueado por el navegador:", err);
+            statusText.style.display = 'block';
+            statusText.innerText = "Haz clic en la pantalla para iniciar el video.";
+            
+            // Forzar reproducción con un clic en caso de restricción del navegador
+            document.body.addEventListener('click', () => {
+                videoElement.play();
+                statusText.style.display = 'none';
+            }, { once: true });
         }
     });
 </script>
