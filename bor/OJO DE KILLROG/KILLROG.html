@@ -22,80 +22,32 @@
         </div>
     </div>
 
-    <script>
-        // Tu firma SAS Maestra de Azure (Válida hasta Septiembre 2027)
-        const AZURE_SAS_TOKEN = "?sp=r&st=2026-09-25T20:51:50Z&se=2027-09-26T05:06:50Z&sv=2026-02-06&sr=c&sig=6NCuDi%2FQRTymkk959lCGT9RHQbrS1HmVrayem5VU5Kg%3D";
+                <!-- 3. ARRANQUE -->
+                <script>
+                     const AZURE_SAS_TOKEN = "?sp=r&st=2026-09-25T20:51:50Z&se=2027-09-26T05:06:50Z&sv=2026-02-06&sr=c&sig=6NCuDi%2FQRTymkk959lCGT9RHQbrS1HmVrayem5VU5Kg%3D";
+                     const parametros = new URLSearchParams(window.location.search);
+                     let rutaVideo = parametros.get('src');
 
-        document.addEventListener('DOMContentLoaded', async () => {
-            const statusDiv = document.getElementById('buffer-status');
-            const urlParams = new URLSearchParams(window.location.search);
-            let rawSrc = urlParams.get('src');
+                     if (rutaVideo) {
+                         // Decodifica %25 por si viene doblemente codificado
+                         while (rutaVideo.includes('%25')) {
+                             rutaVideo = decodeURIComponent(rutaVideo);
+                         }
+                         let finalUrl = decodeURIComponent(rutaVideo);
+                         
+                         // SI ES AZURE: Corta el token viejo e inyecta el Token Maestro
+                         if (finalUrl.includes('blob.core.windows.net')) {
+                             if (finalUrl.includes('?')) {
+                                 finalUrl = finalUrl.split('?')[0];
+                             }
+                             finalUrl += AZURE_SAS_TOKEN;
+                         }
+                         
+                         const miMotor = new BlazarPlayer('#reproductor-blazar', finalUrl);
+                     } else {
+                         console.error("Error: Ningún archivo fue enviado al reproductor.");
+                     }
+                </script>
 
-            if (!rawSrc) {
-                if (statusDiv) statusDiv.innerHTML = '<span style="color:#ff0000;">⚠️ Error: No se recibió la variable ?src=</span>';
-                return;
-            }
-
-            // Si la URL viene doblemente codificada (contiene %25), se decodifica hasta dejarla limpia
-            while (rawSrc.includes('%25')) {
-                rawSrc = decodeURIComponent(rawSrc);
-            }
-            const decodedSrc = decodeURIComponent(rawSrc);
-            let finalUrl = null;
-
-            // CASO A: Es una URL directa (Azure o Servidor Remoto)
-            if (decodedSrc.startsWith('http://') || decodedSrc.startsWith('https://')) {
-                finalUrl = decodedSrc;
-                // Si es de Azure, forzamos el uso del token maestro (por si el original caducó)
-                if (finalUrl.includes('blob.core.windows.net')) {
-                    if (finalUrl.includes('?')) {
-                        finalUrl = finalUrl.split('?')[0];
-                    }
-                    finalUrl += AZURE_SAS_TOKEN;
-                }
-            } 
-            // CASO B: Es un nombre de archivo (ej: "Los.Soprano.1x01.HD720p-lat.mkv") -> Busca en soprano.jsonl
-            else {
-                try {
-                    let response = await fetch('../bases_de_datos/soprano.jsonl').catch(() => null);
-                    if (!response || !response.ok) response = await fetch('bases_de_datos/soprano.jsonl').catch(() => null);
-                    if (!response || !response.ok) response = await fetch('../soprano.jsonl').catch(() => null);
-
-                    if (response && response.ok) {
-                        const textData = await response.text();
-                        for (const line of textData.split('\n')) {
-                            if (line.trim() && line.includes(decodedSrc)) {
-                                const meta = JSON.parse(line.trim());
-                                if (meta.id) {
-                                    const cid = meta.id.split('!');
-                                    finalUrl = `https://onedrive.live.com/download?cid=${cid}&resid=${encodeURIComponent(meta.id)}`;
-                                } else if (meta.url) {
-                                    finalUrl = meta.url;
-                                }
-                                break;
-                            }
-                        }
-                    }
-                } catch (err) {
-                    console.error("Error leyendo soprano.jsonl:", err);
-                }
-            }
-
-            if (!finalUrl) {
-                if (statusDiv) statusDiv.innerHTML = `<span style="color:#ff0000;">❌ No se encontró el archivo "${decodedSrc}"</span>`;
-                return;
-            }
-
-            // Oculta el mensaje de carga e inicia BlazarPlayer
-            if (statusDiv) statusDiv.style.display = 'none';
-
-            try {
-                window.player = new BlazarPlayer('#reproductor-blazar', finalUrl);
-            } catch (err) {
-                if (statusDiv) statusDiv.innerHTML = `<span style="color:#ff0000;">⚠️ Error al iniciar reproductor: ${err.message}</span>`;
-                console.error(err);
-            }
-        });
-    </script>
 </body>
 </html>
