@@ -1,6 +1,9 @@
+Aquí tienes el **código completo y definitivo** para tu archivo **`blazar-player.js`**, calibrado para corregir la pantalla en negro en videos directos (al forzar `.play()` en la Ruta B [blazar player js]), mantener la intercepción HLS/XHR de Azure [blazar player js], activar los escudos anti-piratería [blazar player js] y desplegar el menú contextual flotante **Black Hole** [blazar player js]:
+
+```javascript
 /**
- * BLAZAR ON READY - KEPPLER ENGINE WEB (Ojo de Kilrog)
- * Librería de Reproducción Vanilla JS - Build: Black Hole Edition
+ *  BLAZAR ON READY - KEPPLER ENGINE WEB (Ojo de Kilrog)
+ *  Librería de Reproducción Vanilla JS - Build: Black Hole Edition
  */
 class BlazarPlayer {
     constructor(containerSelector, videoSrc) {
@@ -11,10 +14,10 @@ class BlazarPlayer {
     }
 
     init() {
-        // 1. Construye el cascarón HTML
+        // 1. Construye la interfaz HTML y estilos en el contenedor
         this.renderUI();
 
-        // 2. Captura los elementos
+        // 2. Captura los elementos del DOM
         this.video = this.container.querySelector('video');
         this.progressBar = this.container.querySelector('.blazar-progress');
         this.btnPlay = this.container.querySelector('.btn-play');
@@ -22,38 +25,33 @@ class BlazarPlayer {
 
         // 3. ENRUTADOR BIFURCADO FÁCTICO CON INTERCEPTOR DE HARDWARE (XHR)
         if (this.videoSrc.includes('.m3u8')) {
-            // 1. Aislamiento matemático del SAS Token y URL Base
+            // RUTA A: Stream HLS con manifiesto y firma SAS
             const partesUrl = this.videoSrc.split('?');
-            const baseUrl = partesUrl[0].substring(0, partesUrl[0].lastIndexOf('/') + 1);
+            const baseUrl = partesUrl.substring(0, partesUrl.lastIndexOf('/') + 1);
             const sasToken = partesUrl.slice(1).join('?');
 
             if (typeof Hls !== 'undefined' && Hls.isSupported()) {
-
-                // 2. Interceptor XHR Nativo (Sobrescribe la red en el Hilo Principal)
                 const hls = new Hls({
                     debug: false,
                     xhrSetup: function (xhr, url) {
                         let newUrl = url;
 
-                        // A. Aniquilación de URLs Fantasma y Remapeo de Archivos
-                        // FFmpeg grabó 'example.com', redirigimos al Blob real y al nombre exacto del archivo
+                        // A. Remapeo de claves y rutas
                         if (newUrl.includes('example.com/keys/audio_spa_1.key')) {
                             newUrl = baseUrl + 'audio_spa_1/audio_spa_1_aes.key';
                         } else if (newUrl.includes('example.com/keys/audio_eng_2.key')) {
                             newUrl = baseUrl + 'audio_eng_2/audio_eng_2_aes.key';
                         } else if (newUrl.includes('example.com')) {
-                            // Respaldo de seguridad para cualquier otra ruta falsa
                             const nombreKey = newUrl.substring(newUrl.lastIndexOf('/') + 1);
                             newUrl = baseUrl + nombreKey;
                         }
 
-                        // B. Inyector Absoluto del Token SAS (Elimina el Error 409)
+                        // B. Inyección del Token SAS de Azure
                         if (sasToken && !newUrl.includes(sasToken)) {
                             const separador = newUrl.includes('?') ? '&' : '?';
                             newUrl = newUrl + separador + sasToken;
                         }
 
-                        // C. Ejecución de la Petición Limpia al Navegador
                         xhr.open('GET', newUrl, true);
                     }
                 });
@@ -62,7 +60,12 @@ class BlazarPlayer {
                 hls.attachMedia(this.video);
 
                 hls.on(Hls.Events.MANIFEST_PARSED, () => {
-                    console.log("Motor HLS ensamblado con blindaje XHR universal. Desencriptando en RAM...");
+                    console.log("Motor HLS ensamblado con blindaje XHR universal.");
+                    this.video.play().then(() => {
+                        if (this.btnPlay) this.btnPlay.innerText = "❚❚";
+                    }).catch(err => {
+                        console.log("Autoplay diferido:", err);
+                    });
                 });
 
                 hls.on(Hls.Events.ERROR, (event, data) => {
@@ -71,14 +74,23 @@ class BlazarPlayer {
                     }
                 });
             } else if (this.video.canPlayType('application/vnd.apple.mpegurl')) {
-                this.video.src = this.videoSrc; // Respaldo Apple
+                this.video.src = this.videoSrc; // Respaldo Safari/Apple
+                this.video.play().catch(e => console.log("Autoplay bloqueado:", e));
             }
         } else {
-            // RUTA B: Es un video estándar (MP4, MKV local, etc.)
+            // RUTA B: Video estándar (MKV, MP4, URLs directas de OneDrive o Azure Blob)
             this.video.src = this.videoSrc;
+            
+            // Forzar el inicio de reproducción inmediato y actualizar el botón
+            this.video.play().then(() => {
+                if (this.btnPlay) this.btnPlay.innerText = "❚❚";
+            }).catch(err => {
+                console.log("Autoplay requiere interacción del usuario:", err);
+                if (this.btnPlay) this.btnPlay.innerText = "▶";
+            });
         }
 
-        // 4. Se inicializan sus protecciones y eventos
+        // 4. Inicializar subsistemas de protecciones y control hardware
         this.buildBlackHole();
         this.attachHardwareEvents();
         this.attachSecurityProtocols();
@@ -94,7 +106,7 @@ class BlazarPlayer {
                     overflow: hidden; font-family: 'OLD ENGLISH TEXT', serif;
                 }
                 .blazar-player-wrapper video {
-                    width: 100%; display: block; transition: filter 0.1s; 
+                    width: 100%; display: block; transition: filter 0.1s;
                 }
                 .anti-piracy-shield {
                     position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 10;
@@ -121,13 +133,11 @@ class BlazarPlayer {
                 .blazar-btn:hover { color: #222; -webkit-text-stroke: 1px #ff00d4; }
                 .controls-row { display: flex; align-items: center; justify-content: space-between; }
                 .blazar-player-wrapper:fullscreen .blazar-controls {
-                opacity: 0;
-                transition: opacity 0.5s ease-in-out;
-               }
-               .blazar-player-wrapper:fullscreen .hide-on-fullscreen {
-               display: none !important;
-               }
-                /* ESTILOS DEL BLACK HOLE (WARM HOLE) */
+                    opacity: 0; transition: opacity 0.5s ease-in-out;
+                }
+                .blazar-player-wrapper:fullscreen .hide-on-fullscreen {
+                    display: none !important;
+                }
                 .black-hole-menu {
                     position: fixed; background: #050505; border: 1px solid #ff00d4;
                     box-shadow: 0 0 25px rgba(255, 0, 212, 0.4), inset 0 0 15px rgba(0,0,0,1);
@@ -145,12 +155,10 @@ class BlazarPlayer {
                     transition: background 0.2s, color 0.2s; font-weight: bold; display: flex; justify-content: space-between;
                 }
                 .bh-item:hover { background: #ff00d4; color: #000; }
-                }
             </style>
 
             <div class="blazar-player-wrapper">
                 <div class="anti-piracy-shield"></div>
-                <!-- ATENCIÓN: src vacío porque HLS se encargará de inyectar el Blob -->
                 <video preload="auto"></video>
                 <div class="blazar-controls">
                     <input type="range" class="blazar-progress" value="0" min="0" max="100" step="0.1">
@@ -159,7 +167,7 @@ class BlazarPlayer {
                             <button class="blazar-btn btn-play">▶ Reproducir</button>
                             <span style="color:#D4AF37; font-size:0.9rem; margin-left:10px;">[Clic Derecho = Black Hole]</span>
                         </div>
-                        <div class="blazar-btn" style="cursor:default;" class="hide-on-fullscreen">OJO DE KILROG</div>
+                        <div class="blazar-btn hide-on-fullscreen" style="cursor:default;">OJO DE KILROG</div>
                     </div>
                 </div>
             </div>
@@ -167,7 +175,9 @@ class BlazarPlayer {
     }
 
     buildBlackHole() {
-        // Inyectar el menú virtual directamente en el Body para evadir recortes (overflow)
+        let existingMenu = document.querySelector('.black-hole-menu');
+        if (existingMenu) existingMenu.remove();
+
         this.blackHole = document.createElement('div');
         this.blackHole.className = 'black-hole-menu';
         this.blackHole.innerHTML = `
@@ -180,18 +190,21 @@ class BlazarPlayer {
         `;
         document.body.appendChild(this.blackHole);
 
-        // LÓGICA DE LOS BOTONES DEL BLACK HOLE
         this.blackHole.querySelector('#bh-fullscreen').addEventListener('click', () => {
             if (!document.fullscreenElement) {
                 this.container.querySelector('.blazar-player-wrapper').requestFullscreen();
-            } else { document.exitFullscreen(); }
+            } else { 
+                document.exitFullscreen(); 
+            }
             this.closeBlackHole();
         });
 
         this.blackHole.querySelector('#bh-pip').addEventListener('click', () => {
             if (document.pictureInPictureElement) {
                 document.exitPictureInPicture();
-            } else { this.video.requestPictureInPicture(); }
+            } else { 
+                this.video.requestPictureInPicture(); 
+            }
             this.closeBlackHole();
         });
 
@@ -202,16 +215,14 @@ class BlazarPlayer {
             this.video.playbackRate = next;
             e.currentTarget.querySelector('#bh-speed-val').innerText = next.toFixed(1) + 'x';
             this.showVisualFeedback(`Velocidad: ${next}x`);
-            // No cerramos el menú aquí para que el usuario pueda ciclar la velocidad
         });
 
         this.blackHole.querySelector('#bh-subs').addEventListener('click', (e) => {
-            // Lógica Base para apagar/encender pistas de texto si existen
             let tracks = this.video.textTracks;
             if (tracks.length > 0) {
-                let currentMode = tracks[0].mode;
-                tracks[0].mode = currentMode === 'showing' ? 'hidden' : 'showing';
-                e.currentTarget.querySelector('#bh-subs-val').innerText = tracks[0].mode === 'showing' ? 'ON' : 'OFF';
+                let currentMode = tracks.mode;
+                tracks.mode = currentMode === 'showing' ? 'hidden' : 'showing';
+                e.currentTarget.querySelector('#bh-subs-val').innerText = tracks.mode === 'showing' ? 'ON' : 'OFF';
             } else {
                 this.showVisualFeedback("Sin Subs Físicos");
             }
@@ -219,22 +230,18 @@ class BlazarPlayer {
     }
 
     attachHardwareEvents() {
-        // INVOCAR EL BLACK HOLE EN TODA LA PÁGINA (Bloqueo de Clic Derecho global)
         document.addEventListener('contextmenu', (e) => {
-            e.preventDefault(); // Aniquila el menú nativo de Windows/Navegador
+            e.preventDefault();
             this.openBlackHole(e.clientX, e.clientY);
         });
 
-        // CERRAR EL BLACK HOLE AL HACER CLIC FUERA
         document.addEventListener('click', (e) => {
             if (!e.target.closest('.black-hole-menu')) {
                 this.closeBlackHole();
             }
         });
 
-        // CONTROL DE RATÓN GAMER Y CLICS ZONA VIDEO
         document.addEventListener('mousedown', (e) => {
-            // Canal 3 = Lateral Atrás, Canal 4 = Lateral Adelante
             if (e.button === 3) {
                 e.preventDefault();
                 this.video.currentTime -= 10;
@@ -246,16 +253,23 @@ class BlazarPlayer {
             }
         });
 
-        // Clic Izquierdo en el escudo (Video)
         this.shield.addEventListener('click', (e) => {
             if (e.button === 0) this.togglePlay();
         });
 
-        // Teclado
         document.addEventListener('keydown', (e) => {
-            if (e.code === 'Space') { e.preventDefault(); this.togglePlay(); }
-            if (e.code === 'ArrowRight') this.video.currentTime += 5;
-            if (e.code === 'ArrowLeft') this.video.currentTime -= 5;
+            if (e.code === 'Space') { 
+                e.preventDefault(); 
+                this.togglePlay(); 
+            }
+            if (e.code === 'ArrowRight') {
+                this.video.currentTime += 5;
+                this.showVisualFeedback(">> 5s");
+            }
+            if (e.code === 'ArrowLeft') {
+                this.video.currentTime -= 5;
+                this.showVisualFeedback("<< 5s");
+            }
         });
     }
 
@@ -263,10 +277,15 @@ class BlazarPlayer {
         document.addEventListener('keyup', (e) => {
             if (e.key === 'PrintScreen') {
                 this.video.style.filter = 'brightness(0)';
-                navigator.clipboard.writeText("Bloqueo de Piratería - Universo BDH");
-                setTimeout(() => { this.video.style.filter = 'none'; }, 3000);
+                if (navigator.clipboard) {
+                    navigator.clipboard.writeText("Bloqueo de Piratería - Universo BDH");
+                }
+                setTimeout(() => {
+                    this.video.style.filter = 'none';
+                }, 3000);
             }
         });
+
         document.addEventListener('visibilitychange', () => {
             this.video.style.filter = document.hidden ? 'brightness(0)' : 'none';
         });
@@ -279,32 +298,29 @@ class BlazarPlayer {
             this.progressBar.value = progress;
             this.progressBar.style.background = `linear-gradient(to right, #ff00d4 ${progress}%, #222 ${progress}%)`;
         });
+
         this.progressBar.addEventListener('input', (e) => {
             this.video.currentTime = (e.target.value / 100) * this.video.duration;
         });
+
         this.btnPlay.addEventListener('click', () => this.togglePlay());
 
-        // Lógica de inactividad (Idle Timer) para Pantalla Completa
         let inactividadTimer;
         this.container.addEventListener('mousemove', () => {
-            // Solo actuamos si estamos en pantalla completa
             if (document.fullscreenElement) {
-                // 1. Mostrar cursor y controles al mover el ratón
                 this.container.style.cursor = 'default';
-                this.container.querySelector('.blazar-controls').style.opacity = '1';
+                const controls = this.container.querySelector('.blazar-controls');
+                if (controls) controls.style.opacity = '1';
 
-                // 2. Limpiar el temporizador anterior
                 clearTimeout(inactividadTimer);
 
-                // 3. Iniciar cuenta regresiva (ej: 2.5 segundos) para volver a ocultar
                 inactividadTimer = setTimeout(() => {
                     if (document.fullscreenElement) {
-                        this.container.style.cursor = 'none'; // Aniquila el puntero
-                        this.container.querySelector('.blazar-controls').style.opacity = '0'; // Aniquila la barra
+                        this.container.style.cursor = 'none';
+                        if (controls) controls.style.opacity = '0';
                     }
                 }, 2500);
             } else {
-                // Restaurar el cursor normal si salimos de pantalla completa
                 this.container.style.cursor = 'default';
             }
         });
@@ -312,8 +328,11 @@ class BlazarPlayer {
 
     togglePlay() {
         if (this.video.paused) {
-            this.video.play();
-            this.btnPlay.innerText = "❚❚";
+            this.video.play().then(() => {
+                this.btnPlay.innerText = "❚❚";
+            }).catch(err => {
+                console.log("Error al reproducir:", err);
+            });
         } else {
             this.video.pause();
             this.btnPlay.innerText = "▶";
@@ -321,11 +340,17 @@ class BlazarPlayer {
     }
 
     openBlackHole(x, y) {
-        // Asegurar que el menú no se salga de la pantalla
-        this.blackHole.style.left = `${x}px`;
-        this.blackHole.style.top = `${y}px`;
+        const menuWidth = this.blackHole.offsetWidth || 220;
+        const menuHeight = this.blackHole.offsetHeight || 200;
+        let finalX = x;
+        let finalY = y;
 
-        // Timeout minúsculo para la animación de escala/opacidad
+        if (x + menuWidth > window.innerWidth) finalX = window.innerWidth - menuWidth - 10;
+        if (y + menuHeight > window.innerHeight) finalY = window.innerHeight - menuHeight - 10;
+
+        this.blackHole.style.left = `${finalX}px`;
+        this.blackHole.style.top = `${finalY}px`;
+
         setTimeout(() => this.blackHole.classList.add('active'), 10);
     }
 
@@ -334,7 +359,6 @@ class BlazarPlayer {
     }
 
     showVisualFeedback(text) {
-        // Buscar si ya hay un feedback y eliminarlo para no encimarlos
         let oldFeedback = this.container.querySelector('.v-feedback');
         if (oldFeedback) oldFeedback.remove();
 
@@ -347,15 +371,20 @@ class BlazarPlayer {
             z-index: 100; pointer-events: none; text-shadow: 0 0 20px rgba(255, 0, 212, 0.8);
             animation: pulse-fade 1s forwards; font-family: 'OLD ENGLISH TEXT', serif;
         `;
-        // Inyectar el keyframe temporalmente si no existe
+
         if (!document.getElementById('feedback-style')) {
             const style = document.createElement('style');
             style.id = 'feedback-style';
-            style.innerHTML = `@keyframes pulse-fade { 0% { transform: translate(-50%, -50%) scale(0.8); opacity: 1; } 50% { transform: translate(-50%, -50%) scale(1.1); opacity: 1; } 100% { transform: translate(-50%, -50%) scale(1); opacity: 0; } }`;
+            style.innerHTML = `@keyframes pulse-fade { 
+                0% { transform: translate(-50%, -50%) scale(0.8); opacity: 1; } 
+                50% { transform: translate(-50%, -50%) scale(1.1); opacity: 1; } 
+                100% { transform: translate(-50%, -50%) scale(1); opacity: 0; } 
+            }`;
             document.head.appendChild(style);
         }
 
-        this.container.querySelector('.blazar-player-wrapper').appendChild(feedback);
+        const wrapper = this.container.querySelector('.blazar-player-wrapper');
+        if (wrapper) wrapper.appendChild(feedback);
         setTimeout(() => feedback.remove(), 1000);
     }
 }
