@@ -17,7 +17,6 @@ class BlazarPlayer {
     }
 
     renderUI() {
-        // Inyección del Shadow DOM o estructura directa para la interfaz de Universo BDH
         this.container.innerHTML = `
 ▶
 
@@ -29,10 +28,10 @@ class BlazarPlayer {
 }
 
 init() {
-    // 1. Construye la interfaz HTML y estilos en el contenedor
+    // 1. Construcción de UI
     this.renderUI();
 
-    // 2. Captura los elementos del DOM
+    // 2. Captura de nodos en el DOM
     this.wrapper = this.container.querySelector('.blazar-wrapper');
     this.video = this.container.querySelector('video');
     this.progressBar = this.container.querySelector('.blazar-progress');
@@ -43,10 +42,11 @@ init() {
     this.shield = this.container.querySelector('.anti-piracy-shield');
     this.controls = this.container.querySelector('.blazar-controls');
 
-    // 3. Enrutador bifurcado con fallback automático
-    const isHls = this.videoSrc.includes('.m3u8');
+    // 3. ENRUTADOR ESTRICTO DE MEDIOS
+    const esHls = this.videoSrc.toLowerCase().includes('.m3u8');
 
-    if (isHls && typeof Hls !== 'undefined' && Hls.isSupported()) {
+    if (esHls && typeof Hls !== 'undefined' && Hls.isSupported()) {
+        // RUTA A: Inicialización de flujo particionado HLS
         const partesUrl = this.videoSrc.split('?');
         const sasToken = partesUrl.slice(1).join('?');
 
@@ -66,20 +66,22 @@ init() {
         this.hls.attachMedia(this.video);
 
         this.hls.on(Hls.Events.MANIFEST_PARSED, () => {
-            // Preparado para reproducir
+            this.video.play().catch(e => console.log("Autoplay diferido (HLS):", e));
         });
 
         this.hls.on(Hls.Events.ERROR, (event, data) => {
             if (data.fatal) {
+                console.warn("Fallo crítico en HLS. Destruyendo instancia y pasando a fallback.");
                 this.hls.destroy();
                 this.startDirectPlayback();
             }
         });
     } else {
+        // RUTA B: Para .mkv, .mp4, OneDrive o Azure Blob directo
         this.startDirectPlayback();
     }
 
-    // 4. Inicializar subsistemas de protecciones y control de hardware
+    // 4. Activación de módulos de Protección y Eventos
     this.buildBlackHole();
     this.attachHardwareEvents();
     this.attachSecurityProtocols();
@@ -88,7 +90,7 @@ init() {
 
 startDirectPlayback() {
     this.video.src = this.videoSrc;
-    this.video.load();
+    this.video.play().catch(e => console.log("Autoplay diferido (Directo):", e));
 }
 
 playVideo() {
@@ -161,7 +163,7 @@ updateTimeDisplay() {
 
 attachHardwareEvents() {
     // Control de reproducción por teclado a nivel de contenedor
-    this.wrapper.setAttribute('tabindex', '0'); // Hacer el contenedor focusable
+    this.wrapper.setAttribute('tabindex', '0');
     this.wrapper.addEventListener('keydown', (e) => {
         switch(e.key) {
             case ' ':
@@ -209,21 +211,19 @@ attachSecurityProtocols() {
 
 buildBlackHole() {
     // Lógica de ofuscación de consola o auditoría forense pasiva del entorno web
-    // Esta función actúa como trampa de depuración en la capa cliente.
     const debugTrap = new Function('debugger');
     setInterval(() => {
         const before = new Date().getTime();
-        // debugTrap(); // Descomentar en despliegue de producción extrema para colgar DevTools
+        // debugTrap(); // Descomentar en despliegue de producción para colgar DevTools
         const after = new Date().getTime();
         if (after - before > 100) {
-            // Posible inspección detectada, pausar flujo si se considera riesgoso
-            // this.video.pause();
+            // Interrupción detectada
         }
     }, 1000);
 }
 
 destroy() {
-    // Liberación meticulosa de memoria para evitar leaks en el DOM
+    // Liberación de memoria para evitar fugas en el DOM
     if (this.hls) {
         this.hls.destroy();
     }
