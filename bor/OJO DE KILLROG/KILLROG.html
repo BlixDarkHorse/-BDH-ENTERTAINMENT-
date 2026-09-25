@@ -50,80 +50,70 @@
     </div>
 
 <script>
-    const CLIENT_ID = "086679a9-80fa-48f3-9b00-054cdbb19137"; 
-    const REFRESH_TOKEN = "EwBYBMl6BAAUCBUz0PacyGyQMzAdZCXlnFTa1qQAASdsVL/UuUSCSv8wtW0moW6whfW+ln7yUzj80SXMKhfSIjtspaz76Ncz2VBRPruV0iyhlinfAmI7Z2WSztC6X9enq33xcVuIuBS7wG94bskYGo4LaK6M+lRchnCaS0Go99F57Bh2uVMN/eGT3qQf3lc/jf4/XF/9cDBeLUxiFsNR5wAWpVgMDZM4UToIBhZ1995tHQJ/qyJBQ5sTkoGH1x5Shafib8tsOGNdBo/50h1XCXhAa1bhKrmjtibLq8w2JpC4Oe//DuI+YTpFBWRbqIrlxA1H+Ernbt0XIw4Y09MFNDLzB5n9kzdgb/pOuxaRH/flluLgIWnRqiBeXdUU9J4QZgAAELgjRcwO9p0tRx591WFZPSMgA3XkjzA2jVv0Fv5GdPfEdvnjrwk/PkGrHx7sLnNHpHt5OYVwW2bacmdbc3WeZeyBYUkbbrSn/JTZFsawoAtoxuxAdRMvMeJgZlbDfMah6rLd8iJi7t2pvdfwB+KSJbLfdAukcytdsChZWTaCV6/mWbBWpQcOHMIyvJf9zdreSO02ESsE+0Jg6tTOwGO5fs+7TCdEyq3P6wrXAtU7mBF+Qt2ghI2cfjNc+HjdNUI5eSqKtky4iC5tfS59FPYBGTGDMo8ClJ8I6AmaL12nKKooGBD7siE+qvL6+Ns+p/LyeKUGNUYG9HFNIvGZbH363fu+4uXWPckaJBE1eLGySprgjxr8U/c/0whd4t73IMqehKKBIRnBz4k45vcecAcNUN/Nono6pC6ncbcU7sDj0jJg+cWnz3Gpwcq+bfy7ipb9dX15VbUUHP8qvFrefuzeZExUW1aS5/34V2wfdB+Q6pistxy0dvamO30nagMhaqOOxwszaSM59C2xuA9R4Q6VhoQigNB1qnStgrBLA3ypGp7ObP5U5VG1tTk3+llbGJNpvjYHulyWgSMR17slMEZGcxqMHbHk5IjenC5teYujOmwIHNimbb1U645f0zK73n0WA66d29hAUXtLWi9D69xgfUx29A7DsJb02Bs+FIcmZrhofD3hCh94/f93I3fcPMZMjepBM+5f1LtnRpiwpxL067bp534BJP+TDEaWeWkBw4S2jySC3OwVXEoPRZxIG89+MxL8wVFaeLkTVqp2SPxzvq1nNmEZvFXRNA+A1kyipuoFFvF0Flkw58YXpZiGg3ZIUDUX14epAnSzVEiAUrziR1SyQ9WX9eOfLpDjIIqHFIYIb84pla39N+FXLoccoVkQ+N7a61wq2BylU5L5UX44ieR5MgUaluK/kz8Db9tcP1dz28wJ8nfSAjVQ++OrEwf2YoFJWT4TR87cFFSQJS5gdTvZl44jmOqqR8fdKBblGb6LdQcZmKOM/NxX2aCPvKb4RQxEDAVKgZYHEp8ZnPFH0bF3XHNaa8pGDIUXAQ6nwVKMpm60gPh0qiGn/m7UjjTlhTUwVgM=";
-
-    const DATABASES = ['bases_de_datos/soprano.jsonl', 'soprano.jsonl'];
     const statusText = document.getElementById('buffer-status');
     const contenedor = document.getElementById('contenedor-reproductor');
     const videoElement = document.getElementById('main-video');
 
-    async function obtenerTokenFresco() {
-        const url = "https://login.microsoftonline.com/common/oauth2/v2.0/token";
-        const params = new URLSearchParams();
-        params.append("client_id", CLIENT_ID);
-        params.append("grant_type", "refresh_token");
-        params.append("refresh_token", REFRESH_TOKEN);
-
-        const response = await fetch(url, {
-            method: "POST",
-            headers: { "Content-Type": "application/x-www-form-urlencoded" },
-            body: params
-        });
-
-        if (!response.ok) throw new Error("Refresh Token muerto o inválido.");
-        const data = await response.json();
-        return data.access_token;
-    }
-
     window.addEventListener('DOMContentLoaded', async () => {
         const urlParams = new URLSearchParams(window.location.search);
-        const targetFileName = urlParams.get('src');
+        const srcParam = urlParams.get('src');
 
-        if (!targetFileName) {
+        if (!srcParam) {
             statusText.innerText = "Error fáctico: No se recibió parámetro de video.";
             return;
         }
 
-        statusText.innerText = "Escaneando bases de datos de OneDrive...";
-        let videoMetadata = null;
-
-        for (const dbPath of DATABASES) {
-            try {
-                const response = await fetch(dbPath);
-                if (response.ok) {
-                    const text = await response.text();
-                    const lines = text.split('\n');
-                    for (const line of lines) {
-                        if (line.trim() && line.includes(targetFileName)) {
-                            videoMetadata = JSON.parse(line.trim());
-                            break;
-                        }
-                    }
-                }
-            } catch (e) {
-                console.warn(`No se pudo leer la ruta: ${dbPath}`);
-            }
-            if (videoMetadata) break;
-        }
-
-        if (!videoMetadata) {
-            statusText.innerText = "Archivo no indexado en las bases de datos.";
+        // Si el parámetro src es una URL directa, la reproduce al instante sin buscar en JSONL
+        if (srcParam.startsWith('http://') || srcParam.startsWith('https://')) {
+            statusText.style.display = 'none';
+            contenedor.style.display = 'block';
+            videoElement.src = srcParam;
+            videoElement.play().catch(err => {
+                statusText.style.display = 'block';
+                statusText.innerText = "Error de reproducción: " + err.message;
+                console.error(err);
+            });
             return;
         }
 
-        statusText.innerText = "Autenticando con token fresco...";
-        
+        // Respaldo por si se pasa solo el nombre del archivo
+        statusText.innerText = "Buscando coordenadas en soprano.jsonl...";
+        let videoMetadata = null;
         try {
-            const tokenVivo = await obtenerTokenFresco();
-            
-            const streamResponse = await fetch(`https://graph.microsoft.com/v1.0/me/drive/items/${videoMetadata.id}`, {
-                headers: { 'Authorization': `Bearer ${tokenVivo}` }
+            const response = await fetch('soprano.jsonl');
+            if (response.ok) {
+                const text = await response.text();
+                for (const line of text.split('\n')) {
+                    if (line.trim() && line.includes(srcParam)) {
+                        videoMetadata = JSON.parse(line.trim());
+                        break;
+                    }
+                }
+            }
+        } catch (e) {
+            console.error("Error leyendo soprano.jsonl:", e);
+        }
+
+        if (!videoMetadata) {
+            statusText.innerText = "Archivo no indexado.";
+            return;
+        }
+
+        // Si tienes el token de Azure guardado, extrae el enlace de OneDrive
+        const token = localStorage.getItem('azure_access_token');
+        if (!token) {
+            statusText.innerText = "Falta el token de acceso en localStorage.";
+            return;
+        }
+
+        try {
+            const graphResponse = await fetch(`https://graph.microsoft.com/v1.0/me/drive/items/${videoMetadata.id}`, {
+                headers: { 'Authorization': `Bearer ${token}` }
             });
             
-            if (!streamResponse.ok) throw new Error("Fallo al contactar el clúster de OneDrive.");
+            if (!graphResponse.ok) throw new Error("Fallo en Microsoft Graph.");
             
-            const data = await streamResponse.json();
+            const data = await graphResponse.json();
             const downloadUrl = data["@microsoft.graph.downloadUrl"];
             
             if (downloadUrl) {
@@ -132,7 +122,7 @@
                 videoElement.src = downloadUrl;
                 videoElement.play();
             } else {
-                throw new Error("No se obtuvo la URL de descarga directa.");
+                throw new Error("No se obtuvo la URL de descarga.");
             }
         } catch (error) {
             statusText.innerText = "Falla de Sistema: " + error.message;
