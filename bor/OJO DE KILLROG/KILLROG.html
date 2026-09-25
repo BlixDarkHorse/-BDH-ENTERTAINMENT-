@@ -125,69 +125,38 @@
 
 <!-- MOTOR DE ENRUTAMIENTO BIFURCADO -->
 <script>
-document.addEventListener('DOMContentLoaded', async () =&gt; { const statusDiv = document.getElementById('buffer-status');
-    const titleHeader = document.getElementById('player-title');
-    
-    // 1. Obtener el capítulo desde la URL (?src=)
-    const urlParams = new URLSearchParams(window.location.search);
-    const targetSrc = urlParams.get('src');
+    document.addEventListener('DOMContentLoaded', () => {
+        const statusDiv = document.getElementById('buffer-status');
+        const urlParams = new URLSearchParams(window.location.search);
+        const targetSrc = urlParams.get('src');
 
-    if (!targetSrc) {
-        if (statusDiv) statusDiv.innerHTML = '<span>⚠️ Error: No se especificó ningún capítulo</span>';
-        return;
-    }
-
-    const decodedSrc = decodeURIComponent(targetSrc);
-    let finalVideoUrl = null;
-
-    // CASO A: Si es una URL completa (ej. Azure Blob)
-    if (decodedSrc.startsWith('http://') || decodedSrc.startsWith('https://')) {
-        finalVideoUrl = decodedSrc;
-        if (statusDiv) statusDiv.style.display = 'none';
-        new BlazarPlayer('#reproductor-blazar', finalVideoUrl);
-        return;
-    }
-
-    // CASO B: Si es un nombre corto (.mkv), lee soprano.jsonl y arma la URL automáticamente
-    try {
-        const response = await fetch('bases_de_datos/soprano.jsonl');
-        if (!response.ok) throw new Error("No se pudo cargar soprano.jsonl");
-
-        const textData = await response.text();
-        const lines = textData.split('\n');
-
-        for (let line of lines) {
-            if (line.trim() &amp;&amp; line.includes(decodedSrc)) {
-                const meta = JSON.parse(line.trim());
-                
-                // Si tiene id de OneDrive, construye el enlace directo de descarga al instante
-                if (meta.id) {
-                    const cid = meta.id.split('!')[0];
-                    finalVideoUrl = `https://onedrive.live.com/download?cid=${cid}&amp;resid=${encodeURIComponent(meta.id)}`;
-                } else if (meta.url) {
-                    finalVideoUrl = meta.url;
-                }
-
-                if (meta.name &amp;&amp; titleHeader) {
-                    titleHeader.innerText = meta.name;
-                }
-                break;
-            }
+        if (!targetSrc) {
+            if (statusDiv) statusDiv.innerHTML = '<span style="color:#ff0000;">⚠️ Error: No se recibió el parámetro ?src=</span>';
+            return;
         }
 
-        if (finalVideoUrl) {
+        // 1. Decodificar la URL enviada desde el modal
+        const finalUrl = decodeURIComponent(targetSrc);
+
+        try {
+            // 2. Inicializar BlazarPlayer
+            const player = new BlazarPlayer('#reproductor-blazar', finalUrl);
+            
+            // 3. Ocultar mensaje de carga
             if (statusDiv) statusDiv.style.display = 'none';
-            // Inicia la reproducción en BlazarPlayer
-            new BlazarPlayer('#reproductor-blazar', finalVideoUrl);
-        } else {
-            if (statusDiv) statusDiv.innerHTML = `<span>❌ El capítulo "${decodedSrc}" no existe en soprano.jsonl</span>`;
-        }
 
-    } catch (err) {
-        if (statusDiv) statusDiv.innerHTML = `<span>⚠️ Error: ${err.message}</span>`;
-        console.error(err);
-    }
-});
+            // 4. Forzar el arranque del video inmediatamente
+            const videoElement = document.querySelector('#reproductor-blazar video');
+            if (videoElement) {
+                videoElement.play().catch(err => {
+                    console.log("Haz clic sobre el reproductor para iniciar la reproducción:", err);
+                });
+            }
+        } catch (err) {
+            if (statusDiv) statusDiv.innerHTML = `<span style="color:#ff0000;">⚠️ Error de reproducción: ${err.message}</span>`;
+            console.error(err);
+        }
+    });
 </script>
 
 </body>
