@@ -1,6 +1,3 @@
-Aquí tienes el **código completo y definitivo** para tu archivo **`blazar-player.js`**, calibrado para corregir la pantalla en negro en videos directos (al forzar `.play()` en la Ruta B [blazar player js]), mantener la intercepción HLS/XHR de Azure [blazar player js], activar los escudos anti-piratería [blazar player js] y desplegar el menú contextual flotante **Black Hole** [blazar player js]:
-
-```javascript
 /**
  *  BLAZAR ON READY - KEPPLER ENGINE WEB (Ojo de Kilrog)
  *  Librería de Reproducción Vanilla JS - Build: Black Hole Edition
