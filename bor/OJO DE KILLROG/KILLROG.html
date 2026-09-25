@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -14,14 +15,17 @@
         ⚡ Cargando Ojo de Killrog...
     </div>
 
-    <div class="main-container">
-        <h1 class="title">BDH ENTERTAINMENT</h1>
+    <div class="main-container" style="max-width: 1000px; margin: 0 auto; padding: 20px;">
+        <h1 class="title" style="color:#D4AF37; text-align:center; font-family:'OLD ENGLISH TEXT', serif;">BDH ENTERTAINMENT</h1>
         <div class="video-frame">
             <div id="reproductor-blazar"></div>
         </div>
     </div>
 
     <script>
+        // Tu firma SAS Maestra de Azure (Válida hasta Septiembre 2027)
+        const AZURE_SAS_TOKEN = "?sp=r&st=2026-09-25T20:51:50Z&se=2027-09-26T05:06:50Z&sv=2026-02-06&sr=c&sig=6NCuDi%2FQRTymkk959lCGT9RHQbrS1HmVrayem5VU5Kg%3D";
+
         document.addEventListener('DOMContentLoaded', async () => {
             const statusDiv = document.getElementById('buffer-status');
             const urlParams = new URLSearchParams(window.location.search);
@@ -35,20 +39,20 @@
             const decodedSrc = decodeURIComponent(rawSrc);
             let finalUrl = null;
 
-            // 1. Si es una URL directa (http:// o https:// de Azure Blob Storage)
+            // CASO A: Es una URL directa (Azure o Servidor Remoto)
             if (decodedSrc.startsWith('http://') || decodedSrc.startsWith('https://')) {
                 finalUrl = decodedSrc;
+                // Si es de Azure y no lleva token, le pega el SAS maestro
+                if (finalUrl.includes('blob.core.windows.net') && !finalUrl.includes('?sp=')) {
+                    finalUrl += AZURE_SAS_TOKEN;
+                }
             } 
-            // 2. Si es un nombre de archivo (ej. "Los.Soprano.1x01.HD720p-lat.mkv"), busca en soprano.jsonl
+            // CASO B: Es un nombre de archivo (ej: "Los.Soprano.1x01.HD720p-lat.mkv") -> Busca en soprano.jsonl
             else {
                 try {
                     let response = await fetch('../bases_de_datos/soprano.jsonl').catch(() => null);
-                    if (!response || !response.ok) {
-                        response = await fetch('../soprano.jsonl').catch(() => null);
-                    }
-                    if (!response || !response.ok) {
-                        response = await fetch('bases_de_datos/soprano.jsonl').catch(() => null);
-                    }
+                    if (!response || !response.ok) response = await fetch('bases_de_datos/soprano.jsonl').catch(() => null);
+                    if (!response || !response.ok) response = await fetch('../soprano.jsonl').catch(() => null);
 
                     if (response && response.ok) {
                         const textData = await response.text();
@@ -56,7 +60,6 @@
                             if (line.trim() && line.includes(decodedSrc)) {
                                 const meta = JSON.parse(line.trim());
                                 if (meta.id) {
-                                    // Convierte el ID de OneDrive en la URL directa de descarga de Microsoft
                                     const cid = meta.id.split('!');
                                     finalUrl = `https://onedrive.live.com/download?cid=${cid}&resid=${encodeURIComponent(meta.id)}`;
                                 } else if (meta.url) {
@@ -67,20 +70,19 @@
                         }
                     }
                 } catch (err) {
-                    console.error("Error al leer la base de datos JSONL:", err);
+                    console.error("Error leyendo soprano.jsonl:", err);
                 }
             }
 
             if (!finalUrl) {
-                if (statusDiv) statusDiv.innerHTML = `<span style="color:#ff0000;">❌ No se encontró el archivo "${decodedSrc}" en soprano.jsonl</span>`;
+                if (statusDiv) statusDiv.innerHTML = `<span style="color:#ff0000;">❌ No se encontró el archivo "${decodedSrc}"</span>`;
                 return;
             }
 
-            // Ocultar pantalla de carga
+            // Oculta el mensaje de carga e inicia BlazarPlayer
             if (statusDiv) statusDiv.style.display = 'none';
 
             try {
-                // Instanciar BlazarPlayer con la URL resuelta
                 window.player = new BlazarPlayer('#reproductor-blazar', finalUrl);
             } catch (err) {
                 if (statusDiv) statusDiv.innerHTML = `<span style="color:#ff0000;">⚠️ Error al iniciar reproductor: ${err.message}</span>`;
