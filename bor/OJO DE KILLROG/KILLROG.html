@@ -111,6 +111,7 @@
     </div>
 
     <!-- Menú Black Hole -->
+    <!-- Menú Black Hole y otros elementos visuales previos -->
     <div class="black-hole-menu" id="black-hole">
         <div class="bh-title">🌀 BDH Black Hole</div>
         <div class="bh-item" id="bh-fullscreen"><span>Pantalla Completa</span> <span>⛶</span></div>
@@ -118,134 +119,62 @@
         <div class="bh-item" id="bh-speed"><span>Velocidad</span> <span id="bh-speed-val">1.0x</span></div>
     </div>
 
-<script>
-    /**
-     * =========================================================================
-     * KEPPLER ENGINE & BLAZAR PLAYER CORE
-     * =========================================================================
-     */
-    class BlazarPlayer {
-        constructor(containerSelector, sourceUrl, title = "Reproducción Blazar") {
-            this.container = document.querySelector(containerSelector);
-            this.video = this.container.querySelector('video');
-            this.sourceUrl = sourceUrl;
-            this.title = title;
-            this.init();
-        }
+    <!-- PEGA EL CÓDIGO AQUÍ, JUSTO ANTES DE CERRAR EL BODY -->
+    <script>
+        window.addEventListener('DOMContentLoaded', async () => {
+            if (typeof handleAzureAuthCallback === 'function') handleAzureAuthCallback();
+            if (typeof updateAzureUI === 'function') updateAzureUI();
+            if (typeof renderGalleryFromBuffer === 'function') await renderGalleryFromBuffer();
 
-        init() {
-            if (!this.video) return;
-            this.video.src = this.sourceUrl;
-            this.video.load();
-            this.video.play().catch(err => {
-                console.warn("Autoplay restringido por el navegador, esperando interacción:", err);
-            });
-        }
-    }
+            const urlParams = new URLSearchParams(window.location.search);
+            const targetSrc = urlParams.get('src');
 
-    /**
-     * =========================================================================
-     * CONTROLADOR DE ARRANQUE Y ENRUTAMIENTO ONDRIVE / SOPRANO.JSONL
-     * =========================================================================
-     */
-    window.addEventListener('DOMContentLoaded', async () => {
-        const statusText = document.getElementById('buffer-status');
-        const contenedor = document.getElementById('contenedor-reproductor');
-        
-        const urlParams = new URLSearchParams(window.location.search);
-        const targetSrc = urlParams.get('src');
+            if (!targetSrc) return;
 
-        if (!targetSrc) {
-            statusText.innerText = "Error fáctico: No se recibió parámetro de video en la ruta.";
-            return;
-        }
+            const decodedSrc = decodeURIComponent(targetSrc);
+            let finalVideoUrl = decodedSrc;
 
-        statusText.innerText = "Analizando coordenadas de origen...";
+            if (!decodedSrc.startsWith('http://') && !decodedSrc.startsWith('https://')) {
+                try {
+                    const response = await fetch('soprano.jsonl');
+                    if (!response.ok) throw new Error("No se pudo leer soprano.jsonl");
 
-        let finalStreamUrl = null;
+                    const text = await response.text();
+                    let fileId = null;
 
-        // Caso A: Si el parámetro es una URL directa http/https
-        if (targetSrc.startsWith('http://') || targetSrc.startsWith('https://')) {
-            finalStreamUrl = decodeURIComponent(targetSrc);
-        } 
-        // Caso B: Si el parámetro es el nombre de archivo, consultamos soprano.jsonl y OneDrive Graph
-        else {
-            try {
-                statusText.innerText = "Leyendo base de datos soprano.jsonl...";
-                const response = await fetch('soprano.jsonl');
-                if (!response.ok) throw new Error("No se pudo localizar el archivo soprano.jsonl");
-
-                const text = await response.text();
-                let fileId = null;
-                
-                for (const line of text.split('\n')) {
-                    if (line.trim() && line.includes(targetSrc)) {
-                        const meta = JSON.parse(line.trim());
-                        fileId = meta.id;
-                        break;
+                    for (const line of text.split('\n')) {
+                        if (line.trim() && line.includes(decodedSrc)) {
+                            const meta = JSON.parse(line.trim());
+                            fileId = meta.id;
+                            break;
+                        }
                     }
+
+                    if (!fileId) throw new Error("Archivo no indexado en soprano.jsonl");
+
+                    const token = localStorage.getItem('azure_access_token');
+                    if (!token) throw new Error("Falta azure_access_token en localStorage");
+
+                    const graphRes = await fetch(`https://graph.microsoft.com/v1.0/me/drive/items/${fileId}`, {
+                        headers: { 'Authorization': `Bearer ${token}` }
+                    });
+
+                    if (!graphRes.ok) throw new Error("Error en Microsoft Graph");
+
+                    const data = await graphRes.json();
+                    finalVideoUrl = data["@microsoft.graph.downloadUrl"];
+                } catch (error) {
+                    console.error("Falla en la resolución de OneDrive:", error);
+                    return;
                 }
-
-                if (!fileId) throw new Error(`El archivo "${targetSrc}" no está indexado en soprano.jsonl`);
-
-                statusText.innerText = "Obteniendo token de acceso activo...";
-                const azureToken = localStorage.getItem('azure_access_token');
-                if (!azureToken) throw new Error("Falta el token 'azure_access_token' en el almacenamiento local del navegador.");
-
-                statusText.innerText = "Consultando Microsoft Graph para el stream...";
-                const graphRes = await fetch(`https://graph.microsoft.com/v1.0/me/drive/items/${fileId}`, {
-                    headers: { 'Authorization': `Bearer ${azureToken}` }
-                });
-
-                if (!graphRes.ok) throw new Error("Fallo de autenticación o expiración en la API de Microsoft Graph.");
-                
-                const data = await graphRes.json();
-                finalStreamUrl = data["@microsoft.graph.downloadUrl"];
-
-                if (!finalStreamUrl) throw new Error("La respuesta de Graph no devolvió un enlace de descarga directa.");
-
-            } catch (error) {
-                statusText.innerText = "Falla de Sistema: " + error.message;
-                console.error("Error crítico en motor Blazar:", error);
-                return;
             }
-        }
 
-        if (finalStreamUrl) {
-            statusText.style.display = 'none';
-            contenedor.style.display = 'block';
-            
-            // Instanciar el motor Blazar Player con la URL resuelta
-            window.activeBlazarPlayer = new BlazarPlayer('#reproductor-blazar', finalStreamUrl, targetSrc);
-        } else {
-            statusText.innerText = "Error fáctico: No se pudo consolidar el flujo de video.";
-        }
-    });
-
-    /**
-     * =========================================================================
-     * GESTIÓN DE INTERACCIÓN Y MENÚ BLACK HOLE
-     * =========================================================================
-     */
-    const blackHoleMenu = document.getElementById('black-hole');
-    window.addEventListener('contextmenu', (e) => {
-        e.preventDefault();
-        blackHoleMenu.style.top = `${e.clientY}px`;
-        blackHoleMenu.style.left = `${e.clientX}px`;
-        blackHoleMenu.classList.add('active');
-    });
-
-    window.addEventListener('click', () => {
-        blackHoleMenu.classList.remove('active');
-    });
-
-    document.getElementById('bh-fullscreen').addEventListener('click', () => {
-        if (!document.fullscreenElement) {
-            document.documentElement.requestFullscreen();
-        } else {
-            document.exitFullscreen();
-        }
-    });
-</script>
+            const reproductorDiv = document.querySelector('#reproductor-blazar');
+            if (reproductorDiv && typeof BlazarPlayer === 'function') {
+                reproductorDiv.innerHTML = '';
+                window.blazarInstance = new BlazarPlayer('#reproductor-blazar', finalVideoUrl, decodedSrc);
+            }
+        });
+    </script>
 </body>
 </html>
