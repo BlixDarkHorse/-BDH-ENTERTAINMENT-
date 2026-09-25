@@ -3,167 +3,90 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BDH Entertainment - Reproductor Ojo de Killrog V3</title>
-    
-    <!-- Fuentes e Iconos -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Uncial+Antiqua&family=Segoe+UI:wght@400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-
-    <!-- Inputs Maestros para Temas (Rosa / Dorado) y Vistas (Estándar / Cine / Mini) -->
-    <input type="radio" id="theme-pink" name="theme-switch" checked style="display:none;">
-    <input type="radio" id="theme-gold" name="theme-switch" style="display:none;">
-    <input type="radio" id="view-normal" name="slide" checked style="display:none;">
-    <input type="radio" id="view-cinema" name="slide" style="display:none;">
-    <input type="radio" id="view-mini" name="slide" style="display:none;">
-
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-
-        /* TEMA ROSA ELÉCTRICO */
-        #theme-pink:checked ~ .sqr-wrapper {
-            --color-primary: #ff00d4;
-            --color-secondary: #ff0095;
-            --color-text: #ffffff;
-            --color-muted: #795974;
-            --bg-solid: #000000;
-            --glow: rgba(255, 0, 157, 0.6);
-            --gradient-frame: radial-gradient(circle, #ff00d4 0%, #ff0095 30%, #000 100%);
-            --border-subtle: rgba(250, 0, 167, 0.459);
-        }
-
-        /* TEMA DORADO */
-        #theme-gold:checked ~ .sqr-wrapper {
-            --color-primary: #D4AF37;
-            --color-secondary: #7c6107;
-            --color-text: #ffffff;
-            --color-muted: #a39158;
-            --bg-solid: #000000;
-            --glow: rgba(212, 175, 55, 0.6);
-            --gradient-frame: radial-gradient(circle, #D4AF37 0%, #7c6107 30%, #000 100%);
-            --border-subtle: rgba(212, 175, 55, 0.459);
-        }
-
-        .sqr-wrapper {
-            font-family: 'Segoe UI', serif;
-            background-color: var(--bg-solid);
-            color: var(--color-primary);
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
-
-        /* NAVBAR SQR */
-        .navbar { position: sticky; top: 0; left: 0; right: 0; background: rgba(0, 0, 0, 0.95); border-bottom: 1px solid var(--border-subtle); z-index: 10000; padding: 1rem 0; }
-        .navbar-content { display: flex; justify-content: space-between; align-items: center; max-width: 1400px; margin: 0 auto; padding: 0 1rem; }
-        .nav-tools { display: flex; gap: 15px; align-items: center; }
-        .brand-link { color: var(--color-primary); text-decoration: none; font-size: 1.5rem; font-weight: bold; text-transform: uppercase; text-shadow: 0 0 10px var(--glow); letter-spacing: 2px; }
-        .theme-selector { display: flex; gap: 10px; border-right: 1px solid var(--border-subtle); border-left: 1px solid var(--border-subtle); padding: 0 15px; }
-        .theme-btn { cursor: pointer; padding: 5px 10px; border-radius: 5px; border: 1px solid var(--color-primary); background: #111; color: #fff; font-weight: bold; }
-        #theme-pink:checked ~ .sqr-wrapper label[for="theme-pink"], 
-        #theme-gold:checked ~ .sqr-wrapper label[for="theme-gold"] { background: var(--color-primary); color: #000; box-shadow: 0 0 10px var(--glow); }
-        .view-btn { color: var(--color-primary); cursor: pointer; font-weight: bold; padding: 0.5rem; text-transform: uppercase; }
-
-        /* MARCO DEL REPRODUCTOR */
-        .main-container { display: flex; flex-direction: column; align-items: center; width: 100%; position: relative; z-index: 9; padding-top: 20px; }
-        .title { font-size: 2.5rem; color: var(--color-primary); text-align: center; margin-bottom: 20px; text-shadow: 0 0 15px var(--glow); text-transform: uppercase; }
-        .video-frame { position: relative; width: 85%; max-width: 1100px; padding: 5px; background: var(--gradient-frame); border-radius: 10px; box-shadow: 0 0 30px var(--glow); margin: 0 auto; transition: all 0.4s ease; z-index: 10; }
-
-        /* MODO CINE Y MINI */
-        .cinema-overlay { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.98); z-index: 9000; }
-        #view-cinema:checked ~ .sqr-wrapper .cinema-overlay { display: block; }
-        #view-cinema:checked ~ .sqr-wrapper .video-frame { width: 95vw; max-width: none; margin-top: 2vh; z-index: 9001; }
-        #view-cinema:checked ~ .sqr-wrapper .title { display: none; }
-        #view-mini:checked ~ .sqr-wrapper .video-frame { position: fixed; right: 20px; bottom: 20px; width: 400px; z-index: 3000; }
-
-        /* ESTADO DE CARGA */
-        #buffer-status { text-align: center; color: var(--color-primary); font-size: 1.2rem; font-weight: bold; padding: 40px; text-shadow: 0 0 10px var(--glow); }
-    </style>
+    <title>BDH Entertainment - Ojo de Killrog</title>
+    <link rel="stylesheet" href="../🌹.css">
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+    <script src="../blazar-player.js"></script>
 </head>
+
 <body>
+    <div id="buffer-status" style="color: #ff00d4; font-family: 'OLD ENGLISH TEXT', serif; font-size: 1.5rem; text-align: center; padding-top: 20vh; font-weight: bold;">
+        ⚡ Cargando Ojo de Killrog...
+    </div>
 
-<div class="sqr-wrapper">
-    <div class="cinema-overlay"></div>
-
-    <!-- NAVBAR NAVEGACIÓN -->
-    <nav class="navbar">
-        <div class="navbar-content">
-            <a href="../INDEX.html" class="brand-link">
-                <i class="fas fa-arrow-left"></i> BLAZAR ON READY
-            </a>
-
-            <div class="theme-selector">
-                <label for="theme-pink" class="theme-btn">🐉 Rosa</label>
-                <label for="theme-gold" class="theme-btn">🐎 Dorado</label>
-            </div>
-            
-            <div class="nav-tools">
-                <label for="view-normal" class="view-btn">Estándar</label>
-                <label for="view-cinema" class="view-btn">Cine</label>
-                <label for="view-mini" class="view-btn">Mini</label>
-            </div>
-        </div>
-    </nav>
-    
-    <!-- CONTENEDOR PRINCIPAL DEL REPRODUCTOR -->
     <div class="main-container">
-        <h1 class="title" id="player-title">REPRODUCTOR KEPPLER V2</h1>
-        
+        <h1 class="title">BDH ENTERTAINMENT</h1>
         <div class="video-frame">
-            <div id="buffer-status">
-                <i class="fas fa-spinner fa-spin"></i> Inicializando Motor de Video...
-            </div>
             <div id="reproductor-blazar"></div>
         </div>
     </div>
-</div>
 
-<!-- LIBRERÍAS DE REPRODUCCIÓN -->
-<script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
-<script src="blazar-player.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            const statusDiv = document.getElementById('buffer-status');
+            const urlParams = new URLSearchParams(window.location.search);
+            const rawSrc = urlParams.get('src');
 
-<!-- MOTOR DE ENRUTAMIENTO BIFURCADO -->
-<script>
-    document.addEventListener('DOMContentLoaded', () => {
-        const statusDiv = document.getElementById('buffer-status');
-        const urlParams = new URLSearchParams(window.location.search);
-        let targetSrc = urlParams.get('src');
+            if (!rawSrc) {
+                if (statusDiv) statusDiv.innerHTML = '<span style="color:#ff0000;">⚠️ Error: No se recibió la variable ?src=</span>';
+                return;
+            }
 
-        if (!targetSrc) {
-            if (statusDiv) statusDiv.innerHTML = '<span style="color:#ff0000;">⚠️ Error: No se recibió ningún video</span>';
-            return;
-        }
+            const decodedSrc = decodeURIComponent(rawSrc);
+            let finalUrl = null;
 
-        let finalUrl = decodeURIComponent(targetSrc);
+            // 1. Si es una URL directa (http:// o https:// de Azure Blob Storage)
+            if (decodedSrc.startsWith('http://') || decodedSrc.startsWith('https://')) {
+                finalUrl = decodedSrc;
+            } 
+            // 2. Si es un nombre de archivo (ej. "Los.Soprano.1x01.HD720p-lat.mkv"), busca en soprano.jsonl
+            else {
+                try {
+                    let response = await fetch('../bases_de_datos/soprano.jsonl').catch(() => null);
+                    if (!response || !response.ok) {
+                        response = await fetch('../soprano.jsonl').catch(() => null);
+                    }
+                    if (!response || !response.ok) {
+                        response = await fetch('bases_de_datos/soprano.jsonl').catch(() => null);
+                    }
 
-        // Token de Acceso Maestro (Válido hasta Septiembre de 2027)
-        const AZURE_SAS_TOKEN = "?sp=r&st=2026-09-25T20:51:50Z&se=2027-09-26T05:06:50Z&sv=2026-02-06&sr=c&sig=6NCuDi%2FQRTymkk959lCGT9RHQbrS1HmVrayem5VU5Kg%3D";
+                    if (response && response.ok) {
+                        const textData = await response.text();
+                        for (const line of textData.split('\n')) {
+                            if (line.trim() && line.includes(decodedSrc)) {
+                                const meta = JSON.parse(line.trim());
+                                if (meta.id) {
+                                    // Convierte el ID de OneDrive en la URL directa de descarga de Microsoft
+                                    const cid = meta.id.split('!');
+                                    finalUrl = `https://onedrive.live.com/download?cid=${cid}&resid=${encodeURIComponent(meta.id)}`;
+                                } else if (meta.url) {
+                                    finalUrl = meta.url;
+                                }
+                                break;
+                            }
+                        }
+                    }
+                } catch (err) {
+                    console.error("Error al leer la base de datos JSONL:", err);
+                }
+            }
 
-        // Si la URL es de Azure y no lleva token, se lo pega automáticamente
-        if (finalUrl.includes('blob.core.windows.net') && !finalUrl.includes('?sp=')) {
-            finalUrl += AZURE_SAS_TOKEN;
-        }
+            if (!finalUrl) {
+                if (statusDiv) statusDiv.innerHTML = `<span style="color:#ff0000;">❌ No se encontró el archivo "${decodedSrc}" en soprano.jsonl</span>`;
+                return;
+            }
 
-        try {
+            // Ocultar pantalla de carga
             if (statusDiv) statusDiv.style.display = 'none';
 
-            // Inicia BlazarPlayer
-            const player = new BlazarPlayer('#reproductor-blazar', finalUrl);
-
-            // Forzar inicio de reproducción
-            const videoElement = document.querySelector('#reproductor-blazar video');
-            if (videoElement) {
-                videoElement.play().catch(err => {
-                    console.log("Haz clic sobre el reproductor para iniciar:", err);
-                });
+            try {
+                // Instanciar BlazarPlayer con la URL resuelta
+                window.player = new BlazarPlayer('#reproductor-blazar', finalUrl);
+            } catch (err) {
+                if (statusDiv) statusDiv.innerHTML = `<span style="color:#ff0000;">⚠️ Error al iniciar reproductor: ${err.message}</span>`;
+                console.error(err);
             }
-        } catch (err) {
-            if (statusDiv) statusDiv.innerHTML = `<span style="color:#ff0000;">⚠️ Error de reproducción: ${err.message}</span>`;
-            console.error(err);
-        }
-    });
-</script>
-
+        });
+    </script>
 </body>
 </html>
