@@ -1,4 +1,3 @@
-
 /**
  * BLAZAR ON READY - KEPPLER ENGINE WEB (Ojo de Kilrog)
  * Librería de Reproducción Vanilla JS - Build: Black Hole Edition (Ultra-Robust)
@@ -54,9 +53,15 @@ init() {
             debug: false,
             xhrSetup: (xhr, url) => {
                 let newUrl = url;
-                if (sasToken && !newUrl.includes(sasToken)) {
-                    const separador = newUrl.includes('?') ? '&' : '?';
-                    newUrl = newUrl + separador + sasToken;
+                if (sasToken) {
+                    // Si el fragmento es de Azure y ya trae un SAS viejo, se lo quitamos
+                    if (newUrl.includes('blob.core.windows.net') && newUrl.includes('?')) {
+                        newUrl = newUrl.split('?')[0];
+                    }
+                    if (!newUrl.includes(sasToken)) {
+                        const separador = newUrl.includes('?') ? '&' : '?';
+                        newUrl = newUrl + separador + sasToken;
+                    }
                 }
                 xhr.open('GET', newUrl, true);
             }
