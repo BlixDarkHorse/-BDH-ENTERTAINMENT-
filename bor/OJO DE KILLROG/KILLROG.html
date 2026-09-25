@@ -3,182 +3,186 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BLAZAR ON READY - OJO DE KILLROG V3</title>
+    <title>BDH Entertainment - Reproductor Ojo de Killrog V3</title>
+    
+    <!-- Fuentes e Iconos -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Uncial+Antiqua&family=Segoe+UI:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <!-- Inputs Maestros para Temas (Rosa / Dorado) y Vistas (Estándar / Cine / Mini) -->
+    <input type="radio" id="theme-pink" name="theme-switch" checked style="display:none;">
+    <input type="radio" id="theme-gold" name="theme-switch" style="display:none;">
+    <input type="radio" id="view-normal" name="slide" checked style="display:none;">
+    <input type="radio" id="view-cinema" name="slide" style="display:none;">
+    <input type="radio" id="view-mini" name="slide" style="display:none;">
+
     <style>
-        :root {
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        /* TEMA ROSA ELÉCTRICO */
+        #theme-pink:checked ~ .sqr-wrapper {
             --color-primary: #ff00d4;
+            --color-secondary: #ff0095;
             --color-text: #ffffff;
-            --glow: rgba(255, 0, 157, 0.6);
+            --color-muted: #795974;
             --bg-solid: #000000;
-        }
-        body { 
-            background-color: var(--bg-solid); 
-            color: var(--color-text); 
-            margin: 0; 
-            font-family: 'Segoe UI', sans-serif; 
-            display: flex; 
-            flex-direction: column; 
-            align-items: center; 
-            justify-content: center; 
-            height: 100vh; 
-            overflow: hidden; 
-        }
-        
-        /* Contenedor del Reproductor SQR */
-        .video-frame { 
-            position: relative; 
-            width: 95vw; 
-            height: 95vh; 
-            background: #000; 
-            border: 2px solid var(--color-primary); 
-            box-shadow: 0 0 30px var(--glow); 
-        }
-        .blazar-player-wrapper { 
-            position: relative; 
-            width: 100%; 
-            height: 100%; 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-            overflow: hidden; 
-        }
-        .blazar-player-wrapper video { 
-            position: absolute; 
-            top: 0; 
-            left: 0; 
-            width: 100%; 
-            height: 100%; 
-            object-fit: contain; 
-            transition: filter 0.1s; 
-        }
-        
-        /* Escudo Anti-Capturas */
-        .anti-piracy-shield { 
-            position: absolute; 
-            top: 0; 
-            left: 0; 
-            width: 100%; 
-            height: 100%; 
-            z-index: 10; 
-        }
-        
-        /* Interfaz de Estado / Buffer */
-        #buffer-status { 
-            font-size: 1.5rem; 
-            color: var(--color-primary); 
-            text-shadow: 0 0 10px var(--glow); 
-            font-weight: bold; 
-            position: absolute; 
-            z-index: 50; 
-            text-align: center;
-            padding: 20px;
+            --glow: rgba(255, 0, 157, 0.6);
+            --gradient-frame: radial-gradient(circle, #ff00d4 0%, #ff0095 30%, #000 100%);
+            --border-subtle: rgba(250, 0, 167, 0.459);
         }
 
-        /* Menú Black Hole */
-        .black-hole-menu { 
-            position: fixed; 
-            background: #050505; 
-            border: 1px solid var(--color-primary); 
-            box-shadow: 0 0 25px var(--glow); 
-            border-radius: 8px; 
-            padding: 10px 0; 
-            min-width: 200px; 
-            z-index: 99999; 
-            display: none; 
-            flex-direction: column; 
-            transform: scale(0.9); 
-            opacity: 0; 
-            transition: transform 0.2s, opacity 0.2s; 
+        /* TEMA DORADO */
+        #theme-gold:checked ~ .sqr-wrapper {
+            --color-primary: #D4AF37;
+            --color-secondary: #7c6107;
+            --color-text: #ffffff;
+            --color-muted: #a39158;
+            --bg-solid: #000000;
+            --glow: rgba(212, 175, 55, 0.6);
+            --gradient-frame: radial-gradient(circle, #D4AF37 0%, #7c6107 30%, #000 100%);
+            --border-subtle: rgba(212, 175, 55, 0.459);
         }
-        .black-hole-menu.active { display: flex; transform: scale(1); opacity: 1; }
-        .bh-title { color: var(--color-primary); text-align: center; font-size: 1rem; border-bottom: 1px solid #333; padding-bottom: 5px; margin-bottom: 5px; font-weight: bold; }
-        .bh-item { color: var(--color-text); padding: 10px 20px; cursor: pointer; font-size: 1rem; transition: background 0.2s; display: flex; justify-content: space-between; font-weight: bold; }
-        .bh-item:hover { background: var(--color-primary); color: #000; }
-        
-        .v-feedback { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #000; -webkit-text-stroke: 1px var(--color-primary); font-size: 3rem; font-weight: bold; z-index: 100; pointer-events: none; text-shadow: 0 0 20px var(--glow); }
+
+        .sqr-wrapper {
+            font-family: 'Segoe UI', serif;
+            background-color: var(--bg-solid);
+            color: var(--color-primary);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* NAVBAR SQR */
+        .navbar { position: sticky; top: 0; left: 0; right: 0; background: rgba(0, 0, 0, 0.95); border-bottom: 1px solid var(--border-subtle); z-index: 10000; padding: 1rem 0; }
+        .navbar-content { display: flex; justify-content: space-between; align-items: center; max-width: 1400px; margin: 0 auto; padding: 0 1rem; }
+        .nav-tools { display: flex; gap: 15px; align-items: center; }
+        .brand-link { color: var(--color-primary); text-decoration: none; font-size: 1.5rem; font-weight: bold; text-transform: uppercase; text-shadow: 0 0 10px var(--glow); letter-spacing: 2px; }
+        .theme-selector { display: flex; gap: 10px; border-right: 1px solid var(--border-subtle); border-left: 1px solid var(--border-subtle); padding: 0 15px; }
+        .theme-btn { cursor: pointer; padding: 5px 10px; border-radius: 5px; border: 1px solid var(--color-primary); background: #111; color: #fff; font-weight: bold; }
+        #theme-pink:checked ~ .sqr-wrapper label[for="theme-pink"], 
+        #theme-gold:checked ~ .sqr-wrapper label[for="theme-gold"] { background: var(--color-primary); color: #000; box-shadow: 0 0 10px var(--glow); }
+        .view-btn { color: var(--color-primary); cursor: pointer; font-weight: bold; padding: 0.5rem; text-transform: uppercase; }
+
+        /* MARCO DEL REPRODUCTOR */
+        .main-container { display: flex; flex-direction: column; align-items: center; width: 100%; position: relative; z-index: 9; padding-top: 20px; }
+        .title { font-size: 2.5rem; color: var(--color-primary); text-align: center; margin-bottom: 20px; text-shadow: 0 0 15px var(--glow); text-transform: uppercase; }
+        .video-frame { position: relative; width: 85%; max-width: 1100px; padding: 5px; background: var(--gradient-frame); border-radius: 10px; box-shadow: 0 0 30px var(--glow); margin: 0 auto; transition: all 0.4s ease; z-index: 10; }
+
+        /* MODO CINE Y MINI */
+        .cinema-overlay { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.98); z-index: 9000; }
+        #view-cinema:checked ~ .sqr-wrapper .cinema-overlay { display: block; }
+        #view-cinema:checked ~ .sqr-wrapper .video-frame { width: 95vw; max-width: none; margin-top: 2vh; z-index: 9001; }
+        #view-cinema:checked ~ .sqr-wrapper .title { display: none; }
+        #view-mini:checked ~ .sqr-wrapper .video-frame { position: fixed; right: 20px; bottom: 20px; width: 400px; z-index: 3000; }
+
+        /* ESTADO DE CARGA */
+        #buffer-status { text-align: center; color: var(--color-primary); font-size: 1.2rem; font-weight: bold; padding: 40px; text-shadow: 0 0 10px var(--glow); }
     </style>
 </head>
 <body>
 
-    <div id="buffer-status">Inicializando núcleo Blazar...</div>
+<div class="sqr-wrapper">
+    <div class="cinema-overlay"></div>
+
+    <!-- NAVBAR NAVEGACIÓN -->
+    <nav class="navbar">
+        <div class="navbar-content">
+            <a href="../INDEX.html" class="brand-link">
+                <i class="fas fa-arrow-left"></i> BLAZAR ON READY
+            </a>
+
+            <div class="theme-selector">
+                <label for="theme-pink" class="theme-btn">🐉 Rosa</label>
+                <label for="theme-gold" class="theme-btn">🐎 Dorado</label>
+            </div>
+            
+            <div class="nav-tools">
+                <label for="view-normal" class="view-btn">Estándar</label>
+                <label for="view-cinema" class="view-btn">Cine</label>
+                <label for="view-mini" class="view-btn">Mini</label>
+            </div>
+        </div>
+    </nav>
     
-    <div class="video-frame" id="contenedor-reproductor" style="display: none;">
-        <div class="blazar-player-wrapper" id="reproductor-blazar">
-            <div class="anti-piracy-shield" id="shield"></div>
-            <video id="main-video" controls autoplay controlsList="nodownload"></video>
+    <!-- CONTENEDOR PRINCIPAL DEL REPRODUCTOR -->
+    <div class="main-container">
+        <h1 class="title" id="player-title">REPRODUCTOR KEPPLER V2</h1>
+        
+        <div class="video-frame">
+            <div id="buffer-status">
+                <i class="fas fa-spinner fa-spin"></i> Inicializando Motor de Video...
+            </div>
+            <div id="reproductor-blazar"></div>
         </div>
     </div>
+</div>
 
-    <!-- Menú Black Hole -->
-    <!-- Menú Black Hole y otros elementos visuales previos -->
-    <div class="black-hole-menu" id="black-hole">
-        <div class="bh-title">🌀 BDH Black Hole</div>
-        <div class="bh-item" id="bh-fullscreen"><span>Pantalla Completa</span> <span>⛶</span></div>
-        <div class="bh-item" id="bh-pip"><span>Imagen en Imagen</span> <span>📺</span></div>
-        <div class="bh-item" id="bh-speed"><span>Velocidad</span> <span id="bh-speed-val">1.0x</span></div>
-    </div>
+<!-- LIBRERÍAS DE REPRODUCCIÓN -->
+<script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+<script src="blazar-player.js"></script>
 
-    <!-- PEGA EL CÓDIGO AQUÍ, JUSTO ANTES DE CERRAR EL BODY -->
+<!-- MOTOR DE ENRUTAMIENTO BIFURCADO -->
 <script>
-    window.addEventListener('DOMContentLoaded', async () => {
-        const statusText = document.getElementById('buffer-status');
-        const contenedor = document.getElementById('contenedor-reproductor');
+    document.addEventListener('DOMContentLoaded', async () => {
+        const statusDiv = document.getElementById('buffer-status');
+        const titleHeader = document.getElementById('player-title');
+        
+        // 1. Extraer parámetro ?src= de la URL
         const urlParams = new URLSearchParams(window.location.search);
         const targetSrc = urlParams.get('src');
 
         if (!targetSrc) {
-            statusText.innerText = "Error fáctico: Falta el parámetro src.";
+            statusDiv.innerHTML = '<span style="color:#ff0000;">⚠️ Error: Ningún video fue enviado al reproductor (?src=)</span>';
             return;
         }
 
-        statusText.innerText = "Leyendo coordenadas en soprano.jsonl...";
+        const decodedSrc = decodeURIComponent(targetSrc);
+        let finalVideoUrl = null;
 
-        try {
-            const response = await fetch('soprano.jsonl');
-            if (!response.ok) throw new Error("No se pudo leer el archivo soprano.jsonl");
+        // 2. CASO A: Es un enlace directo (Azure Blob .m3u8 o MP4/MKV HTTP)
+        if (decodedSrc.startsWith('http://') || decodedSrc.startsWith('https://')) {
+            finalVideoUrl = decodedSrc;
+            statusDiv.style.display = 'none';
+            titleHeader.innerText = "LOS SOPRANO - STREAMING DIRECTO";
+            new BlazarPlayer('#reproductor-blazar', finalVideoUrl);
+        } 
+        // 3. CASO B: Es un nombre corto, busca en la base de datos ocultos (soprano.jsonl)
+        else {
+            statusDiv.innerHTML = '<i class="fas fa-search fa-spin"></i> Consultando base de datos soprano.jsonl...';
+            
+            try {
+                // Escanea la carpeta de bases de datos
+                const response = await fetch('bases_de_datos/soprano.jsonl');
+                if (!response.ok) throw new Error("No se pudo acceder a bases_de_datos/soprano.jsonl");
 
-            const text = await response.text();
-            let videoUrl = null;
-            const decodedTarget = decodeURIComponent(targetSrc);
+                const textData = await response.text();
+                const lines = textData.split('\n');
 
-            for (const line of text.split('\n')) {
-                if (line.trim()) {
-                    const meta = JSON.parse(line.trim());
-                    // Busca coincidencia por nombre, id o contenido de la línea
-                    if (meta.name === decodedTarget || line.includes(decodedTarget) || meta.id === decodedTarget) {
-                        videoUrl = meta.downloadUrl || meta['@microsoft.graph.downloadUrl'] || meta.url;
+                for (let line of lines) {
+                    if (line.trim() && line.includes(decodedSrc)) {
+                        const meta = JSON.parse(line.trim());
+                        // Extrae la URL codificada en el objeto JSON
+                        finalVideoUrl = meta.url || meta.downloadUrl || meta['@microsoft.graph.downloadUrl'];
+                        titleHeader.innerText = meta.name || decodedSrc;
                         break;
                     }
                 }
-            }
 
-            if (!videoUrl) {
-                if (decodedTarget.startsWith('http://') || decodedTarget.startsWith('https://')) {
-                    videoUrl = decodedTarget;
+                if (finalVideoUrl) {
+                    statusDiv.style.display = 'none';
+                    new BlazarPlayer('#reproductor-blazar', finalVideoUrl);
                 } else {
-                    throw new Error(`El archivo "${decodedTarget}" no tiene un enlace de descarga en soprano.jsonl`);
+                    statusDiv.innerHTML = `<span style="color:#ff0000;">❌ El título "${decodedSrc}" no existe en soprano.jsonl</span>`;
                 }
+            } catch (err) {
+                statusDiv.innerHTML = `<span style="color:#ff0000;">⚠️ Error de lectura: ${err.message}</span>`;
+                console.error(err);
             }
-
-            statusText.style.display = 'none';
-            contenedor.style.display = 'block';
-
-            if (typeof BlazarPlayer === 'function') {
-                new BlazarPlayer('#reproductor-blazar', videoUrl, decodedTarget);
-            } else {
-                const videoEl = document.getElementById('main-video');
-                videoEl.src = videoUrl;
-                videoEl.play();
-            }
-
-        } catch (error) {
-            statusText.style.display = 'block';
-            contenedor.style.display = 'none';
-            statusText.innerText = "Falla de Sistema: " + error.message;
-            console.error(error);
         }
     });
 </script>
+
 </body>
 </html>
