@@ -125,63 +125,69 @@
 
 <!-- MOTOR DE ENRUTAMIENTO BIFURCADO -->
 <script>
-    document.addEventListener('DOMContentLoaded', async () => {
-        const statusDiv = document.getElementById('buffer-status');
-        const titleHeader = document.getElementById('player-title');
-        
-        // 1. Extraer parámetro ?src= de la URL
-        const urlParams = new URLSearchParams(window.location.search);
-        const targetSrc = urlParams.get('src');
+document.addEventListener('DOMContentLoaded', async () =&gt; { const statusDiv = document.getElementById('buffer-status');
+    const titleHeader = document.getElementById('player-title');
+    
+    // 1. Obtener el capítulo desde la URL (?src=)
+    const urlParams = new URLSearchParams(window.location.search);
+    const targetSrc = urlParams.get('src');
 
-        if (!targetSrc) {
-            statusDiv.innerHTML = '<span style="color:#ff0000;">⚠️ Error: Ningún video fue enviado al reproductor (?src=)</span>';
-            return;
-        }
+    if (!targetSrc) {
+        if (statusDiv) statusDiv.innerHTML = '<span>⚠️ Error: No se especificó ningún capítulo</span>';
+        return;
+    }
 
-        const decodedSrc = decodeURIComponent(targetSrc);
-        let finalVideoUrl = null;
+    const decodedSrc = decodeURIComponent(targetSrc);
+    let finalVideoUrl = null;
 
-        // 2. CASO A: Es un enlace directo (Azure Blob .m3u8 o MP4/MKV HTTP)
-        if (decodedSrc.startsWith('http://') || decodedSrc.startsWith('https://')) {
-            finalVideoUrl = decodedSrc;
-            statusDiv.style.display = 'none';
-            titleHeader.innerText = "LOS SOPRANO - STREAMING DIRECTO";
-            new BlazarPlayer('#reproductor-blazar', finalVideoUrl);
-        } 
-        // 3. CASO B: Es un nombre corto, busca en la base de datos ocultos (soprano.jsonl)
-        else {
-            statusDiv.innerHTML = '<i class="fas fa-search fa-spin"></i> Consultando base de datos soprano.jsonl...';
-            
-            try {
-                // Escanea la carpeta de bases de datos
-                const response = await fetch('bases_de_datos/soprano.jsonl');
-                if (!response.ok) throw new Error("No se pudo acceder a bases_de_datos/soprano.jsonl");
+    // CASO A: Si es una URL completa (ej. Azure Blob)
+    if (decodedSrc.startsWith('http://') || decodedSrc.startsWith('https://')) {
+        finalVideoUrl = decodedSrc;
+        if (statusDiv) statusDiv.style.display = 'none';
+        new BlazarPlayer('#reproductor-blazar', finalVideoUrl);
+        return;
+    }
 
-                const textData = await response.text();
-                const lines = textData.split('\n');
+    // CASO B: Si es un nombre corto (.mkv), lee soprano.jsonl y arma la URL automáticamente
+    try {
+        const response = await fetch('bases_de_datos/soprano.jsonl');
+        if (!response.ok) throw new Error("No se pudo cargar soprano.jsonl");
 
-                for (let line of lines) {
-                    if (line.trim() && line.includes(decodedSrc)) {
-                        const meta = JSON.parse(line.trim());
-                        // Extrae la URL codificada en el objeto JSON
-                        finalVideoUrl = meta.url || meta.downloadUrl || meta['@microsoft.graph.downloadUrl'];
-                        titleHeader.innerText = meta.name || decodedSrc;
-                        break;
-                    }
+        const textData = await response.text();
+        const lines = textData.split('\n');
+
+        for (let line of lines) {
+            if (line.trim() &amp;&amp; line.includes(decodedSrc)) {
+                const meta = JSON.parse(line.trim());
+                
+                // Si tiene id de OneDrive, construye el enlace directo de descarga al instante
+                if (meta.id) {
+                    const cid = meta.id.split('!')[0];
+                    finalVideoUrl = `https://onedrive.live.com/download?cid=${cid}&amp;resid=${encodeURIComponent(meta.id)}`;
+                } else if (meta.url) {
+                    finalVideoUrl = meta.url;
                 }
 
-                if (finalVideoUrl) {
-                    statusDiv.style.display = 'none';
-                    new BlazarPlayer('#reproductor-blazar', finalVideoUrl);
-                } else {
-                    statusDiv.innerHTML = `<span style="color:#ff0000;">❌ El título "${decodedSrc}" no existe en soprano.jsonl</span>`;
+                if (meta.name &amp;&amp; titleHeader) {
+                    titleHeader.innerText = meta.name;
                 }
-            } catch (err) {
-                statusDiv.innerHTML = `<span style="color:#ff0000;">⚠️ Error de lectura: ${err.message}</span>`;
-                console.error(err);
+                break;
             }
         }
-    });
+
+        if (finalVideoUrl) {
+            if (statusDiv) statusDiv.style.display = 'none';
+            // Inicia la reproducción en BlazarPlayer
+            new BlazarPlayer('#reproductor-blazar', finalVideoUrl);
+        } else {
+            if (statusDiv) statusDiv.innerHTML = `<span>❌ El capítulo "${decodedSrc}" no existe en soprano.jsonl</span>`;
+        }
+
+    } catch (err) {
+        if (statusDiv) statusDiv.innerHTML = `<span>⚠️ Error: ${err.message}</span>`;
+        console.error(err);
+    }
+});
 </script>
 
 </body>
