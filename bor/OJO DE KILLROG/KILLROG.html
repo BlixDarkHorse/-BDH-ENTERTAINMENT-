@@ -162,64 +162,74 @@
         }
     });
 
-    // ==========================================
-    // 3. SEGURIDAD ANTI-PIRATERÍA Y BLACK HOLE
-    // ==========================================
-    document.addEventListener('keyup', (e) => {
-        if (e.key === 'PrintScreen' || (e.ctrlKey && e.key === 'p')) {
-            videoElement.style.filter = 'brightness(0)';
-            showFeedback("CAPTURAS BLOQUEADAS");
-            setTimeout(() => { videoElement.style.filter = 'none'; }, 3000);
+<script>
+    // Configuración OAuth extraída de tu arquitectura V2
+    const AZURE_CONFIG = {
+        clientId: "086679a9-80fa-48f3-9b00-054cdbb19137",
+        tenantId: "common",
+        scopes: ["User.Read", "Files.Read", "offline_access"]
+    };
+
+    window.addEventListener('DOMContentLoaded', async () => {
+        const urlParams = new URLSearchParams(window.location.search);
+        const targetFileName = urlParams.get('src');
+
+        if (!targetFileName) {
+            console.error("Error fáctico: No se recibió parámetro de video.");
+            return;
+        }
+
+        // 1. Obtener token activo del almacenamiento local del navegador
+        let azureToken = localStorage.getItem('azure_access_token');
+        if (!azureToken) {
+            alert("Sesión de OneDrive requerida. Conéctate para autorizar el stream.");
+            return;
+        }
+
+        // 2. Escanear el archivo .jsonl localmente con Vanilla JS (fetch)
+        let videoId = null;
+        try {
+            const response = await fetch('bases_de_datos/sopranos.jsonl');
+            const text = await response.text();
+            const lines = text.split('\n');
+            for (const line of lines) {
+                if (line.includes(targetFileName)) {
+                    const meta = JSON.parse(line.trim());
+                    videoId = meta.id;
+                    break;
+                }
+            }
+        } catch (e) {
+            console.error("Error al leer el índice JSONL:", e);
+        }
+
+        if (!videoId) {
+            console.error("El archivo no está indexado en la base de datos.");
+            return;
+        }
+
+        // 3. Consultar a Microsoft Graph el enlace de descarga directa firmada (igual que en tu Python)
+        try {
+            const graphResponse = await fetch(`https://graph.microsoft.com/v1.0/me/drive/items/${videoId}`, {
+                headers: { 'Authorization': `Bearer ${azureToken}` }
+            });
+
+            if (!graphResponse.ok) throw new Error("Fallo de autenticación con Microsoft Graph.");
+
+            const data = await graphResponse.json();
+            const downloadUrl = data["@microsoft.graph.downloadUrl"];
+
+            if (downloadUrl) {
+                // 4. Inyección directa al reproductor Blazar existente
+                // El navegador procesará el stream de OneDrive por rangos de bytes de forma nativa
+                const miMotor = new BlazarPlayer('#reproductor-blazar', downloadUrl);
+            } else {
+                console.error("No se pudo extraer el enlace de descarga de OneDrive.");
+            }
+        } catch (error) {
+            console.error("Error en el motor de enlace:", error);
         }
     });
-
-    document.addEventListener('keydown', (e) => {
-        if (e.code === 'Space') { 
-            e.preventDefault(); 
-            videoElement.paused ? videoElement.play() : videoElement.pause(); 
-        }
-        if (e.code === 'ArrowRight') videoElement.currentTime += 5;
-        if (e.code === 'ArrowLeft') videoElement.currentTime -= 5;
-    });
-
-    contenedor.addEventListener('contextmenu', (e) => {
-        e.preventDefault();
-        blackHole.style.left = `${e.clientX}px`;
-        blackHole.style.top = `${e.clientY}px`;
-        blackHole.classList.add('active');
-    });
-
-    document.addEventListener('click', (e) => {
-        if (!e.target.closest('.black-hole-menu')) blackHole.classList.remove('active');
-    });
-
-    document.getElementById('bh-fullscreen').addEventListener('click', () => {
-        !document.fullscreenElement ? wrapper.requestFullscreen() : document.exitFullscreen();
-        blackHole.classList.remove('active');
-    });
-
-    document.getElementById('bh-pip').addEventListener('click', () => {
-        document.pictureInPictureElement ? document.exitPictureInPicture() : videoElement.requestPictureInPicture();
-        blackHole.classList.remove('active');
-    });
-
-    document.getElementById('bh-speed').addEventListener('click', (e) => {
-        const rates = [0.5, 1.0, 1.25, 1.5, 2.0];
-        const next = rates[(rates.indexOf(videoElement.playbackRate) + 1) % rates.length];
-        videoElement.playbackRate = next;
-        e.currentTarget.querySelector('#bh-speed-val').innerText = next.toFixed(1) + 'x';
-        showFeedback(`Velocidad: ${next}x`);
-    });
-
-    function showFeedback(text) {
-        let old = document.querySelector('.v-feedback');
-        if (old) old.remove();
-        const fb = document.createElement('div');
-        fb.className = 'v-feedback';
-        fb.innerText = text;
-        wrapper.appendChild(fb);
-        setTimeout(() => fb.remove(), 1000);
-    }
 </script>
 </body>
 </html>
