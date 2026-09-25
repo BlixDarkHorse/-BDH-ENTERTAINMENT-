@@ -128,28 +128,34 @@
     document.addEventListener('DOMContentLoaded', () => {
         const statusDiv = document.getElementById('buffer-status');
         const urlParams = new URLSearchParams(window.location.search);
-        const targetSrc = urlParams.get('src');
+        let targetSrc = urlParams.get('src');
 
         if (!targetSrc) {
-            if (statusDiv) statusDiv.innerHTML = '<span style="color:#ff0000;">⚠️ Error: No se recibió el parámetro ?src=</span>';
+            if (statusDiv) statusDiv.innerHTML = '<span style="color:#ff0000;">⚠️ Error: No se recibió ningún video</span>';
             return;
         }
 
-        // 1. Decodificar la URL enviada desde el modal
-        const finalUrl = decodeURIComponent(targetSrc);
+        let finalUrl = decodeURIComponent(targetSrc);
+
+        // Token de Acceso Maestro (Válido hasta Septiembre de 2027)
+        const AZURE_SAS_TOKEN = "?sp=r&st=2026-09-25T20:51:50Z&se=2027-09-26T05:06:50Z&sv=2026-02-06&sr=c&sig=6NCuDi%2FQRTymkk959lCGT9RHQbrS1HmVrayem5VU5Kg%3D";
+
+        // Si la URL es de Azure y no lleva token, se lo pega automáticamente
+        if (finalUrl.includes('blob.core.windows.net') && !finalUrl.includes('?sp=')) {
+            finalUrl += AZURE_SAS_TOKEN;
+        }
 
         try {
-            // 2. Inicializar BlazarPlayer
-            const player = new BlazarPlayer('#reproductor-blazar', finalUrl);
-            
-            // 3. Ocultar mensaje de carga
             if (statusDiv) statusDiv.style.display = 'none';
 
-            // 4. Forzar el arranque del video inmediatamente
+            // Inicia BlazarPlayer
+            const player = new BlazarPlayer('#reproductor-blazar', finalUrl);
+
+            // Forzar inicio de reproducción
             const videoElement = document.querySelector('#reproductor-blazar video');
             if (videoElement) {
                 videoElement.play().catch(err => {
-                    console.log("Haz clic sobre el reproductor para iniciar la reproducción:", err);
+                    console.log("Haz clic sobre el reproductor para iniciar:", err);
                 });
             }
         } catch (err) {
