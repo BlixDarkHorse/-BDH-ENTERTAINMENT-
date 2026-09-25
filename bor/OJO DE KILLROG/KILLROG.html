@@ -89,6 +89,28 @@
                 console.error(err);
             }
         });
+        document.addEventListener('DOMContentLoaded', async () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    let rawSrc = urlParams.get('src');
+
+    if (!rawSrc) return;
+
+    // Si la URL viene doblemente codificada (contiene %25), se decodifica hasta dejarla limpia
+    while (rawSrc.includes('%25')) {
+        rawSrc = decodeURIComponent(rawSrc);
+    }
+
+    let finalUrl = rawSrc;
+
+    // Si es un archivo .mkv o .mp4 directo de Azure o OneDrive, se envía directo
+    if (!finalUrl.includes('?sp=') && finalUrl.includes('blob.core.windows.net')) {
+        const AZURE_SAS_TOKEN = "?sp=r&st=2026-09-25T20:51:50Z&se=2027-09-26T05:06:50Z&sv=2026-02-06&sr=c&sig=6NCuDi%2FQRTymkk959lCGT9RHQbrS1HmVrayem5VU5Kg%3D";
+        finalUrl += AZURE_SAS_TOKEN;
+    }
+
+    // Inicializa el reproductor con la URL limpia
+    window.player = new BlazarPlayer('#reproductor-blazar', finalUrl);
+});
     </script>
 </body>
 </html>
