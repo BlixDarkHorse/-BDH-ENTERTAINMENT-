@@ -63,69 +63,57 @@
             return;
         }
 
-        // Si el parámetro src es una URL directa, la reproduce al instante sin buscar en JSONL
-        if (srcParam.startsWith('http://') || srcParam.startsWith('https://')) {
-            statusText.style.display = 'none';
-            contenedor.style.display = 'block';
-            videoElement.src = srcParam;
-            videoElement.play().catch(err => {
-                statusText.style.display = 'block';
-                statusText.innerText = "Error de reproducción: " + err.message;
-                console.error(err);
-            });
-            return;
-        }
+        statusText.innerText = "Conectando al clúster de OneDrive...";
 
-        // Respaldo por si se pasa solo el nombre del archivo
-        statusText.innerText = "Buscando coordenadas en soprano.jsonl...";
-        let videoMetadata = null;
         try {
-            const response = await fetch('soprano.jsonl');
-            if (response.ok) {
+            let downloadUrl = srcParam;
+
+            // Si el parámetro recibido es una ruta de archivo o ID en lugar de un enlace directo
+            if (!srcParam.startsWith('http://') && !srcParam.startsWith('https://')) {
+                const token = localStorage.getItem('azure_access_token');
+                if (!token) throw new Error("Falta el token de Azure en localStorage.");
+
+                // Buscar en el JSONL local el ID real del archivo
+                const response = await fetch('soprano.jsonl');
+                if (!response.ok) throw new Error("No se pudo leer soprano.jsonl");
+                
                 const text = await response.text();
+                let fileId = null;
                 for (const line of text.split('\n')) {
                     if (line.trim() && line.includes(srcParam)) {
-                        videoMetadata = JSON.parse(line.trim());
+                        const meta = JSON.parse(line.trim());
+                        fileId = meta.id;
                         break;
                     }
                 }
+
+                if (!fileId) throw new Error("El archivo no está indexado en soprano.jsonl");
+
+                // Obtener un enlace de descarga 100% fresco desde Microsoft Graph
+                const graphRes = await fetch(`https://graph.microsoft.com/v1.0/me/drive/items/${fileId}`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                
+                if (!graphRes.ok) throw new Error("Fallo de autorización en Microsoft Graph.");
+                const data = await graphRes.json();
+                downloadUrl = data["@microsoft.graph.downloadUrl"];
             }
-        } catch (e) {
-            console.error("Error leyendo soprano.jsonl:", e);
-        }
 
-        if (!videoMetadata) {
-            statusText.innerText = "Archivo no indexado.";
-            return;
-        }
+            if (!downloadUrl) throw new Error("No se pudo generar la URL de streaming.");
 
-        // Si tienes el token de Azure guardado, extrae el enlace de OneDrive
-        const token = localStorage.getItem('azure_access_token');
-        if (!token) {
-            statusText.innerText = "Falta el token de acceso en localStorage.";
-            return;
-        }
-
-        try {
-            const graphResponse = await fetch(`https://graph.microsoft.com/v1.0/me/drive/items/${videoMetadata.id}`, {
-                headers: { 'Authorization': `Bearer ${token}` }
+            // Mostrar el reproductor y arrancar la transmisión
+            statusText.style.display = 'none';
+            contenedor.style.display = 'block';
+            videoElement.src = downloadUrl;
+            
+            videoElement.play().catch(err => {
+                throw new Error("El navegador bloqueó la reproducción automática: " + err.message);
             });
-            
-            if (!graphResponse.ok) throw new Error("Fallo en Microsoft Graph.");
-            
-            const data = await graphResponse.json();
-            const downloadUrl = data["@microsoft.graph.downloadUrl"];
-            
-            if (downloadUrl) {
-                statusText.style.display = 'none';
-                contenedor.style.display = 'block';
-                videoElement.src = downloadUrl;
-                videoElement.play();
-            } else {
-                throw new Error("No se obtuvo la URL de descarga.");
-            }
+
         } catch (error) {
-            statusText.innerText = "Falla de Sistema: " + error.message;
+            statusText.style.display = 'block';
+            contenedor.style.display = 'none';
+            statusText.innerText = "Falla Crítica: " + error.message;
             console.error(error);
         }
     });
