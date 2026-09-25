@@ -120,61 +120,65 @@
     </div>
 
     <!-- PEGA EL CÓDIGO AQUÍ, JUSTO ANTES DE CERRAR EL BODY -->
-    <script>
-        window.addEventListener('DOMContentLoaded', async () => {
-            if (typeof handleAzureAuthCallback === 'function') handleAzureAuthCallback();
-            if (typeof updateAzureUI === 'function') updateAzureUI();
-            if (typeof renderGalleryFromBuffer === 'function') await renderGalleryFromBuffer();
+<script>
+    window.addEventListener('DOMContentLoaded', async () => {
+        const statusText = document.getElementById('buffer-status');
+        const contenedor = document.getElementById('contenedor-reproductor');
+        const urlParams = new URLSearchParams(window.location.search);
+        const targetSrc = urlParams.get('src');
 
-            const urlParams = new URLSearchParams(window.location.search);
-            const targetSrc = urlParams.get('src');
+        if (!targetSrc) {
+            statusText.innerText = "Error fáctico: Falta el parámetro src.";
+            return;
+        }
 
-            if (!targetSrc) return;
+        statusText.innerText = "Leyendo coordenadas en soprano.jsonl...";
 
-            const decodedSrc = decodeURIComponent(targetSrc);
-            let finalVideoUrl = decodedSrc;
+        try {
+            const response = await fetch('soprano.jsonl');
+            if (!response.ok) throw new Error("No se pudo leer el archivo soprano.jsonl");
 
-            if (!decodedSrc.startsWith('http://') && !decodedSrc.startsWith('https://')) {
-                try {
-                    const response = await fetch('soprano.jsonl');
-                    if (!response.ok) throw new Error("No se pudo leer soprano.jsonl");
+            const text = await response.text();
+            let videoUrl = null;
+            const decodedTarget = decodeURIComponent(targetSrc);
 
-                    const text = await response.text();
-                    let fileId = null;
-
-                    for (const line of text.split('\n')) {
-                        if (line.trim() && line.includes(decodedSrc)) {
-                            const meta = JSON.parse(line.trim());
-                            fileId = meta.id;
-                            break;
-                        }
+            for (const line of text.split('\n')) {
+                if (line.trim()) {
+                    const meta = JSON.parse(line.trim());
+                    // Busca coincidencia por nombre, id o contenido de la línea
+                    if (meta.name === decodedTarget || line.includes(decodedTarget) || meta.id === decodedTarget) {
+                        videoUrl = meta.downloadUrl || meta['@microsoft.graph.downloadUrl'] || meta.url;
+                        break;
                     }
-
-                    if (!fileId) throw new Error("Archivo no indexado en soprano.jsonl");
-
-                    const token = localStorage.getItem('azure_access_token');
-                    if (!token) throw new Error("Falta azure_access_token en localStorage");
-
-                    const graphRes = await fetch(`https://graph.microsoft.com/v1.0/me/drive/items/${fileId}`, {
-                        headers: { 'Authorization': `Bearer ${token}` }
-                    });
-
-                    if (!graphRes.ok) throw new Error("Error en Microsoft Graph");
-
-                    const data = await graphRes.json();
-                    finalVideoUrl = data["@microsoft.graph.downloadUrl"];
-                } catch (error) {
-                    console.error("Falla en la resolución de OneDrive:", error);
-                    return;
                 }
             }
 
-            const reproductorDiv = document.querySelector('#reproductor-blazar');
-            if (reproductorDiv && typeof BlazarPlayer === 'function') {
-                reproductorDiv.innerHTML = '';
-                window.blazarInstance = new BlazarPlayer('#reproductor-blazar', finalVideoUrl, decodedSrc);
+            if (!videoUrl) {
+                if (decodedTarget.startsWith('http://') || decodedTarget.startsWith('https://')) {
+                    videoUrl = decodedTarget;
+                } else {
+                    throw new Error(`El archivo "${decodedTarget}" no tiene un enlace de descarga en soprano.jsonl`);
+                }
             }
-        });
-    </script>
+
+            statusText.style.display = 'none';
+            contenedor.style.display = 'block';
+
+            if (typeof BlazarPlayer === 'function') {
+                new BlazarPlayer('#reproductor-blazar', videoUrl, decodedTarget);
+            } else {
+                const videoEl = document.getElementById('main-video');
+                videoEl.src = videoUrl;
+                videoEl.play();
+            }
+
+        } catch (error) {
+            statusText.style.display = 'block';
+            contenedor.style.display = 'none';
+            statusText.innerText = "Falla de Sistema: " + error.message;
+            console.error(error);
+        }
+    });
+</script>
 </body>
 </html>
