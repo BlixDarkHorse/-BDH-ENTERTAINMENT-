@@ -12,17 +12,85 @@
             --glow: rgba(255, 0, 157, 0.6);
             --bg-solid: #000000;
         }
-        body { background-color: var(--bg-solid); color: var(--color-text); margin: 0; font-family: 'Segoe UI', sans-serif; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; overflow: hidden; }
+        body { 
+            background-color: var(--bg-solid); 
+            color: var(--color-text); 
+            margin: 0; 
+            font-family: 'Segoe UI', sans-serif; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            justify-content: center; 
+            height: 100vh; 
+            overflow: hidden; 
+        }
         
-        .video-frame { position: relative; width: 95vw; height: 95vh; background: #000; border: 2px solid var(--color-primary); box-shadow: 0 0 30px var(--glow); }
-        .blazar-player-wrapper { position: relative; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; overflow: hidden; }
-        .blazar-player-wrapper video { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: contain; transition: filter 0.1s; }
+        /* Contenedor del Reproductor SQR */
+        .video-frame { 
+            position: relative; 
+            width: 95vw; 
+            height: 95vh; 
+            background: #000; 
+            border: 2px solid var(--color-primary); 
+            box-shadow: 0 0 30px var(--glow); 
+        }
+        .blazar-player-wrapper { 
+            position: relative; 
+            width: 100%; 
+            height: 100%; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            overflow: hidden; 
+        }
+        .blazar-player-wrapper video { 
+            position: absolute; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 100%; 
+            object-fit: contain; 
+            transition: filter 0.1s; 
+        }
         
-        .anti-piracy-shield { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 10; }
+        /* Escudo Anti-Capturas */
+        .anti-piracy-shield { 
+            position: absolute; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 100%; 
+            z-index: 10; 
+        }
         
-        #buffer-status { font-size: 1.5rem; color: var(--color-primary); text-shadow: 0 0 10px var(--glow); font-weight: bold; position: absolute; z-index: 50; }
+        /* Interfaz de Estado / Buffer */
+        #buffer-status { 
+            font-size: 1.5rem; 
+            color: var(--color-primary); 
+            text-shadow: 0 0 10px var(--glow); 
+            font-weight: bold; 
+            position: absolute; 
+            z-index: 50; 
+            text-align: center;
+            padding: 20px;
+        }
 
-        .black-hole-menu { position: fixed; background: #050505; border: 1px solid var(--color-primary); box-shadow: 0 0 25px var(--glow); border-radius: 8px; padding: 10px 0; min-width: 200px; z-index: 99999; display: none; flex-direction: column; transform: scale(0.9); opacity: 0; transition: transform 0.2s, opacity 0.2s; }
+        /* Menú Black Hole */
+        .black-hole-menu { 
+            position: fixed; 
+            background: #050505; 
+            border: 1px solid var(--color-primary); 
+            box-shadow: 0 0 25px var(--glow); 
+            border-radius: 8px; 
+            padding: 10px 0; 
+            min-width: 200px; 
+            z-index: 99999; 
+            display: none; 
+            flex-direction: column; 
+            transform: scale(0.9); 
+            opacity: 0; 
+            transition: transform 0.2s, opacity 0.2s; 
+        }
         .black-hole-menu.active { display: flex; transform: scale(1); opacity: 1; }
         .bh-title { color: var(--color-primary); text-align: center; font-size: 1rem; border-bottom: 1px solid #333; padding-bottom: 5px; margin-bottom: 5px; font-weight: bold; }
         .bh-item { color: var(--color-text); padding: 10px 20px; cursor: pointer; font-size: 1rem; transition: background 0.2s; display: flex; justify-content: space-between; font-weight: bold; }
@@ -33,7 +101,7 @@
 </head>
 <body>
 
-    <div id="buffer-status">Buscando coordenadas de video...</div>
+    <div id="buffer-status">Inicializando núcleo Blazar...</div>
     
     <div class="video-frame" id="contenedor-reproductor" style="display: none;">
         <div class="blazar-player-wrapper" id="reproductor-blazar">
@@ -42,6 +110,7 @@
         </div>
     </div>
 
+    <!-- Menú Black Hole -->
     <div class="black-hole-menu" id="black-hole">
         <div class="bh-title">🌀 BDH Black Hole</div>
         <div class="bh-item" id="bh-fullscreen"><span>Pantalla Completa</span> <span>⛶</span></div>
@@ -50,75 +119,131 @@
     </div>
 
 <script>
-    const statusText = document.getElementById('buffer-status');
-    const contenedor = document.getElementById('contenedor-reproductor');
-    const videoElement = document.getElementById('main-video');
+    /**
+     * =========================================================================
+     * KEPPLER ENGINE & BLAZAR PLAYER CORE
+     * =========================================================================
+     */
+    class BlazarPlayer {
+        constructor(containerSelector, sourceUrl, title = "Reproducción Blazar") {
+            this.container = document.querySelector(containerSelector);
+            this.video = this.container.querySelector('video');
+            this.sourceUrl = sourceUrl;
+            this.title = title;
+            this.init();
+        }
 
+        init() {
+            if (!this.video) return;
+            this.video.src = this.sourceUrl;
+            this.video.load();
+            this.video.play().catch(err => {
+                console.warn("Autoplay restringido por el navegador, esperando interacción:", err);
+            });
+        }
+    }
+
+    /**
+     * =========================================================================
+     * CONTROLADOR DE ARRANQUE Y ENRUTAMIENTO ONDRIVE / SOPRANO.JSONL
+     * =========================================================================
+     */
     window.addEventListener('DOMContentLoaded', async () => {
+        const statusText = document.getElementById('buffer-status');
+        const contenedor = document.getElementById('contenedor-reproductor');
+        
         const urlParams = new URLSearchParams(window.location.search);
-        const srcParam = urlParams.get('src');
+        const targetSrc = urlParams.get('src');
 
-        if (!srcParam) {
-            statusText.innerText = "Error fáctico: No se recibió parámetro de video.";
+        if (!targetSrc) {
+            statusText.innerText = "Error fáctico: No se recibió parámetro de video en la ruta.";
             return;
         }
 
-        statusText.innerText = "Resolviendo coordenadas de origen...";
+        statusText.innerText = "Analizando coordenadas de origen...";
 
-        try {
-            let downloadUrl = decodeURIComponent(srcParam);
+        let finalStreamUrl = null;
 
-            // Si se pasa el nombre del archivo en lugar de una URL directa, se busca el ID en soprano.jsonl
-            if (!downloadUrl.startsWith('http://') && !downloadUrl.startsWith('https://')) {
-                const token = localStorage.getItem('azure_access_token');
-                if (!token) throw new Error("Falta el token de acceso de Azure en localStorage.");
-
+        // Caso A: Si el parámetro es una URL directa http/https
+        if (targetSrc.startsWith('http://') || targetSrc.startsWith('https://')) {
+            finalStreamUrl = decodeURIComponent(targetSrc);
+        } 
+        // Caso B: Si el parámetro es el nombre de archivo, consultamos soprano.jsonl y OneDrive Graph
+        else {
+            try {
+                statusText.innerText = "Leyendo base de datos soprano.jsonl...";
                 const response = await fetch('soprano.jsonl');
-                if (!response.ok) throw new Error("No se pudo leer el archivo soprano.jsonl");
+                if (!response.ok) throw new Error("No se pudo localizar el archivo soprano.jsonl");
 
                 const text = await response.text();
                 let fileId = null;
+                
                 for (const line of text.split('\n')) {
-                    if (line.trim() && line.includes(downloadUrl)) {
+                    if (line.trim() && line.includes(targetSrc)) {
                         const meta = JSON.parse(line.trim());
                         fileId = meta.id;
                         break;
                     }
                 }
 
-                if (!fileId) throw new Error("El archivo no está indexado en soprano.jsonl");
+                if (!fileId) throw new Error(`El archivo "${targetSrc}" no está indexado en soprano.jsonl`);
 
-                statusText.innerText = "Consultando clúster de Microsoft Graph...";
+                statusText.innerText = "Obteniendo token de acceso activo...";
+                const azureToken = localStorage.getItem('azure_access_token');
+                if (!azureToken) throw new Error("Falta el token 'azure_access_token' en el almacenamiento local del navegador.");
+
+                statusText.innerText = "Consultando Microsoft Graph para el stream...";
                 const graphRes = await fetch(`https://graph.microsoft.com/v1.0/me/drive/items/${fileId}`, {
-                    headers: { 'Authorization': `Bearer ${token}` }
+                    headers: { 'Authorization': `Bearer ${azureToken}` }
                 });
 
-                if (!graphRes.ok) throw new Error("Fallo de autenticación en Microsoft Graph.");
+                if (!graphRes.ok) throw new Error("Fallo de autenticación o expiración en la API de Microsoft Graph.");
+                
                 const data = await graphRes.json();
-                downloadUrl = data["@microsoft.graph.downloadUrl"];
+                finalStreamUrl = data["@microsoft.graph.downloadUrl"];
+
+                if (!finalStreamUrl) throw new Error("La respuesta de Graph no devolvió un enlace de descarga directa.");
+
+            } catch (error) {
+                statusText.innerText = "Falla de Sistema: " + error.message;
+                console.error("Error crítico en motor Blazar:", error);
+                return;
             }
+        }
 
-            if (!downloadUrl) throw new Error("No se obtuvo la URL de descarga de OneDrive.");
-
-            // HECHO TÉCNICO: Descargar el binario mediante fetch para superar restricciones de CORS y cabeceras
-            statusText.innerText = "Cargando flujo multimedia en memoria local...";
-            const mediaResponse = await fetch(downloadUrl);
-            if (!mediaResponse.ok) throw new Error("Error al descargar el archivo desde la CDN de OneDrive.");
-
-            const videoBlob = await mediaResponse.blob();
-            const localBlobUrl = URL.createObjectURL(videoBlob);
-
+        if (finalStreamUrl) {
             statusText.style.display = 'none';
             contenedor.style.display = 'block';
             
-            videoElement.src = localBlobUrl;
-            await videoElement.play();
+            // Instanciar el motor Blazar Player con la URL resuelta
+            window.activeBlazarPlayer = new BlazarPlayer('#reproductor-blazar', finalStreamUrl, targetSrc);
+        } else {
+            statusText.innerText = "Error fáctico: No se pudo consolidar el flujo de video.";
+        }
+    });
 
-        } catch (error) {
-            statusText.style.display = 'block';
-            contenedor.style.display = 'none';
-            statusText.innerText = "Falla de Sistema: " + error.message;
-            console.error(error);
+    /**
+     * =========================================================================
+     * GESTIÓN DE INTERACCIÓN Y MENÚ BLACK HOLE
+     * =========================================================================
+     */
+    const blackHoleMenu = document.getElementById('black-hole');
+    window.addEventListener('contextmenu', (e) => {
+        e.preventDefault();
+        blackHoleMenu.style.top = `${e.clientY}px`;
+        blackHoleMenu.style.left = `${e.clientX}px`;
+        blackHoleMenu.classList.add('active');
+    });
+
+    window.addEventListener('click', () => {
+        blackHoleMenu.classList.remove('active');
+    });
+
+    document.getElementById('bh-fullscreen').addEventListener('click', () => {
+        if (!document.fullscreenElement) {
+            document.documentElement.requestFullscreen();
+        } else {
+            document.exitFullscreen();
         }
     });
 </script>
