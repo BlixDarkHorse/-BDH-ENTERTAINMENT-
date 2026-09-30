@@ -27,7 +27,7 @@
     let sesionActiva = false; 
 
     document.addEventListener('click', function(e) {
-        if (e.target.tagName === 'BUTTON' && (e.target.innerText.includes('Capítulo') || e.target.innerText.includes('Volumen') || e.target.innerText.includes('REPRODUCIR'))) {
+        if (e.target.classList.contains('ep-btn') || (e.target.tagName === 'BUTTON' && (e.target.innerText.includes('Capítulo') || e.target.innerText.includes('Volumen') || e.target.innerText.includes('REPRODUCIR')))) {
             if (!sesionActiva) {
                 e.preventDefault(); 
                 
@@ -51,12 +51,18 @@
         const navUsername = document.getElementById('bdh-nav-username');
         const modalUsername = document.getElementById('bdh-modal-username');
         
+        const navAvatar = document.getElementById('bdh-nav-avatar');
+        const modalAvatar = document.getElementById('bdh-modal-avatar-grande');
+        const avatarUrl = localStorage.getItem('bdh_vip_avatar') || "https://raw.githubusercontent.com/BlixDarkHorse/BlixDarkHorse.github.io/main/assets/fondo-default.jpg";
+        
         if (identidad && sesionActiva) {
             if (btnLoginView) btnLoginView.style.display = 'none';
             if (profileView) profileView.style.display = 'flex';
             
             if (navUsername) navUsername.innerText = identidad.split('@')[0];
             if (modalUsername) modalUsername.innerText = identidad;
+            if (navAvatar) navAvatar.src = avatarUrl;
+            if (modalAvatar) modalAvatar.src = avatarUrl;
         } else {
             if (btnLoginView) btnLoginView.style.display = 'block';
             if (profileView) profileView.style.display = 'none';
@@ -64,8 +70,28 @@
     }
 
     window.abrirModalPerfil = function() {
-        const modalPerfil = document.getElementById('bdh-toggle-perfil-modal');
-        if (modalPerfil) modalPerfil.checked = true;
+        const modalPerfilOverlay = document.getElementById('bdh-profile-modal-overlay');
+        if (modalPerfilOverlay) modalPerfilOverlay.style.display = 'flex';
+    };
+
+    window.cerrarModalPerfil = function() {
+        const modalPerfilOverlay = document.getElementById('bdh-profile-modal-overlay');
+        if (modalPerfilOverlay) modalPerfilOverlay.style.display = 'none';
+        const galeria = document.getElementById('bdh-avatar-gallery');
+        if (galeria) galeria.style.display = 'none';
+    };
+
+    window.toggleGaleriaAvatares = function() {
+        const galeria = document.getElementById('bdh-avatar-gallery');
+        if (galeria) {
+            galeria.style.display = galeria.style.display === 'none' ? 'flex' : 'none';
+        }
+    };
+
+    window.seleccionarAvatar = function(url) {
+        localStorage.setItem('bdh_vip_avatar', url);
+        actualizarInterfazPerfil(localStorage.getItem('bdh_vip_identity'));
+        toggleGaleriaAvatares();
     };
 
     window.cerrarSesionBDH = function() {
