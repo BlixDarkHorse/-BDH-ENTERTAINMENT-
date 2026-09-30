@@ -1,8 +1,8 @@
-:root { --🕷: #000000e1; --🐉d4: #ff00d4; --🐉95: #ff0095; --🕷-bg: #00000000; --🐎: #7c6107; --text-muted: #795974; --glow-🐉: rgba(255, 0, 157, 0.411); --glow-🕷: rgba(0, 0, 0, 0.836); --dark-bg-secondary: var(--🕷-bg); --dark-bg-tertiary: var(--🕷-bg); --gold: #D4AF37; --pink: #ff00d4; --pink-glow: rgba(255, 0, 157, 0.6); --gold-glow: rgba(212, 175, 55, 0.6); --font-main: 'Segoe UI', Arial, sans-serif; --font-brand: 'Old English Text', serif; --dark-gray: var(--🕷); --magenta-oscuro: var(--🐉95); --magenta-neon: var(--🐉d4); --oro-bdh: var(--gold); --borde-resplandor: var(--glow-🐉); --btn-oauth-bg: var(--glow-🕷); }
+:root { --🕷: #000000e1; --🐉d4: #ff00d4; --🐉95: #ff0095; --🕷-bg: #00000000; --🐎: #7c6107; --text-muted: #795974; --glow-🐉: rgba(255, 0, 157, 0.411); --glow-🕷: rgba(0, 0, 0, 0.836); --dark-bg-secondary: var(--🕷-bg); --dark-bg-tertiary: var(--🕷-bg); --gold: #876b0e; --pink: #ff00d4; --pink-glow: rgba(255, 0, 157, 0.6); --gold-glow: rgba(212, 175, 55, 0.6); --font-main: 'Segoe UI', Arial, sans-serif; --font-brand: 'Diabolic', serif; --dark-gray: var(--🕷); --magenta-oscuro: var(--🐉95); --magenta-neon: var(--🐉d4); --oro-bdh: var(--gold); --borde-resplandor: var(--glow-🐉); --btn-oauth-bg: var(--glow-🕷); }
 * { box-sizing: border-box; margin: 0; padding: 0; }
-body { background-color: #000; color: var(--gold); font-family: var(--font-main); overflow-x: hidden; }
+body { background-color: #00000030; color: var(--gold); font-family: var(--font-main); overflow-x: hidden; }
 input[type="radio"].nav-trigger, input[type="checkbox"].modal-trigger, input.bdh-motor-estado { display: none; }
-header { position: fixed; top: 0; width: 100%; background: rgba(3, 3, 3, 0.95); border-bottom: 2px solid var(--pink); box-shadow: 0 0 15px var(--pink-glow); z-index: 1000; display: flex; flex-direction: column; padding: 10px 20px; }
+header { position: fixed; top: 0; width: 100%; background: rgba(3, 3, 3, 0.431); border-bottom: 2px solid var(--pink); box-shadow: 0 0 15px var(--pink-glow); z-index: 1000; display: flex; flex-direction: column; padding: 10px 20px; }
 .header-top { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255, 215, 0, 0.2); padding-bottom: 10px; margin-bottom: 10px; }
 .logo-container h1 { font-size: 1.8rem; color: var(--gold); text-transform: uppercase; letter-spacing: 2px; text-shadow: 2px 2px 0px #000, 0 0 15px var(--gold-glow); -webkit-text-stroke: 1px #000; }
 .logo-container h1 span { color: var(--pink); text-shadow: 2px 2px 0px #000, 0 0 15px var(--pink-glow); -webkit-text-stroke: 1px #000; }
@@ -117,7 +117,7 @@ label.cover-box, label.masonry-item, label.trailer-box { display: block; cursor:
 .bdh-cerrar-area { position: absolute; top: 0; left: 0; width: 100%; height: 100%; cursor: crosshair; }
 #bdh-toggle-modal:checked ~ .bdh-modal-overlay { opacity: 1; pointer-events: all; }
 .bdh-contenedor-maestro { position: relative; width: 420px; height: 650px; perspective: 1000px; z-index: 10000; }
-.bdh-panel { position: absolute; width: 100%; height: 100%; background: linear-gradient(135deg, rgba(10, 0, 15, 0.85) 0%, rgba(0, 0, 0, 0.95) 100%), url('3.png'); background-size: cover; background-position: center; border: 2px solid var(--magenta-oscuro); border-radius: 15px; box-shadow: 0 0 30px var(--borde-resplandor), inset 0 0 20px rgba(0,0,0,0.8); display: flex; flex-direction: column; align-items: center; padding: 40px 30px; box-sizing: border-box; transition: transform 0.6s cubic-bezier(0.4, 0.0, 0.2, 1), opacity 0.6s ease; backface-visibility: hidden; }
+.bdh-panel { position: absolute; width: 100%; height: 100%; background: linear-gradient(135deg, rgba(10, 0, 15, 0.85) 0%, rgba(0, 0, 0, 0.95) 100%), url('https://ragnarokmedia.blob.core.windows.net/0010010110110110/%F0%9F%96%BCGALERIAS/%F0%9F%8C%80NEOGROUNDS.PLO/3.png'); background-size: cover; background-position: center; border: 2px solid var(--magenta-oscuro); border-radius: 15px; box-shadow: 0 0 30px var(--borde-resplandor), inset 0 0 20px rgba(0,0,0,0.8); display: flex; flex-direction: column; align-items: center; padding: 40px 30px; box-sizing: border-box; transition: transform 0.6s cubic-bezier(0.4, 0.0, 0.2, 1), opacity 0.6s ease; backface-visibility: hidden; }
 #bdh-panel-login { transform: rotateY(0deg); opacity: 1; z-index: 2; }
 #bdh-panel-registro { transform: rotateY(180deg); opacity: 0; z-index: 1; }
 #bdh-toggle-registro:checked ~ .bdh-modal-overlay .bdh-contenedor-maestro #bdh-panel-login { transform: rotateY(-180deg); opacity: 0; z-index: 1; }
@@ -129,7 +129,11 @@ label.cover-box, label.masonry-item, label.trailer-box { display: block; cursor:
 .bdh-input-caja { width: 100%; background: rgba(0, 0, 0, 0.7); border: 1px solid var(--magenta-oscuro); border-radius: 5px; padding: 12px 15px; color: var(--oro-bdh); font-size: 1.25rem; outline: none; box-sizing: border-box; transition: 0.3s; font-family: sans-serif; }
 .bdh-input-caja:focus { border-color: var(--magenta-neon); box-shadow: 0 0 15px rgba(255, 0, 212, 0.3); }
 .bdh-input-caja::placeholder { color: rgba(255, 215, 0, 0.3); }
-.bdh-btn-enviar { width: 100%; background: linear-gradient(90deg, #000, var(--magenta-oscuro)); border: 1px solid var(--magenta-neon); color: var(--oro-bdh); padding: 15px; font-size: 1.35rem; font-weight: bold; font-family: 'OLD ENGLISH TEXT', serif; cursor: pointer; border-radius: 5px; transition: 0.3s; margin-top: 5px; text-transform: uppercase; }
+.bdh-btn-enviar { width: 100%; background: linear-gradient(90deg, #000, var(--magenta-oscuro)); border: 1px solid var(--magenta-neon); color: var(--oro-bdh); padding: 15px; font-size: 1.35rem; font-weight: bold; font-family: 'Diabolic';
+    src: url('https://ragnarokmedia.blob.core.windows.net/0010010110110110/%F0%9F%96%BCGALERIAS/%F0%9F%8C%80NEOGROUNDS.PLO/Diabolic.ttf?sp=r&st=2026-09-25T20:51:50Z&se=2027-09-26T05:06:50Z&sv=2026-02-06&sr=c&sig=6NCuDi%2FQRTymkk959lCGT9RHQbrS1HmVrayem5VU5Kg%3D') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    cursor: pointer; border-radius: 5px; transition: 0.3s; margin-top: 5px; text-transform: uppercase; }
 .bdh-btn-enviar:hover { background: linear-gradient(90deg, var(--magenta-oscuro), var(--magenta-neon)); box-shadow: 0 0 20px var(--magenta-neon); color: var(--gold); }
 .bdh-separador { width: 100%; height: 1px; background: linear-gradient(90deg, transparent, var(--magenta-oscuro), transparent); margin: 20px 0 15px 0; }
 .bdh-oauth-grid { display: flex; gap: 10px; width: 100%; }
@@ -138,7 +142,7 @@ label.cover-box, label.masonry-item, label.trailer-box { display: block; cursor:
 .bdh-cambio-estado { margin-top: 20px; color: var(--gold); font-family: sans-serif; font-size: 0.85rem; }
 .bdh-cambio-estado label { color: var(--magenta-neon); cursor: pointer; font-weight: bold; transition: 0.3s; text-decoration: underline; }
 .bdh-cambio-estado label:hover { color: var(--oro-bdh); text-shadow: 0 0 10px var(--oro-bdh); }
-@font-face { font-family: 'Old English Text'; src: url('oldenglish.ttf') format('truetype'); }
+@font-face { font-family: 'Diabolic'; src: url('https://ragnarokmedia.blob.core.windows.net/0010010110110110/%F0%9F%96%BCGALERIAS/%F0%9F%8C%80NEOGROUNDS.PLO/Diabolic.ttf?sp=r&st=2026-09-25T20:51:50Z&se=2027-09-26T05:06:50Z&sv=2026-02-06&sr=c&sig=6NCuDi%2FQRTymkk959lCGT9RHQbrS1HmVrayem5VU5Kg%3D') format('truetype'); }
 .logo-container h1, .logo-container h2, .bdh-marca-titulo, .hero-title, .home-title-zone h1, .trailer-info h3, .footer-bdh p { font-family: var(--font-brand) !important; letter-spacing: 2px; }
 .video-background { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: -1; opacity: 0.35; mix-blend-mode: screen; }
 .cover-box { transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.4s; }
@@ -203,3 +207,412 @@ label.cover-box, label.masonry-item, label.trailer-box { display: block; cursor:
 .slogan-top { text-align: center; color: var(--gold); font-family: var(--font-brand); font-size: 1.5rem; letter-spacing: 3px; margin-bottom: 15px; text-shadow: 2px 2px 5px rgba(0,0,0,1), 0 0 10px var(--pink-glow); }
 #m-redes:checked ~ #redes-overlay, #m-youtube:checked ~ #youtube-overlay, #m-hub:checked ~ #hub-overlay, #m-politicas:checked ~ #politicas-overlay, #m-licencia:checked ~ #licencia-overlay, #m-mas:checked ~ #mas-overlay { opacity: 1; pointer-events: auto; visibility: visible; }
 #m-redes:checked ~ #redes-overlay .modal-content, #m-youtube:checked ~ #youtube-overlay .modal-content, #m-hub:checked ~ #hub-overlay .modal-content, #m-politicas:checked ~ #politicas-overlay .modal-content, #m-licencia:checked ~ #licencia-overlay .modal-content, #m-mas:checked ~ #mas-overlay .modal-content { transform: scale(1); }
+/* =========================================================
+   UNIVERSO BDH
+   MINI FOOTER · TRANSPARENT GLASS
+   ========================================================= */
+
+   .bdh-minifooter {
+
+       position: relative;
+
+       width: 100%;
+
+       margin-top: 3rem;
+
+       padding: 1.4rem 0 0.8rem;
+
+       /* TRANSPARENCIA */
+       background:
+           linear-gradient(180deg,
+               rgba(0, 0, 0, 0.08),
+               rgba(0, 0, 0, 0.22));
+
+       /* GLASS */
+       backdrop-filter: blur(12px);
+       -webkit-backdrop-filter: blur(12px);
+
+       /* BORDE SUPERIOR */
+       border-top:
+           1px solid rgba(255, 0, 212, 0.35);
+
+       /* SOMBRA MUY SUTIL */
+       box-shadow:
+           0 -8px 30px rgba(255, 0, 212, 0.06);
+
+       color: #ffffff;
+
+       z-index: 20;
+
+       overflow: hidden;
+   }
+
+
+   /* =========================================================
+   LÍNEA NEÓN SUPERIOR
+   ========================================================= */
+
+   .bdh-minifooter::before {
+
+       content: "";
+
+       position: absolute;
+
+       top: 0;
+
+       left: 12%;
+       right: 12%;
+
+       height: 1px;
+
+       background:
+           linear-gradient(90deg,
+               transparent,
+               rgba(255, 0, 212, 0.75),
+               rgba(255, 215, 0, 0.55),
+               rgba(255, 0, 212, 0.75),
+               transparent);
+
+       box-shadow:
+           0 0 10px rgba(255, 0, 212, 0.45);
+   }
+
+
+   /* =========================================================
+   CONTENEDOR
+   ========================================================= */
+
+   .bdh-footer-inner {
+
+       width: min(1050px, 90%);
+
+       margin: auto;
+
+       display: grid;
+
+       grid-template-columns:
+           minmax(180px, 0.8fr) minmax(300px, 1.2fr);
+
+       align-items: center;
+
+       gap: 3rem;
+   }
+
+
+   /* =========================================================
+   MARCA
+   ========================================================= */
+
+   .footer-brand {
+
+       display: flex;
+
+       flex-direction: column;
+
+       justify-content: center;
+   }
+
+
+   .footer-brand-title {
+
+       font-family:
+           "Old English Text MT",
+           "UnifrakturCook",
+           serif;
+
+       font-size: 1.35rem;
+
+       letter-spacing: 0.04em;
+
+       background:
+           linear-gradient(90deg,
+               #ffffff,
+               #ff00d4,
+               #ffd700);
+
+       -webkit-background-clip: text;
+       background-clip: text;
+
+       -webkit-text-fill-color: transparent;
+
+       text-shadow:
+           0 0 15px rgba(255, 0, 212, 0.15);
+   }
+
+
+   .footer-brand-subtitle {
+
+       margin-top: 0.2rem;
+
+       font-family:
+           "Segoe UI",
+           sans-serif;
+
+       font-size: 0.55rem;
+
+       letter-spacing: 0.22em;
+
+       color:
+           rgba(255, 255, 255, 0.45);
+   }
+
+
+   /* =========================================================
+   GRID DE ENLACES
+   ========================================================= */
+
+   .footer-grid {
+
+       display: grid;
+
+       grid-template-columns:
+           1fr 1fr;
+
+       gap: 2.5rem;
+   }
+
+
+   .footer-column {
+
+       display: flex;
+
+       flex-direction: column;
+
+       gap: 0.3rem;
+   }
+
+
+   .footer-column b {
+
+       margin-bottom: 0.3rem;
+
+       font-family:
+           "Segoe UI",
+           sans-serif;
+
+       font-size: 0.58rem;
+
+       letter-spacing: 0.18em;
+
+       color: #ffd700;
+
+       font-weight: 600;
+   }
+
+
+   .footer-column a {
+
+       width: fit-content;
+
+       font-family:
+           "Segoe UI",
+           sans-serif;
+
+       font-size: 0.68rem;
+
+       color:
+           rgba(255, 255, 255, 0.55);
+
+       text-decoration: none;
+
+       transition:
+           color 0.2s ease,
+           transform 0.2s ease,
+           text-shadow 0.2s ease;
+   }
+
+
+   .footer-column a:hover {
+
+       color: #ff00d4;
+
+       transform: translateX(3px);
+
+       text-shadow:
+           0 0 10px rgba(255, 0, 212, 0.65);
+   }
+
+
+   /* =========================================================
+   DIVISOR
+   ========================================================= */
+
+   .footer-divider {
+
+       width: min(1050px, 90%);
+
+       height: 1px;
+
+       margin:
+           1rem auto 0.7rem;
+
+       background:
+           linear-gradient(90deg,
+               transparent,
+               rgba(255, 0, 212, 0.28),
+               rgba(255, 215, 0, 0.22),
+               transparent);
+   }
+
+
+   /* =========================================================
+   PARTE INFERIOR
+   ========================================================= */
+
+   .footer-bottom {
+
+       width: min(1050px, 90%);
+
+       margin: auto;
+
+       display: flex;
+
+       justify-content: space-between;
+
+       align-items: center;
+
+       gap: 1rem;
+
+       flex-wrap: wrap;
+
+       font-family:
+           "Segoe UI",
+           sans-serif;
+
+       font-size: 0.58rem;
+
+       color:
+           rgba(255, 255, 255, 0.38);
+   }
+
+
+   .footer-copy {
+
+       display: flex;
+
+       gap: 0.5rem;
+
+       flex-wrap: wrap;
+
+       align-items: center;
+   }
+
+
+   .footer-copy span {
+
+       color:
+           rgba(255, 215, 0, 0.55);
+   }
+
+
+   .footer-motto {
+
+       font-family:
+           "Old English Text MT",
+           "UnifrakturCook",
+           serif;
+
+       font-size: 0.68rem;
+
+       color:
+           rgba(255, 0, 212, 0.68);
+
+       text-shadow:
+           0 0 10px rgba(255, 0, 212, 0.18);
+   }
+
+
+   /* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+   @media (max-width: 700px) {
+
+       .bdh-footer-inner {
+
+           grid-template-columns: 1fr;
+
+           gap: 1.2rem;
+
+           text-align: center;
+       }
+
+       .footer-brand {
+
+           align-items: center;
+       }
+
+       .footer-grid {
+
+           justify-content: center;
+
+           gap: 2rem;
+       }
+
+       .footer-column {
+
+           align-items: center;
+       }
+
+       .footer-bottom {
+
+           justify-content: center;
+
+           text-align: center;
+       }
+   }
+
+/* =========================================================
+   ADAPTACIÓN RESPONSIVA MÓVIL (UNIVERSO BDH)
+   ========================================================= */
+@media (max-width: 768px) {
+  /* Ajuste de contenedor de modales */
+  .bdh-contenedor-maestro, 
+  .modal-content {
+    width: 90% !important;
+    max-width: 400px !important;
+    padding: 20px 15px !important;
+    box-sizing: border-box !important;
+    margin: 0 auto !important;
+  }
+
+  /* Cajas de texto e inputs */
+  .bdh-input-caja, 
+  #bdh-vip-user, 
+  #bdh-vip-code, 
+  #bdh-top-user, 
+  #bdh-top-code {
+    width: 100% !important;
+    font-size: 1rem !important;
+    padding: 10px !important;
+    box-sizing: border-box !important;
+  }
+
+  /* Disposición de botones en paralelo o vertical */
+  .bdh-auth-module .stars-btn,
+  #stars-overlay .stars-btn {
+    font-size: 0.85rem !important;
+    padding: 10px 5px !important;
+    white-space: nowrap !important;
+  }
+
+  /* Encabezado y barra superior */
+  .header-top {
+    flex-direction: column !important;
+    gap: 10px !important;
+    align-items: center !important;
+  }
+
+  .search-login {
+    width: 100% !important;
+    justify-content: center !important;
+  }
+
+  .stars-bar {
+    font-size: 0.85rem !important;
+    flex-direction: column !important;
+    gap: 8px !important;
+  }
+}
+
+
