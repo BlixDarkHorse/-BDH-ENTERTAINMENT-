@@ -30,6 +30,8 @@
         if (e.target.classList.contains('ep-btn') || (e.target.tagName === 'BUTTON' && (e.target.innerText.includes('Capítulo') || e.target.innerText.includes('Volumen') || e.target.innerText.includes('REPRODUCIR')))) {
             if (!sesionActiva) {
                 e.preventDefault(); 
+                e.stopPropagation();
+
                 
                 const modalesAbiertos = document.querySelectorAll('.modal-trigger:checked');
                 modalesAbiertos.forEach(modal => modal.checked = false);
@@ -40,65 +42,9 @@
                 console.warn("BLAZAR ALERTA: Intento de acceso sin forjar credenciales. Redirigiendo a Auth.");
             }
         }
-    });
+    }, true);
 
-    // ---------------------------------------------------------
-    // CONTROL VISUAL DEL PERFIL
-    // ---------------------------------------------------------
-    function actualizarInterfazPerfil(identidad) {
-        const btnLoginView = document.getElementById('bdh-btn-login-view');
-        const profileView = document.getElementById('bdh-profile-view');
-        const navUsername = document.getElementById('bdh-nav-username');
-        const modalUsername = document.getElementById('bdh-modal-username');
-        
-        const navAvatar = document.getElementById('bdh-nav-avatar');
-        const modalAvatar = document.getElementById('bdh-modal-avatar-grande');
-        const avatarUrl = localStorage.getItem('bdh_vip_avatar') || "https://raw.githubusercontent.com/BlixDarkHorse/BlixDarkHorse.github.io/main/assets/fondo-default.jpg";
-        
-        if (identidad && sesionActiva) {
-            if (btnLoginView) btnLoginView.style.display = 'none';
-            if (profileView) profileView.style.display = 'flex';
-            
-            if (navUsername) navUsername.innerText = identidad.split('@')[0];
-            if (modalUsername) modalUsername.innerText = identidad;
-            if (navAvatar) navAvatar.src = avatarUrl;
-            if (modalAvatar) modalAvatar.src = avatarUrl;
-        } else {
-            if (btnLoginView) btnLoginView.style.display = 'block';
-            if (profileView) profileView.style.display = 'none';
-        }
-    }
-
-    window.abrirModalPerfil = function() {
-        const modalPerfilOverlay = document.getElementById('bdh-profile-modal-overlay');
-        if (modalPerfilOverlay) modalPerfilOverlay.style.display = 'flex';
-    };
-
-    window.cerrarModalPerfil = function() {
-        const modalPerfilOverlay = document.getElementById('bdh-profile-modal-overlay');
-        if (modalPerfilOverlay) modalPerfilOverlay.style.display = 'none';
-        const galeria = document.getElementById('bdh-avatar-gallery');
-        if (galeria) galeria.style.display = 'none';
-    };
-
-    window.toggleGaleriaAvatares = function() {
-        const galeria = document.getElementById('bdh-avatar-gallery');
-        if (galeria) {
-            galeria.style.display = galeria.style.display === 'none' ? 'flex' : 'none';
-        }
-    };
-
-    window.seleccionarAvatar = function(url) {
-        localStorage.setItem('bdh_vip_avatar', url);
-        actualizarInterfazPerfil(localStorage.getItem('bdh_vip_identity'));
-        toggleGaleriaAvatares();
-    };
-
-    window.cerrarSesionBDH = function() {
-        localStorage.removeItem('bdh_vip_exp');
-        localStorage.removeItem('bdh_vip_identity');
-        window.location.reload();
-    };
+    // El control visual del perfil fue movido a bdh-profile.js
 
     // ---------------------------------------------------------
     // MOTOR DE AUTENTICACIÓN Y LLAVES TARÁNTULA BDH
@@ -157,7 +103,7 @@
         }
         
         const identidadGuardada = localStorage.getItem('bdh_vip_identity');
-        actualizarInterfazPerfil(identidadGuardada);
+        if (window.actualizarInterfazPerfil) window.actualizarInterfazPerfil(identidadGuardada, sesionActiva);
     }
 
     document.addEventListener('DOMContentLoaded', () => {
@@ -224,7 +170,7 @@
                 
                 if (codeInput) codeInput.value = '';
                 actualizarCronometro();
-                actualizarInterfazPerfil(identidadOficial);
+                if (window.actualizarInterfazPerfil) window.actualizarInterfazPerfil(identidadOficial, true);
 
                 if (esCanje) {
                     alert(`⚠️ ALTO. TOMA CAPTURA DE PANTALLA AHORA MISMO ⚠️\n\nTu Identidad Oficial y Permanente es:\n\n👉 ${identidadOficial} 👈\n\nGuarda esta captura. Si pierdes este nombre exacto, perderás tu tiempo VIP en otros dispositivos y no habrá recuperación.`);
