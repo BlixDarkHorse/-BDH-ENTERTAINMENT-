@@ -53,7 +53,7 @@
 
             <!-- ESTADO 2: LOGUEADO (Estilo Battle.net - Círculo + Nombre) -->
             <div id="bdh-profile-view" style="display: none; align-items: center; gap: 8px; cursor: pointer;" onclick="abrirModalPerfil()">
-                <img id="bdh-nav-avatar" src="https://raw.githubusercontent.com/BlixDarkHorse/BlixDarkHorse.github.io/main/assets/fondo-default.jpg" alt="Perfil BDH" style="width: 40px; height: 40px; border-radius: 50%; border: 2px solid #ff4500; object-fit: cover;">
+                <img id="bdh-nav-avatar" src="https://ragnarokmedia.blob.core.windows.net/0010010110110110/%F0%9F%96%BCGALERIAS/%F0%9F%8C%80NEOGROUNDS.PLO/1.png?sp=r&st=2026-09-25T20:51:50Z&se=2027-09-26T05:06:50Z&sv=2026-02-06&sr=c&sig=6NCuDi%2FQRTymkk959lCGT9RHQbrS1HmVrayem5VU5Kg%3D" alt="Perfil BDH" style="width: 40px; height: 40px; border-radius: 50%; border: 2px solid #ff4500; object-fit: cover;">
                 <span id="bdh-nav-username" style="color: #fff; font-weight: bold; font-size: 0.9rem;">USUARIO</span>
             </div>
 
@@ -123,25 +123,25 @@
   </div>
 
   <!-- MODAL DE PERFIL ACTIVO (ESTILO BATTLE.NET) -->
-  <div class="bdh-modal-overlay" id="bdh-profile-modal-overlay" style="display: none;">
+  <div class="bdh-modal-overlay" id="bdh-profile-modal-overlay" style="display: none; opacity: 1 !important; pointer-events: auto !important; z-index: 99999;">
     <div class="bdh-cerrar-area" onclick="cerrarModalPerfil()"></div>
     <div class="bdh-contenedor-maestro" style="text-align: center; padding: 30px; position: relative;">
       <label onclick="cerrarModalPerfil()" style="position: absolute; top: 15px; right: 20px; color: #fff; cursor: pointer; font-size: 1.5rem; font-weight: bold; z-index: 10;">✕</label>
       
       <!-- FOTO DE PERFIL GRANDE -->
       <div style="position: relative; display: inline-block;">
-        <img id="bdh-modal-avatar-grande" src="https://raw.githubusercontent.com/BlixDarkHorse/BlixDarkHorse.github.io/main/assets/fondo-default.jpg" alt="Avatar Grande" style="width: 90px; height: 90px; border-radius: 50%; border: 3px solid #ff4500; object-fit: cover; margin-bottom: 5px;">
+        <img id="bdh-modal-avatar-grande" src="https://ragnarokmedia.blob.core.windows.net/0010010110110110/%F0%9F%96%BCGALERIAS/%F0%9F%8C%80NEOGROUNDS.PLO/1.png?sp=r&st=2026-09-25T20:51:50Z&se=2027-09-26T05:06:50Z&sv=2026-02-06&sr=c&sig=6NCuDi%2FQRTymkk959lCGT9RHQbrS1HmVrayem5VU5Kg%3D" alt="Avatar Grande" style="width: 90px; height: 90px; border-radius: 50%; border: 3px solid #ff4500; object-fit: cover; margin-bottom: 5px;">
         <button type="button" onclick="toggleGaleriaAvatares()" style="display: block; margin: 0 auto 15px auto; background-color: #333; color: #fff; border: 1px solid #ff4500; border-radius: 4px; padding: 3px 8px; font-size: 0.75rem; cursor: pointer;">Cambiar foto</button>
       </div>
 
       <!-- GALERIA DE AVATARES OCULTA -->
       <div id="bdh-avatar-gallery" style="display: none; flex-wrap: wrap; gap: 10px; justify-content: center; margin-bottom: 15px; max-width: 250px; margin-left: auto; margin-right: auto;">
         <img src="https://ragnarokmedia.blob.core.windows.net/0010010110110110/%F0%9F%96%BCGALERIAS/%F0%9F%8C%80NEOGROUNDS.PLO/1.png?sp=r&st=2026-09-25T20:51:50Z&se=2027-09-26T05:06:50Z&sv=2026-02-06&sr=c&sig=6NCuDi%2FQRTymkk959lCGT9RHQbrS1HmVrayem5VU5Kg%3D" style="width:40px; height:40px; border-radius:50%; cursor:pointer; border: 2px solid transparent;" onclick="seleccionarAvatar(this.src)">
-        <img src="https://ragnarokmedia.blob.core.windows.net/0010010110110110/%F0%9F%96%BCGALERIAS/%F0%9F%8C%80NEOGROUNDS.PLO/A44.png?sp=r&st=2026-09-25T20:51:50Z&se=2027-09-26T05:06:50Z&sv=2026-02-06&sr=c&sig=6NCuDi%2FQRTymkk959lCGT9RHQbrS1HmVrayem5VU5Kg%3D" style="width:40px; height:40px; border-radius:50%; cursor:pointer; border: 2px solid transparent;" onclick="seleccionarAvatar(this.src)">
-        <img src="https://ragnarokmedia.blob.core.windows.net/0010010110110110/%F0%9F%96%BCGALERIAS/%F0%9F%8C%80NEOGROUNDS.PLO/A38.png?sp=r&st=2026-09-25T20:51:50Z&se=2027-09-26T05:06:50Z&sv=2026-02-06&sr=c&sig=6NCuDi%2FQRTymkk959lCGT9RHQbrS1HmVrayem5VU5Kg%3D" style="width:40px; height:40px; border-radius:50%; cursor:pointer; border: 2px solid transparent;" onclick="seleccionarAvatar(this.src)">
-        <img src="https://ragnarokmedia.blob.core.windows.net/0010010110110110/%F0%9F%96%BCGALERIAS/%F0%9F%8C%80NEOGROUNDS.PLO/S16.png?sp=r&st=2026-09-25T20:51:50Z&se=2027-09-26T05:06:50Z&sv=2026-02-06&sr=c&sig=6NCuDi%2FQRTymkk959lCGT9RHQbrS1HmVrayem5VU5Kg%3D" style="width:40px; height:40px; border-radius:50%; cursor:pointer; border: 2px solid transparent;" onclick="seleccionarAvatar(this.src)">
+        <img src="https://ragnarokmedia.blob.core.windows.net/0010010110110110/%F0%9F%96%BCGALERIAS/%F0%9F%8C%80NEOGROUNDS.PLO/A44.PNG?sp=r&st=2026-09-25T20:51:50Z&se=2027-09-26T05:06:50Z&sv=2026-02-06&sr=c&sig=6NCuDi%2FQRTymkk959lCGT9RHQbrS1HmVrayem5VU5Kg%3D" style="width:40px; height:40px; border-radius:50%; cursor:pointer; border: 2px solid transparent;" onclick="seleccionarAvatar(this.src)">
+        <img src="https://ragnarokmedia.blob.core.windows.net/0010010110110110/%F0%9F%96%BCGALERIAS/%F0%9F%8C%80NEOGROUNDS.PLO/A38.PNG?sp=r&st=2026-09-25T20:51:50Z&se=2027-09-26T05:06:50Z&sv=2026-02-06&sr=c&sig=6NCuDi%2FQRTymkk959lCGT9RHQbrS1HmVrayem5VU5Kg%3D" style="width:40px; height:40px; border-radius:50%; cursor:pointer; border: 2px solid transparent;" onclick="seleccionarAvatar(this.src)">
+        <img src="https://ragnarokmedia.blob.core.windows.net/0010010110110110/%F0%9F%96%BCGALERIAS/%F0%9F%8C%80NEOGROUNDS.PLO/S16.PNG?sp=r&st=2026-09-25T20:51:50Z&se=2027-09-26T05:06:50Z&sv=2026-02-06&sr=c&sig=6NCuDi%2FQRTymkk959lCGT9RHQbrS1HmVrayem5VU5Kg%3D" style="width:40px; height:40px; border-radius:50%; cursor:pointer; border: 2px solid transparent;" onclick="seleccionarAvatar(this.src)">
         <img src="https://ragnarokmedia.blob.core.windows.net/0010010110110110/%F0%9F%96%BCGALERIAS/%F0%9F%8C%80NEOGROUNDS.PLO/S13.png?sp=r&st=2026-09-25T20:51:50Z&se=2027-09-26T05:06:50Z&sv=2026-02-06&sr=c&sig=6NCuDi%2FQRTymkk959lCGT9RHQbrS1HmVrayem5VU5Kg%3D" style="width:40px; height:40px; border-radius:50%; cursor:pointer; border: 2px solid transparent;" onclick="seleccionarAvatar(this.src)">
-        <img src="https://raw.githubusercontent.com/BlixDarkHorse/BlixDarkHorse.github.io/main/assets/fondo-default.jpg" style="width:40px; height:40px; border-radius:50%; cursor:pointer; border: 2px solid transparent;" onclick="seleccionarAvatar(this.src)">
+        <img src="https://ragnarokmedia.blob.core.windows.net/0010010110110110/%F0%9F%96%BCGALERIAS/%F0%9F%8C%80NEOGROUNDS.PLO/1.png?sp=r&st=2026-09-25T20:51:50Z&se=2027-09-26T05:06:50Z&sv=2026-02-06&sr=c&sig=6NCuDi%2FQRTymkk959lCGT9RHQbrS1HmVrayem5VU5Kg%3D" style="width:40px; height:40px; border-radius:50%; cursor:pointer; border: 2px solid transparent;" onclick="seleccionarAvatar(this.src)">
       </div>
       
       <h1 id="bdh-modal-username" class="bdh-marca-titulo" style="font-size: 1.2rem; color: #ff4500;">NOMBRE_USUARIO</h1>
@@ -183,15 +183,15 @@
             <div class="featured-block">
               <h2>TOP ANIME</h2>
               <div class="mini-slider">
-                <label for="m-serie" class="cover-box modal-de-contenido"><img src="https://ragnarokmedia.blob.core.windows.net/0010010110110110/%F0%9F%96%BCGALERIAS/%F0%9F%8C%80NEOGROUNDS.PLO/A44.png?sp=r&st=2026-09-25T20:51:50Z&se=2027-09-26T05:06:50Z&sv=2026-02-06&sr=c&sig=6NCuDi%2FQRTymkk959lCGT9RHQbrS1HmVrayem5VU5Kg%3D" loading="lazy" alt="Pluto"><div class="cover-title">PLUTO</div></label>
-                <label for="m-serie" class="cover-box modal-de-contenido"><img src="https://ragnarokmedia.blob.core.windows.net/0010010110110110/%F0%9F%96%BCGALERIAS/%F0%9F%8C%80NEOGROUNDS.PLO/A38.png?sp=r&st=2026-09-25T20:51:50Z&se=2027-09-26T05:06:50Z&sv=2026-02-06&sr=c&sig=6NCuDi%2FQRTymkk959lCGT9RHQbrS1HmVrayem5VU5Kg%3D" loading="lazy" alt="Naruto"><div class="cover-title">NARUTO</div></label>
+                <label for="m-serie" class="cover-box modal-de-contenido"><img src="https://ragnarokmedia.blob.core.windows.net/0010010110110110/%F0%9F%96%BCGALERIAS/%F0%9F%8C%80NEOGROUNDS.PLO/A44.PNG?sp=r&st=2026-09-25T20:51:50Z&se=2027-09-26T05:06:50Z&sv=2026-02-06&sr=c&sig=6NCuDi%2FQRTymkk959lCGT9RHQbrS1HmVrayem5VU5Kg%3D" loading="lazy" alt="Pluto"><div class="cover-title">PLUTO</div></label>
+                <label for="m-serie" class="cover-box modal-de-contenido"><img src="https://ragnarokmedia.blob.core.windows.net/0010010110110110/%F0%9F%96%BCGALERIAS/%F0%9F%8C%80NEOGROUNDS.PLO/A38.PNG?sp=r&st=2026-09-25T20:51:50Z&se=2027-09-26T05:06:50Z&sv=2026-02-06&sr=c&sig=6NCuDi%2FQRTymkk959lCGT9RHQbrS1HmVrayem5VU5Kg%3D" loading="lazy" alt="Naruto"><div class="cover-title">NARUTO</div></label>
               </div>
             </div>
 
             <div class="featured-block">
               <h2>TOP SERIES Y PELÍCULAS GOLDS</h2>
               <div class="mini-slider">
-                <label for="m-serie" class="cover-box modal-de-contenido"><img src="https://ragnarokmedia.blob.core.windows.net/0010010110110110/%F0%9F%96%BCGALERIAS/%F0%9F%8C%80NEOGROUNDS.PLO/S16.png?sp=r&st=2026-09-25T20:51:50Z&se=2027-09-26T05:06:50Z&sv=2026-02-06&sr=c&sig=6NCuDi%2FQRTymkk959lCGT9RHQbrS1HmVrayem5VU5Kg%3D" loading="lazy" alt="Lost"><div class="cover-title">LOST</div></label>
+                <label for="m-serie" class="cover-box modal-de-contenido"><img src="https://ragnarokmedia.blob.core.windows.net/0010010110110110/%F0%9F%96%BCGALERIAS/%F0%9F%8C%80NEOGROUNDS.PLO/S16.PNG?sp=r&st=2026-09-25T20:51:50Z&se=2027-09-26T05:06:50Z&sv=2026-02-06&sr=c&sig=6NCuDi%2FQRTymkk959lCGT9RHQbrS1HmVrayem5VU5Kg%3D" loading="lazy" alt="Lost"><div class="cover-title">LOST</div></label>
                 <label for="m-serie" class="cover-box modal-de-contenido"><img src="https://ragnarokmedia.blob.core.windows.net/0010010110110110/%F0%9F%96%BCGALERIAS/%F0%9F%8C%80NEOGROUNDS.PLO/S13.png?sp=r&st=2026-09-25T20:51:50Z&se=2027-09-26T05:06:50Z&sv=2026-02-06&sr=c&sig=6NCuDi%2FQRTymkk959lCGT9RHQbrS1HmVrayem5VU5Kg%3D" loading="lazy" alt="GOT"><div class="cover-title">GAME OF THRONES</div></label>
                 <label for="m-serie" class="cover-box modal-de-contenido"><img src="https://ragnarokmedia.blob.core.windows.net/0010010110110110/%F0%9F%96%BCGALERIAS/%F0%9F%8C%80NEOGROUNDS.PLO/S06.png?sp=r&st=2026-09-25T20:51:50Z&se=2027-09-26T05:06:50Z&sv=2026-02-06&sr=c&sig=6NCuDi%2FQRTymkk959lCGT9RHQbrS1HmVrayem5VU5Kg%3D" loading="lazy" alt="Breaking Bad"><div class="cover-title">BREAKING BAD</div></label>
               </div>
@@ -493,4 +493,17 @@
         </div>
 
         <div class="footer-motto">
-            🕷
+            🕷🕸 ¡HOY CONSTRUIMOS EL IMPERIO
+            🧙🏼‍♂️💜 🖤🔥🚀!
+        </div>
+
+    </div>
+
+</footer>
+   <!-- Loader de modales: detecta cajas en SECCIÓN 3 y 4, agrega clase y carga modales por demanda -->
+    <script src="scripts/modals-loader.js" defer></script>
+    <script src="scripts/bdh-profile.js" defer></script>
+    <script src="scripts/bdh-auth-vip.js" defer></script>
+
+
+</🐍🕸️🖤🔥🚀>
