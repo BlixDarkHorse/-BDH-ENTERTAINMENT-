@@ -43,6 +43,38 @@
     });
 
     // ---------------------------------------------------------
+    // CONTROL VISUAL DEL PERFIL
+    // ---------------------------------------------------------
+    function actualizarInterfazPerfil(identidad) {
+        const btnLoginView = document.getElementById('bdh-btn-login-view');
+        const profileView = document.getElementById('bdh-profile-view');
+        const navUsername = document.getElementById('bdh-nav-username');
+        const modalUsername = document.getElementById('bdh-modal-username');
+        
+        if (identidad && sesionActiva) {
+            if (btnLoginView) btnLoginView.style.display = 'none';
+            if (profileView) profileView.style.display = 'flex';
+            
+            if (navUsername) navUsername.innerText = identidad.split('@')[0];
+            if (modalUsername) modalUsername.innerText = identidad;
+        } else {
+            if (btnLoginView) btnLoginView.style.display = 'block';
+            if (profileView) profileView.style.display = 'none';
+        }
+    }
+
+    window.abrirModalPerfil = function() {
+        const modalPerfil = document.getElementById('bdh-toggle-perfil-modal');
+        if (modalPerfil) modalPerfil.checked = true;
+    };
+
+    window.cerrarSesionBDH = function() {
+        localStorage.removeItem('bdh_vip_exp');
+        localStorage.removeItem('bdh_vip_identity');
+        window.location.reload();
+    };
+
+    // ---------------------------------------------------------
     // MOTOR DE AUTENTICACIÓN Y LLAVES TARÁNTULA BDH
     // ---------------------------------------------------------
 
@@ -63,16 +95,24 @@
 
     function actualizarCronometro() {
         let timerDisplay = document.getElementById('bdh-user-time');
-        if (!timerDisplay) return;
+        let modalTimerDisplay = document.getElementById('bdh-user-time-modal');
+        if (!timerDisplay && !modalTimerDisplay) return;
 
         let restante = calcularTiempoRestante();
         
         if (restante <= 0) {
-            timerDisplay.innerText = "ACCESO BLOQUEADO";
-            timerDisplay.style.color = "red";
+            if (timerDisplay) {
+                timerDisplay.innerText = "ACCESO BLOQUEADO";
+                timerDisplay.style.color = "red";
+            }
+            if (modalTimerDisplay) {
+                modalTimerDisplay.innerText = "ACCESO BLOQUEADO";
+                modalTimerDisplay.style.color = "red";
+            }
             sesionActiva = false;
         } else {
-            timerDisplay.style.color = "#fff";
+            if (timerDisplay) timerDisplay.style.color = "#fff";
+            if (modalTimerDisplay) modalTimerDisplay.style.color = "#fff";
             sesionActiva = true;
             
             let segs = Math.floor(restante / 1000);
@@ -85,8 +125,13 @@
             const mStr = m < 10 ? '0'+m : m;
             const sStr = s < 10 ? '0'+s : s;
             
-            timerDisplay.innerText = `${d} Días ${hStr}:${mStr}:${sStr}`;
+            let timeText = `${d} Días ${hStr}:${mStr}:${sStr}`;
+            if (timerDisplay) timerDisplay.innerText = timeText;
+            if (modalTimerDisplay) modalTimerDisplay.innerText = timeText;
         }
+        
+        const identidadGuardada = localStorage.getItem('bdh_vip_identity');
+        actualizarInterfazPerfil(identidadGuardada);
     }
 
     document.addEventListener('DOMContentLoaded', () => {
@@ -153,6 +198,7 @@
                 
                 if (codeInput) codeInput.value = '';
                 actualizarCronometro();
+                actualizarInterfazPerfil(identidadOficial);
 
                 if (esCanje) {
                     alert(`⚠️ ALTO. TOMA CAPTURA DE PANTALLA AHORA MISMO ⚠️\n\nTu Identidad Oficial y Permanente es:\n\n👉 ${identidadOficial} 👈\n\nGuarda esta captura. Si pierdes este nombre exacto, perderás tu tiempo VIP en otros dispositivos y no habrá recuperación.`);
