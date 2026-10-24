@@ -1,0 +1,1631 @@
+<!TIPODOC SQR 🐍🕸️>
+<SQR lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>GALAXY VYOLETA OS — UNIVERSO BDH</title>
+  <meta name="theme-color" content="#06060a">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="mobile-web-app-capable" content="yes">
+  <link rel="icon" href="https://ragnarokmedia.blob.core.windows.net/0010010110110110/%F0%9F%96%BCGALERIAS/%F0%9F%8C%80NEOGROUNDS.PLO/icon.ico?sp=r&st=2026-09-25T20:51:50Z&se=2027-09-26T05:06:50Z&sv=2026-02-06&sr=c&sig=6NCuDi%2FQRTymkk959lCGT9RHQbrS1HmVrayem5VU5Kg%3D">
+
+  <style>
+    /* =========================================================================
+       GALAXY VYOLETA OS MOBILE — BARE METAL DESIGN SYSTEM
+       UNIVERSO BDH / BLAZAR ON READY
+       ========================================================================= */
+    :root {
+      --gx-pink: #ff00d4;
+      --gx-pink-glow: rgba(255, 0, 212, 0.5);
+      --gx-magenta: #ff0095;
+      --gx-gold: #d4af37;
+      --gx-gold-dark: #876b0e;
+      --gx-gold-glow: rgba(212, 175, 55, 0.5);
+      --gx-orange: #ff4500;
+      --gx-orange-glow: rgba(255, 69, 0, 0.6);
+      --gx-dark: #06060a;
+      --gx-surface: rgba(14, 10, 22, 0.94);
+      --gx-border: rgba(255, 0, 212, 0.35);
+      --font-main: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      --nav-width: 76px;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+    }
+
+    html {
+      width: 100%;
+      height: 100dvh;
+      overflow: hidden;
+      background: var(--gx-dark);
+    }
+
+    body {
+      width: 100%;
+      height: 100dvh;
+      background-color: var(--gx-dark);
+      background-image: 
+        linear-gradient(180deg, rgba(6, 6, 12, 0.82) 0%, rgba(6, 6, 12, 0.92) 100%),
+        url('https://ragnarokmedia.blob.core.windows.net/0010010110110110/%F0%9F%96%BCGALERIAS/%F0%9F%8C%80NEOGROUNDS.PLO/GV.png?sp=r&st=2026-09-25T20:51:50Z&se=2027-09-26T05:06:50Z&sv=2026-02-06&sr=c&sig=6NCuDi%2FQRTymkk959lCGT9RHQbrS1HmVrayem5VU5Kg%3D');
+      background-size: cover;
+      background-position: center center;
+      background-attachment: fixed;
+      background-repeat: no-repeat;
+      color: #fff;
+      font-family: var(--font-main);
+      overflow: hidden;
+      display: flex !important;
+      flex-direction: row !important;
+    }
+
+    /* ---------------------------------------------------------
+       1. BARRA TAB NAV LATERAL (CENTRADOS VERTICALMENTE EN MEDIO)
+       --------------------------------------------------------- */
+    .mobile-tab-nav {
+      width: var(--nav-width);
+      min-width: var(--nav-width);
+      height: 100dvh;
+      background: rgba(4, 3, 8, 0.94);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border-right: 1.5px solid var(--gx-border);
+      box-shadow: 4px 0 30px rgba(0, 0, 0, 0.9);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center; /* Recorridos en medio para aprovechar el espacio */
+      gap: 10px;
+      padding: 10px 0;
+      z-index: 1000;
+      position: relative;
+    }
+
+    /* BOTÓN TAB INDIVIDUAL (ICONOS MÁS GRANDES Y VISIBLES) */
+    .nav-tab-item {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      width: 58px;
+      height: 58px;
+      border-radius: 50%;
+      transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    .nav-tab-item:active {
+      transform: scale(0.92);
+    }
+
+    .nav-tab-icon {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      border: 1.5px solid rgba(255, 0, 212, 0.45);
+      background: rgba(255, 255, 255, 0.04);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.8), inset 0 0 8px rgba(0, 0, 0, 0.6);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      padding: 3px;
+      transition: all 0.25s ease;
+    }
+    .nav-tab-item.active .nav-tab-icon,
+    .nav-tab-item.bubble-open .nav-tab-icon {
+      border-color: var(--gx-gold);
+      box-shadow: 0 0 16px var(--gx-gold-glow);
+      transform: scale(1.08);
+      background: rgba(212, 175, 55, 0.12);
+    }
+
+    .nav-tab-icon img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      pointer-events: none;
+      filter: drop-shadow(0 0 5px var(--gx-gold));
+    }
+    .nav-tab-emoji {
+      font-size: 1.85rem;
+      line-height: 1;
+      filter: drop-shadow(0 0 8px var(--gx-pink));
+      pointer-events: none;
+    }
+
+    /* Borde Naranja exclusivo para Perfil */
+    .nav-tab-item.profile-tab .nav-tab-icon {
+      border: 2.5px solid var(--gx-orange);
+      box-shadow: 0 0 16px var(--gx-orange-glow);
+      padding: 0;
+    }
+    .nav-tab-item.profile-tab .nav-tab-icon img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 50%;
+    }
+
+    /* Borde Dorado brillante para Stars */
+    .nav-tab-item.stars-tab .nav-tab-icon {
+      border: 2px solid var(--gx-gold);
+      box-shadow: 0 0 14px var(--gx-gold-glow);
+    }
+
+    /* BURBUJA FLOTANTE EMERGENTE (DOBLE TOQUE) */
+    .tab-bubble-tooltip {
+      position: absolute;
+      left: calc(var(--nav-width) - 4px);
+      top: 50%;
+      transform: translateY(-50%) scale(0.85);
+      background: linear-gradient(135deg, rgba(22, 10, 32, 0.98), rgba(10, 5, 18, 0.98));
+      border: 1.5px solid var(--gx-pink);
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.95), 0 0 20px var(--gx-pink-glow);
+      border-radius: 14px;
+      padding: 9px 15px;
+      white-space: nowrap;
+      pointer-events: none;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      z-index: 2001;
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+    .tab-bubble-tooltip::before {
+      content: '';
+      position: absolute;
+      left: -7px;
+      top: 50%;
+      transform: translateY(-50%);
+      border-top: 6px solid transparent;
+      border-bottom: 6px solid transparent;
+      border-right: 7px solid var(--gx-pink);
+    }
+    .tab-bubble-title {
+      font-size: 0.84rem;
+      font-weight: 800;
+      color: #fff;
+      letter-spacing: 0.5px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .tab-bubble-desc {
+      font-size: 0.72rem;
+      color: var(--gx-gold);
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+    .nav-tab-item.bubble-open .tab-bubble-tooltip {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(-50%) scale(1);
+    }
+
+    /* ---------------------------------------------------------
+       2. CONTENEDOR PRINCIPAL DEL CHAT Y SISTEMA
+       --------------------------------------------------------- */
+    .mobile-chat-os {
+      flex: 1;
+      width: calc(100vw - var(--nav-width));
+      height: 100dvh;
+      display: flex !important;
+      flex-direction: column !important;
+      position: relative;
+      overflow: hidden;
+      background: radial-gradient(circle at top right, rgba(255, 0, 212, 0.15) 0%, rgba(6, 6, 12, 0.96) 80%);
+    }
+
+    /* CABECERA GALAXY VYOLETA */
+    .gx-mobile-header {
+      padding: 10px 14px;
+      background: rgba(8, 5, 14, 0.92);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--gx-border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      z-index: 100;
+      flex-shrink: 0;
+    }
+    .gx-header-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .gx-avatar-ring {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      border: 2px solid var(--gx-pink);
+      box-shadow: 0 0 14px var(--gx-pink-glow);
+      padding: 2px;
+      background: rgba(0, 0, 0, 0.6);
+      animation: pulseAvatar 3s infinite ease-in-out;
+    }
+    .gx-avatar-ring img {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      object-fit: cover;
+      display: block;
+    }
+    @keyframes pulseAvatar {
+      0%, 100% { box-shadow: 0 0 12px var(--gx-pink-glow); border-color: var(--gx-pink); }
+      50% { box-shadow: 0 0 20px var(--gx-gold-glow); border-color: var(--gx-gold); }
+    }
+    .gx-header-info h1 {
+      font-size: 0.9rem;
+      font-weight: 900;
+      letter-spacing: 1.2px;
+      color: #fff;
+      text-shadow: 0 0 8px var(--gx-pink);
+    }
+    .gx-header-status {
+      font-size: 0.68rem;
+      color: var(--gx-gold);
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .gx-status-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #00ff66;
+      box-shadow: 0 0 8px #00ff66;
+    }
+
+    /* BANNER DE STARS & TIEMPO VIP EN GRANDE (COMO EN EL INDEX) */
+    .mobile-vip-banner {
+      background: linear-gradient(90deg, rgba(20, 10, 28, 0.95), rgba(10, 5, 18, 0.95));
+      border-bottom: 1px solid rgba(212, 175, 55, 0.4);
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.6);
+      padding: 8px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.75rem;
+      font-weight: 800;
+      cursor: pointer;
+      flex-shrink: 0;
+      z-index: 90;
+    }
+    .vip-banner-stars {
+      color: var(--gx-pink);
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .vip-banner-stars span {
+      color: #fff;
+    }
+    .vip-banner-sep {
+      color: var(--gx-pink);
+      font-weight: 400;
+    }
+    .vip-banner-time {
+      color: var(--gx-gold);
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .vip-banner-time span {
+      color: #fff;
+      font-size: 0.85rem;
+      text-shadow: 0 0 8px var(--gx-gold);
+      font-weight: 900;
+      letter-spacing: 0.5px;
+    }
+
+    /* ZONA DE MENSAJES Y CONVERSACIÓN DEL CHAT */
+    .gx-chat-scroll {
+      flex: 1;
+      overflow-y: auto;
+      padding: 14px 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      scroll-behavior: smooth;
+      scrollbar-width: none;
+    }
+    .gx-chat-scroll::-webkit-scrollbar { display: none; }
+
+    .chat-msg-row {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      animation: msgPop 0.28s ease-out;
+    }
+    @keyframes msgPop {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .msg-bubble-bot {
+      align-self: flex-start;
+      background: rgba(255, 0, 212, 0.12);
+      border: 1.5px solid rgba(255, 0, 212, 0.4);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.65), inset 0 0 10px rgba(255, 0, 212, 0.08);
+      padding: 12px 14px;
+      border-radius: 16px 16px 16px 4px;
+      max-width: 90%;
+      font-size: 0.88rem;
+      line-height: 1.45;
+      color: #f5f5f5;
+    }
+    .msg-bubble-bot b { color: var(--gx-gold); }
+
+    .msg-bubble-user {
+      align-self: flex-end;
+      background: rgba(212, 175, 55, 0.16);
+      border: 1.5px solid rgba(212, 175, 55, 0.45);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.65);
+      padding: 10px 14px;
+      border-radius: 16px 16px 4px 16px;
+      max-width: 85%;
+      font-size: 0.88rem;
+      line-height: 1.4;
+      color: #fff;
+    }
+
+    /* TARJETA DE CONTENIDO EN EL CHAT */
+    .chat-card-preview {
+      margin-top: 10px;
+      background: rgba(10, 6, 16, 0.96);
+      border: 1px solid var(--gx-pink);
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.85);
+      display: flex;
+      flex-direction: column;
+    }
+    .chat-card-media {
+      width: 100%;
+      height: 120px;
+      background-size: cover;
+      background-position: center;
+      position: relative;
+    }
+    .chat-card-media::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, transparent 40%, rgba(10, 6, 16, 0.98) 100%);
+    }
+    .chat-card-info {
+      padding: 10px 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+    .chat-card-title {
+      font-size: 0.92rem;
+      font-weight: 800;
+      color: #fff;
+    }
+    .chat-card-desc {
+      font-size: 0.74rem;
+      color: #bbb;
+      line-height: 1.3;
+    }
+    .chat-card-btn {
+      margin-top: 6px;
+      background: linear-gradient(135deg, var(--gx-pink), var(--gx-magenta));
+      color: #fff;
+      font-weight: 800;
+      font-size: 0.78rem;
+      border: none;
+      border-radius: 8px;
+      padding: 8px 12px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      box-shadow: 0 0 12px var(--gx-pink-glow);
+    }
+
+    /* CHIPS DE ACCIÓN RÁPIDA (INTUITIVOS, CERO ESCRITURA) */
+    .gx-quick-chips {
+      display: flex;
+      gap: 7px;
+      padding: 6px 12px;
+      overflow-x: auto;
+      scrollbar-width: none;
+      background: rgba(8, 5, 14, 0.6);
+      flex-shrink: 0;
+    }
+    .gx-quick-chips::-webkit-scrollbar { display: none; }
+    .gx-chip {
+      flex: 0 0 auto;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 0, 212, 0.35);
+      color: #fff;
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 6px 11px;
+      border-radius: 18px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      white-space: nowrap;
+    }
+    .gx-chip:active {
+      background: var(--gx-pink);
+      color: #000;
+      border-color: var(--gx-pink);
+      transform: scale(0.95);
+    }
+
+    /* CAJA DE TEXTO Y BÚSQUEDA DEL CHAT */
+    .gx-chat-input-bar {
+      padding: 8px 12px;
+      background: rgba(6, 4, 10, 0.96);
+      backdrop-filter: blur(15px);
+      border-top: 1px solid var(--gx-border);
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      flex-shrink: 0;
+    }
+    .gx-input-wrapper {
+      flex: 1;
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+    .gx-input-wrapper input {
+      width: 100%;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1.5px solid rgba(255, 0, 212, 0.35);
+      color: #fff;
+      font-size: 0.88rem;
+      padding: 10px 38px 10px 14px;
+      border-radius: 22px;
+      outline: none;
+      user-select: text;
+    }
+    .gx-input-wrapper input:focus {
+      border-color: var(--gx-pink);
+      box-shadow: 0 0 10px var(--gx-pink-glow);
+    }
+    .gx-btn-search-icon {
+      position: absolute;
+      right: 12px;
+      background: none;
+      border: none;
+      color: var(--gx-gold);
+      font-size: 1rem;
+      cursor: pointer;
+    }
+    .gx-btn-send {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--gx-pink), var(--gx-magenta));
+      border: none;
+      color: #fff;
+      font-size: 1rem;
+      font-weight: 900;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 12px var(--gx-pink-glow);
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+    .gx-btn-send:active { transform: scale(0.9); }
+
+    /* ---------------------------------------------------------
+       3. LÍNEA DEL MINIFOOTER HASTA ABAJO (REQUISITO 2 DEL USUARIO)
+       --------------------------------------------------------- */
+    .gx-chat-bottom-footer {
+      background: rgba(4, 2, 6, 0.98);
+      border-top: 1px solid rgba(255, 215, 0, 0.25);
+      padding: 6px 10px 8px 10px;
+      text-align: center;
+      flex-shrink: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      z-index: 100;
+    }
+    .gx-chat-bottom-footer .footer-copy {
+      font-size: 0.68rem;
+      color: #aaa;
+      letter-spacing: 0.5px;
+    }
+    .gx-chat-bottom-footer .footer-copy span {
+      color: var(--gx-gold);
+      font-weight: 800;
+      margin-left: 4px;
+    }
+    .gx-chat-bottom-footer .footer-motto {
+      font-size: 0.65rem;
+      color: var(--gx-pink);
+      font-weight: 700;
+      letter-spacing: 0.3px;
+    }
+
+    /* ---------------------------------------------------------
+       4. BOTTOM SHEET (RESULTADOS DE CONTENIDO / HISTORIAL)
+       --------------------------------------------------------- */
+    .gx-bottom-sheet {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 65dvh;
+      background: rgba(10, 6, 16, 0.98);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-top: 2px solid var(--gx-gold);
+      border-radius: 22px 22px 0 0;
+      padding: 14px 16px;
+      box-shadow: 0 -12px 40px rgba(0, 0, 0, 0.95), 0 0 25px var(--gx-gold-glow);
+      transform: translateY(105%);
+      transition: transform 0.32s cubic-bezier(0.16, 1, 0.3, 1);
+      z-index: 2000;
+      display: flex;
+      flex-direction: column;
+    }
+    .gx-bottom-sheet.open {
+      transform: translateY(0);
+    }
+    .sheet-drag-handle {
+      width: 44px;
+      height: 4px;
+      background: rgba(255, 255, 255, 0.3);
+      border-radius: 4px;
+      margin: 0 auto 10px auto;
+    }
+    .sheet-header-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    .sheet-title {
+      font-size: 1rem;
+      font-weight: 800;
+      color: var(--gx-gold);
+      letter-spacing: 0.5px;
+    }
+    .sheet-close-btn {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: #fff;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      font-size: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+    .sheet-cards-scroll {
+      flex: 1;
+      overflow-x: auto;
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      padding: 10px 4px;
+      scrollbar-width: none;
+    }
+    .sheet-cards-scroll::-webkit-scrollbar { display: none; }
+
+    .sheet-movie-card {
+      flex: 0 0 140px;
+      height: 210px;
+      border-radius: 12px;
+      border: 1.5px solid rgba(255, 0, 212, 0.4);
+      background-size: cover;
+      background-position: center;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.8);
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+    }
+    .sheet-movie-card:active {
+      transform: scale(0.96);
+      border-color: var(--gx-gold);
+    }
+    .sheet-card-overlay {
+      background: linear-gradient(180deg, transparent 20%, rgba(0, 0, 0, 0.94) 80%);
+      padding: 8px 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+    .sheet-card-title {
+      font-size: 0.8rem;
+      font-weight: 800;
+      color: #fff;
+      line-height: 1.2;
+    }
+    .sheet-card-tag {
+      font-size: 0.65rem;
+      color: var(--gx-gold);
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    /* ---------------------------------------------------------
+       5. MODALES (PERFIL, STARS/TIEMPO VIP, DESCARGAS, MINIFOOTER)
+       --------------------------------------------------------- */
+    .gx-modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.88);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      z-index: 3000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .gx-modal-overlay.active { display: flex; }
+
+    .gx-modal-card {
+      width: 100%;
+      max-width: 350px;
+      background: rgba(14, 10, 22, 0.98);
+      border: 2px solid var(--gx-pink);
+      box-shadow: 0 0 35px var(--gx-pink-glow);
+      border-radius: 20px;
+      padding: 22px 18px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+    .avatar-gallery-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+      margin: 12px 0;
+      max-height: 130px;
+      overflow-y: auto;
+    }
+    .avatar-choice {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      border: 1.5px solid var(--gx-pink);
+      object-fit: cover;
+      cursor: pointer;
+    }
+    .avatar-choice:active { transform: scale(0.9); border-color: var(--gx-gold); }
+
+    /* Modal Stars específico */
+    .stars-modal-card {
+      border-color: var(--gx-gold);
+      box-shadow: 0 0 35px var(--gx-gold-glow);
+    }
+    .stars-modal-input {
+      width: 100%;
+      max-width: 260px;
+      background: #000;
+      color: #fff;
+      border: 1px solid var(--gx-pink);
+      border-radius: 8px;
+      padding: 10px;
+      text-align: center;
+      font-size: 0.95rem;
+      margin-bottom: 10px;
+      outline: none;
+    }
+    .stars-modal-input:focus {
+      border-color: var(--gx-gold);
+      box-shadow: 0 0 10px var(--gx-gold-glow);
+    }
+    .stars-btn-canjear {
+      background: linear-gradient(135deg, var(--gx-gold), var(--gx-gold-dark));
+      color: #000;
+      font-weight: 900;
+      border: none;
+      border-radius: 20px;
+      padding: 10px 24px;
+      font-size: 0.9rem;
+      cursor: pointer;
+      box-shadow: 0 0 15px var(--gx-gold-glow);
+      margin-top: 4px;
+    }
+    .stars-btn-canjear:active { transform: scale(0.95); }
+
+    /* Modal Minifooter */
+    .minifooter-modal {
+      width: 100%;
+      max-width: 360px;
+      background: rgba(10, 6, 18, 0.98);
+      border: 2px solid var(--gx-gold);
+      box-shadow: 0 0 35px var(--gx-gold-glow);
+      border-radius: 20px;
+      padding: 20px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      max-height: 85dvh;
+      overflow-y: auto;
+    }
+    .minifooter-title {
+      font-size: 1.05rem;
+      font-weight: 900;
+      color: var(--gx-gold);
+      letter-spacing: 1px;
+      text-align: center;
+    }
+    .minifooter-section {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 10px;
+      padding: 8px 12px;
+      text-align: left;
+    }
+    .minifooter-section b {
+      color: var(--gx-pink);
+      display: block;
+      margin-bottom: 4px;
+      font-size: 0.8rem;
+    }
+    .minifooter-link {
+      display: block;
+      color: #ddd;
+      font-size: 0.76rem;
+      text-decoration: none;
+      padding: 3px 0;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body class="mobile-layout-body">
+
+  <!-- =========================================================
+       1. BARRA TAB NAV LATERAL (ICONOS MÁS GRANDES Y CENTRADOS)
+       ========================================================= -->
+  <nav class="mobile-tab-nav" id="mobile-tab-nav">
+
+    <!-- 1. INICIO (Últimos vistos en Black Tube / Killrog) -->
+    <div class="nav-tab-item" data-action="inicio" onclick="VyoletaApp.handleTabTouch(this, 'inicio')">
+      <div class="nav-tab-icon">
+        <img src="https://ragnarokmedia.blob.core.windows.net/0010010110110110/%F0%9F%96%BCGALERIAS/%F0%9F%8C%80NEOGROUNDS.PLO/INICIO.png?sp=r&st=2026-09-25T20:51:50Z&se=2027-09-26T05:06:50Z&sv=2026-02-06&sr=c&sig=6NCuDi%2FQRTymkk959lCGT9RHQbrS1HmVrayem5VU5Kg%3D" alt="Inicio">
+      </div>
+      <div class="tab-bubble-tooltip">
+        <span class="tab-bubble-title">🏠 INICIO</span>
+        <span class="tab-bubble-desc">Últimos que se vieron</span>
+      </div>
+    </div>
+
+    <!-- 2. ORIGINALS (Bloqueado: Próximamente) -->
+    <div class="nav-tab-item" data-action="originals" onclick="VyoletaApp.handleTabTouch(this, 'originals')">
+      <div class="nav-tab-icon">
+        <img src="https://ragnarokmedia.blob.core.windows.net/0010010110110110/%F0%9F%96%BCGALERIAS/%F0%9F%8C%80NEOGROUNDS.PLO/ORIGINALS.png?sp=r&st=2026-09-25T20:51:50Z&se=2027-09-26T05:06:50Z&sv=2026-02-06&sr=c&sig=6NCuDi%2FQRTymkk959lCGT9RHQbrS1HmVrayem5VU5Kg%3D" alt="Originals">
+      </div>
+      <div class="tab-bubble-tooltip">
+        <span class="tab-bubble-title">🎬 ORIGINALS</span>
+        <span class="tab-bubble-desc" style="color:#ff0055;">🔒 Próximamente</span>
+      </div>
+    </div>
+
+    <!-- 3. ANIME (Catálogo Seinen y Shonen) -->
+    <div class="nav-tab-item" data-action="anime" onclick="VyoletaApp.handleTabTouch(this, 'anime')">
+      <div class="nav-tab-icon">
+        <img src="https://ragnarokmedia.blob.core.windows.net/0010010110110110/%F0%9F%96%BCGALERIAS/%F0%9F%8C%80NEOGROUNDS.PLO/ANIME.png?sp=r&st=2026-09-25T20:51:50Z&se=2027-09-26T05:06:50Z&sv=2026-02-06&sr=c&sig=6NCuDi%2FQRTymkk959lCGT9RHQbrS1HmVrayem5VU5Kg%3D" alt="Anime">
+      </div>
+      <div class="tab-bubble-tooltip">
+        <span class="tab-bubble-title">⚔️ ANIME</span>
+        <span class="tab-bubble-desc">Catálogo disponible</span>
+      </div>
+    </div>
+
+    <!-- 4. GOLDS (Cine y Series de Culto) -->
+    <div class="nav-tab-item" data-action="golds" onclick="VyoletaApp.handleTabTouch(this, 'golds')">
+      <div class="nav-tab-icon">
+        <img src="https://ragnarokmedia.blob.core.windows.net/0010010110110110/%F0%9F%96%BCGALERIAS/%F0%9F%8C%80NEOGROUNDS.PLO/GOLDS.png?sp=r&st=2026-09-25T20:51:50Z&se=2027-09-26T05:06:50Z&sv=2026-02-06&sr=c&sig=6NCuDi%2FQRTymkk959lCGT9RHQbrS1HmVrayem5VU5Kg%3D" alt="Golds">
+      </div>
+      <div class="tab-bubble-tooltip">
+        <span class="tab-bubble-title">⭐ GOLDS</span>
+        <span class="tab-bubble-desc">Series & Cine de Culto</span>
+      </div>
+    </div>
+
+    <!-- 5. PERFIL (Avatar con borde naranja #ff4500) -->
+    <div class="nav-tab-item profile-tab" data-action="perfil" onclick="VyoletaApp.handleTabTouch(this, 'perfil')">
+      <div class="nav-tab-icon">
+        <img id="tab-avatar-img" src="https://ragnarokmedia.blob.core.windows.net/0010010110110110/%F0%9F%96%BCGALERIAS/%F0%9F%8C%80NEOGROUNDS.PLO/1.png?sp=r&st=2026-09-25T20:51:50Z&se=2027-09-26T05:06:50Z&sv=2026-02-06&sr=c&sig=6NCuDi%2FQRTymkk959lCGT9RHQbrS1HmVrayem5VU5Kg%3D" alt="Perfil">
+      </div>
+      <div class="tab-bubble-tooltip">
+        <span class="tab-bubble-title">👤 MI PERFIL</span>
+        <span class="tab-bubble-desc" style="color:var(--gx-orange);">Ajustes & Avatar</span>
+      </div>
+    </div>
+
+    <!-- 6. DESCARGA (Instalar en Pantalla de Inicio / App móvil) -->
+    <div class="nav-tab-item" data-action="descarga" onclick="VyoletaApp.handleTabTouch(this, 'descarga')">
+      <div class="nav-tab-icon">
+        <img src="https://ragnarokmedia.blob.core.windows.net/0010010110110110/%F0%9F%96%BCGALERIAS/%F0%9F%8C%80NEOGROUNDS.PLO/icon.ico?sp=r&st=2026-09-25T20:51:50Z&se=2027-09-26T05:06:50Z&sv=2026-02-06&sr=c&sig=6NCuDi%2FQRTymkk959lCGT9RHQbrS1HmVrayem5VU5Kg%3D" alt="Descargas">
+      </div>
+      <div class="tab-bubble-tooltip">
+        <span class="tab-bubble-title">📱 DESCARGAR APP</span>
+        <span class="tab-bubble-desc">Instalar en Pantalla de Inicio</span>
+      </div>
+    </div>
+
+    <!-- 7. STARS VIP (Debajo de Perfil y Descargas para Recargar/Tiempo) -->
+    <div class="nav-tab-item stars-tab" data-action="stars" onclick="VyoletaApp.handleTabTouch(this, 'stars')">
+      <div class="nav-tab-icon">
+        <img src="https://ragnarokmedia.blob.core.windows.net/0010010110110110/%F0%9F%96%BCGALERIAS/%F0%9F%8C%80NEOGROUNDS.PLO/STARS.png?sp=r&st=2026-09-25T20:51:50Z&se=2027-09-26T05:06:50Z&sv=2026-02-06&sr=c&sig=6NCuDi%2FQRTymkk959lCGT9RHQbrS1HmVrayem5VU5Kg%3D" alt="Stars">
+      </div>
+      <div class="tab-bubble-tooltip">
+        <span class="tab-bubble-title">⭐ STARS & VIP</span>
+        <span class="tab-bubble-desc">Canjear Código / Recargar</span>
+      </div>
+    </div>
+
+    <!-- 8. MINIFOOTER BDH (Emoji 🧙‍♂️) -->
+    <div class="nav-tab-item" data-action="minifooter" onclick="VyoletaApp.handleTabTouch(this, 'minifooter')">
+      <div class="nav-tab-icon">
+        <span class="nav-tab-emoji">🧙‍♂️</span>
+      </div>
+      <div class="tab-bubble-tooltip">
+        <span class="tab-bubble-title">🧙‍♂️ UNIVERSO BDH</span>
+        <span class="tab-bubble-desc">Imperio, Legal & Redes</span>
+      </div>
+    </div>
+
+  </nav>
+
+  <!-- =========================================================
+       2. SISTEMA OPERATIVO GALAXY VYOLETA OS
+       ========================================================= -->
+  <main class="mobile-chat-os" id="main-chat-os" onclick="VyoletaApp.closeActiveBubbles(event)">
+
+    <!-- CABECERA SUPERIOR -->
+    <header class="gx-mobile-header">
+      <div class="gx-header-left">
+        <div class="gx-avatar-ring">
+          <img src="https://ragnarokmedia.blob.core.windows.net/0010010110110110/%F0%9F%96%BCGALERIAS/%F0%9F%8C%80NEOGROUNDS.PLO/GV.png?sp=r&st=2026-09-25T20:51:50Z&se=2027-09-26T05:06:50Z&sv=2026-02-06&sr=c&sig=6NCuDi%2FQRTymkk959lCGT9RHQbrS1HmVrayem5VU5Kg%3D" alt="Galaxy Vyoleta">
+        </div>
+        <div class="gx-header-info">
+          <h1>GALAXY VYOLETA OS</h1>
+          <div class="gx-header-status">
+            <span class="gx-status-dot"></span>
+            <span id="gx-user-alias">LORD_BDH</span>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- BANNER DE STARS Y TIEMPO VIP EN GRANDE (COMO EN EL INDEX) -->
+    <div class="mobile-vip-banner" onclick="VyoletaApp.openStarsModal()" title="Toca para gestionar Stars o Canjear Tiempo">
+      <div class="vip-banner-stars">
+        ⭐ STARS: <span id="gx-stars-count">1,500</span>
+      </div>
+      <div class="vip-banner-sep">|</div>
+      <div class="vip-banner-time">
+        ⏳ ACCESO VIP: <span id="gx-big-timer">VERIFICANDO...</span>
+      </div>
+    </div>
+
+    <!-- CUERPO DE CONVERSACIÓN / RESULTADOS DEL CHAT -->
+    <div class="gx-chat-scroll" id="gx-chat-scroll">
+      <!-- Los mensajes y tarjetas interactivas se inyectan dinámicamente aquí -->
+    </div>
+
+    <!-- CHIPS DE ACCIÓN RÁPIDA (INTUITIVOS, CERO ESCRITURA) -->
+    <div class="gx-quick-chips">
+      <button class="gx-chip" onclick="VyoletaApp.triggerChip('que_ver')">🎬 ¿Qué ver hoy?</button>
+      <button class="gx-chip" onclick="VyoletaApp.triggerChip('ultimos')">⏳ Últimos vistos</button>
+      <button class="gx-chip" onclick="VyoletaApp.triggerChip('anime')">⚔️ Anime</button>
+      <button class="gx-chip" onclick="VyoletaApp.triggerChip('golds')">⭐ Golds</button>
+      <button class="gx-chip" onclick="VyoletaApp.triggerChip('canjear')">🔑 Canjear Stars</button>
+      <button class="gx-chip" onclick="VyoletaApp.triggerChip('instalar')">📱 Instalar App</button>
+    </div>
+
+    <!-- CAJA DE MENSAJE Y BÚSQUEDA -->
+    <div class="gx-chat-input-bar">
+      <div class="gx-input-wrapper">
+        <input type="text" id="gx-chat-input" placeholder="Buscar película, anime o serie..." autocomplete="off" onkeypress="if(event.key === 'Enter') VyoletaApp.handleSend()">
+        <button class="gx-btn-search-icon" onclick="VyoletaApp.handleSend()" title="Buscar">🔍</button>
+      </div>
+      <button class="gx-btn-send" onclick="VyoletaApp.handleSend()" title="Enviar">➤</button>
+    </div>
+
+    <!-- LÍNEA DEL MINIFOOTER HASTA ABAJO (REQUISITO DEL USUARIO) -->
+    <footer class="gx-chat-bottom-footer" onclick="VyoletaApp.openMinifooterModal()">
+      <div class="footer-copy">
+        © 2026 UNIVERSO BDH / BDH CORPS 🪐 <span>BY LORD BDH</span>
+      </div>
+      <div class="footer-motto">
+        🕷🕸 ¡HOY CONSTRUIMOS EL IMPERIO 🧙🏼‍♂️💜 🖤🔥🚀!
+      </div>
+    </footer>
+
+    <!-- BOTTOM SHEET (RESULTADOS Y CARRUSELES) -->
+    <div class="gx-bottom-sheet" id="gx-bottom-sheet">
+      <div class="sheet-drag-handle"></div>
+      <div class="sheet-header-row">
+        <h2 class="sheet-title" id="sheet-title">🎬 Contenidos Disponibles</h2>
+        <button class="sheet-close-btn" onclick="VyoletaApp.closeSheet()">✕</button>
+      </div>
+      <div class="sheet-cards-scroll" id="sheet-cards-container">
+        <!-- Tarjetas dinámicas inyectadas por JS -->
+      </div>
+    </div>
+
+  </main>
+
+  <!-- =========================================================
+       3. MODALES DE SISTEMA
+       ========================================================= -->
+
+  <!-- MODAL DE PERFIL Y CAMBIO DE AVATAR -->
+  <div class="gx-modal-overlay" id="modal-perfil">
+    <div class="gx-modal-card" style="border-color:var(--gx-orange); box-shadow:0 0 35px var(--gx-orange-glow);">
+      <img id="modal-avatar-preview" class="avatar-choice" style="width:84px; height:84px; border:3px solid var(--gx-orange); margin-bottom:8px;" src="https://ragnarokmedia.blob.core.windows.net/0010010110110110/%F0%9F%96%BCGALERIAS/%F0%9F%8C%80NEOGROUNDS.PLO/1.png?sp=r&st=2026-09-25T20:51:50Z&se=2027-09-26T05:06:50Z&sv=2026-02-06&sr=c&sig=6NCuDi%2FQRTymkk959lCGT9RHQbrS1HmVrayem5VU5Kg%3D" alt="Avatar">
+      <h2 id="modal-perfil-name" style="color:var(--gx-orange); font-size:1.1rem; margin-bottom:4px;">LORD_BDH</h2>
+      <span id="modal-perfil-time" style="color:var(--gx-gold); font-size:0.8rem; font-weight:700;">ACCESO VIP ACTIVO</span>
+
+      <p style="font-size:0.8rem; color:#aaa; margin: 12px 0 6px;">Selecciona tu foto de perfil:</p>
+      <div class="avatar-gallery-grid">
+        <img class="avatar-choice" src="https://ragnarokmedia.blob.core.windows.net/0010010110110110/%F0%9F%96%BCGALERIAS/%F0%9F%8C%80NEOGROUNDS.PLO/1.png?sp=r&st=2026-09-25T20:51:50Z&se=2027-09-26T05:06:50Z&sv=2026-02-06&sr=c&sig=6NCuDi%2FQRTymkk959lCGT9RHQbrS1HmVrayem5VU5Kg%3D" onclick="VyoletaApp.selectAvatar(this.src)">
+        <img class="avatar-choice" src="https://ragnarokmedia.blob.core.windows.net/0010010110110110/%F0%9F%96%BCGALERIAS/%F0%9F%8C%80NEOGROUNDS.PLO/GV.png?sp=r&st=2026-09-25T20:51:50Z&se=2027-09-26T05:06:50Z&sv=2026-02-06&sr=c&sig=6NCuDi%2FQRTymkk959lCGT9RHQbrS1HmVrayem5VU5Kg%3D" onclick="VyoletaApp.selectAvatar(this.src)">
+        <img class="avatar-choice" src="https://ragnarokmedia.blob.core.windows.net/0010010110110110/%F0%9F%96%BCGALERIAS/%F0%9F%8C%80NEOGROUNDS.PLO/A44.PNG?sp=r&st=2026-09-25T20:51:50Z&se=2027-09-26T05:06:50Z&sv=2026-02-06&sr=c&sig=6NCuDi%2FQRTymkk959lCGT9RHQbrS1HmVrayem5VU5Kg%3D" onclick="VyoletaApp.selectAvatar(this.src)">
+        <img class="avatar-choice" src="https://ragnarokmedia.blob.core.windows.net/0010010110110110/%F0%9F%96%BCGALERIAS/%F0%9F%8C%80NEOGROUNDS.PLO/A38.PNG?sp=r&st=2026-09-25T20:51:50Z&se=2027-09-26T05:06:50Z&sv=2026-02-06&sr=c&sig=6NCuDi%2FQRTymkk959lCGT9RHQbrS1HmVrayem5VU5Kg%3D" onclick="VyoletaApp.selectAvatar(this.src)">
+        <img class="avatar-choice" src="https://ragnarokmedia.blob.core.windows.net/0010010110110110/%F0%9F%96%BCGALERIAS/%F0%9F%8C%80NEOGROUNDS.PLO/S16.PNG?sp=r&st=2026-09-25T20:51:50Z&se=2027-09-26T05:06:50Z&sv=2026-02-06&sr=c&sig=6NCuDi%2FQRTymkk959lCGT9RHQbrS1HmVrayem5VU5Kg%3D" onclick="VyoletaApp.selectAvatar(this.src)">
+        <img class="avatar-choice" src="https://ragnarokmedia.blob.core.windows.net/0010010110110110/%F0%9F%96%BCGALERIAS/%F0%9F%8C%80NEOGROUNDS.PLO/S13.png?sp=r&st=2026-09-25T20:51:50Z&se=2027-09-26T05:06:50Z&sv=2026-02-06&sr=c&sig=6NCuDi%2FQRTymkk959lCGT9RHQbrS1HmVrayem5VU5Kg%3D" onclick="VyoletaApp.selectAvatar(this.src)">
+        <img class="avatar-choice" src="https://ragnarokmedia.blob.core.windows.net/0010010110110110/%F0%9F%96%BCGALERIAS/%F0%9F%8C%80NEOGROUNDS.PLO/S32.png?sp=r&st=2026-09-25T20:51:50Z&se=2027-09-26T05:06:50Z&sv=2026-02-06&sr=c&sig=6NCuDi%2FQRTymkk959lCGT9RHQbrS1HmVrayem5VU5Kg%3D" onclick="VyoletaApp.selectAvatar(this.src)">
+      </div>
+
+      <button style="margin-top:14px; background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.25); color:#fff; border-radius:10px; padding:8px 24px; font-weight:700; cursor:pointer;" onclick="document.getElementById('modal-perfil').classList.remove('active')">Cerrar</button>
+    </div>
+  </div>
+
+  <!-- MODAL DE STARS / CANJE VIP (AGREGAR MÁS TIEMPO) -->
+  <div class="gx-modal-overlay" id="modal-stars">
+    <div class="gx-modal-card stars-modal-card">
+      <div style="font-size:2.2rem; margin-bottom:4px;">⭐</div>
+      <h2 style="color:var(--gx-gold); font-size:1.15rem; margin-bottom:4px;">CANJEAR STARS & TIEMPO VIP</h2>
+      <p style="font-size:0.78rem; color:#aaa; margin-bottom:14px;">Ingresa tu alias y código VIP para sumar 30 días de acceso ilimitado:</p>
+
+      <input type="text" id="stars-input-user" class="stars-modal-input" placeholder="Tu Usuario / Alias" autocomplete="off">
+      <input type="text" id="stars-input-code" class="stars-modal-input" placeholder="Código VIP (o clave 'BDH')" autocomplete="off">
+
+      <button class="stars-btn-canjear" onclick="VyoletaApp.processStarsRedeem()">CANJEAR TIEMPO</button>
+
+      <button style="margin-top:14px; background:transparent; border:none; color:#777; font-size:0.8rem; cursor:pointer;" onclick="document.getElementById('modal-stars').classList.remove('active')">Cancelar</button>
+    </div>
+  </div>
+
+  <!-- MODAL DE DESCARGA / INSTALACIÓN PWA -->
+  <div class="gx-modal-overlay" id="modal-instalar">
+    <div class="gx-modal-card" style="border-color:var(--gx-pink); box-shadow:0 0 35px var(--gx-pink-glow);">
+      <div style="font-size:2.4rem; margin-bottom:8px;">📱</div>
+      <h2 style="color:var(--gx-pink); font-size:1.15rem; margin-bottom:8px;">INSTALAR APP UNIVERSO BDH</h2>
+      <p style="font-size:0.82rem; color:#ddd; line-height:1.4; margin-bottom:14px;">
+        Accede a Blazar On Ready en pantalla completa como una aplicación instalada en tu celular:
+      </p>
+
+      <div style="background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); border-radius:12px; padding:12px; text-align:left; font-size:0.78rem; line-height:1.45; color:#ccc; margin-bottom:16px;">
+        <p style="margin-bottom:6px;"><b>🤖 En Android (Chrome/Edge):</b><br>Toca los tres puntos <b>⋮</b> arriba a la derecha y selecciona <b>«Instalar aplicación»</b> o <b>«Añadir a la pantalla de inicio»</b>.</p>
+        <p><b>🍏 En iPhone (Safari):</b><br>Toca el botón Compartir <b>⎋</b> abajo y selecciona <b>«Añadir a pantalla de inicio ➕»</b>.</p>
+      </div>
+
+      <button style="background:linear-gradient(135deg, var(--gx-pink), var(--gx-magenta)); border:none; color:#fff; font-weight:800; padding:10px 22px; border-radius:25px; font-size:0.85rem; cursor:pointer; box-shadow:0 0 15px var(--gx-pink-glow);" onclick="VyoletaApp.triggerPWAInstall()">
+        ✨ AÑADIR A PANTALLA DE INICIO
+      </button>
+
+      <button style="margin-top:12px; background:transparent; border:none; color:#888; font-size:0.8rem; cursor:pointer;" onclick="document.getElementById('modal-instalar').classList.remove('active')">Cerrar</button>
+    </div>
+  </div>
+
+  <!-- MODAL MINIFOOTER BDH -->
+  <div class="gx-modal-overlay" id="modal-minifooter">
+    <div class="minifooter-modal">
+      <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid rgba(255,215,0,0.3); padding-bottom:8px;">
+        <span class="minifooter-title">🧙‍♂️ UNIVERSO BDH</span>
+        <button class="sheet-close-btn" onclick="document.getElementById('modal-minifooter').classList.remove('active')">✕</button>
+      </div>
+
+      <div class="minifooter-section">
+        <b>🌐 Comunidad</b>
+        <a class="minifooter-link" onclick="alert('Conectando a Redes Oficiales Universo BDH...')">📡 Redes Sociales Oficiales</a>
+        <a class="minifooter-link" onclick="alert('Abriendo Canal Oficial de YouTube...')">📺 Canal de YouTube BDH</a>
+      </div>
+
+      <div class="minifooter-section">
+        <b>⚖️ Legal & Políticas</b>
+        <a class="minifooter-link" onclick="alert('Políticas de uso del portal Universo BDH')">📜 Políticas de uso</a>
+        <a class="minifooter-link" onclick="alert('Licencia de desarrollo Universo BDH Bare Metal Framework')">🛡️ Licencia Framework</a>
+        <a class="minifooter-link" onclick="alert('Términos y condiciones de Universo BDH')">⚖️ Términos</a>
+        <a class="minifooter-link" onclick="alert('Privacidad de datos y encriptación local')">🔒 Privacidad</a>
+      </div>
+
+      <div class="minifooter-section" style="text-align:center;">
+        <p style="font-size:0.72rem; color:#aaa;">© 2026 UNIVERSO BDH / BDH CORPS 🪐</p>
+        <p style="font-size:0.82rem; font-weight:800; color:var(--gx-gold); margin-top:2px;">BY LORD BDH</p>
+        <p style="font-size:0.75rem; color:var(--gx-pink); margin-top:6px;">🕷🕸 ¡HOY CONSTRUIMOS EL IMPERIO 🧙🏼‍♂️💜 🖤🔥🚀!</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================================
+       4. MOTOR LÓGICO GALAXY VYOLETA OS (VANILLA JAVASCRIPT)
+       ========================================================= -->
+  <script>
+    const VyoletaApp = (() => {
+      // BASE DE DATOS DE CONTENIDOS DEL UNIVERSO BDH
+      const BDH_DB = [
+        {
+          id: "solo-leveling",
+          title: "SOLO LEVELING",
+          category: "anime",
+          tag: "Anime • Shonen / Fantasía",
+          img: "https://ragnarokmedia.blob.core.windows.net/0010010110110110/%F0%9F%96%BCGALERIAS/%F0%9F%8C%80NEOGROUNDS.PLO/A50.PNG?sp=r&st=2026-09-25T20:51:50Z&se=2027-09-26T05:06:50Z&sv=2026-02-06&sr=c&sig=6NCuDi%2FQRTymkk959lCGT9RHQbrS1HmVrayem5VU5Kg%3D",
+          desc: "Sung Jinwoo, el cazador más débil, despierta con un sistema secreto que le permite subir de nivel ilimitadamente."
+        },
+        {
+          id: "naruto",
+          title: "NARUTO",
+          category: "anime",
+          tag: "Anime • Ninja Clásico",
+          img: "https://ragnarokmedia.blob.core.windows.net/0010010110110110/%F0%9F%96%BCGALERIAS/%F0%9F%8C%80NEOGROUNDS.PLO/A38.PNG?sp=r&st=2026-09-25T20:51:50Z&se=2027-09-26T05:06:50Z&sv=2026-02-06&sr=c&sig=6NCuDi%2FQRTymkk959lCGT9RHQbrS1HmVrayem5VU5Kg%3D",
+          desc: "Naruto Uzumaki busca convertirse en Hokage y ser reconocido por toda su aldea."
+        },
+        {
+          id: "pluto",
+          title: "PLUTO",
+          category: "anime",
+          tag: "Anime • Cyberpunk / Sci-Fi",
+          img: "https://ragnarokmedia.blob.core.windows.net/0010010110110110/%F0%9F%96%BCGALERIAS/%F0%9F%8C%80NEOGROUNDS.PLO/A44.PNG?sp=r&st=2026-09-25T20:51:50Z&se=2027-09-26T05:06:50Z&sv=2026-02-06&sr=c&sig=6NCuDi%2FQRTymkk959lCGT9RHQbrS1HmVrayem5VU5Kg%3D",
+          desc: "El androide Gesicht investiga la muerte de los robots más poderosos de la Tierra."
+        },
+        {
+          id: "dandadan",
+          title: "DANDADAN",
+          category: "anime",
+          tag: "Anime • Sobrenatural / Acción",
+          img: "https://ragnarokmedia.blob.core.windows.net/0010010110110110/%F0%9F%96%BCGALERIAS/%F0%9F%8C%80NEOGROUNDS.PLO/A16.PNG?sp=r&st=2026-09-25T20:51:50Z&se=2027-09-26T05:06:50Z&sv=2026-02-06&sr=c&sig=6NCuDi%2FQRTymkk959lCGT9RHQbrS1HmVrayem5VU5Kg%3D",
+          desc: "Fantasmas, extraterrestres y batallas caóticas en una comedia sobrenatural sin frenos."
+        },
+        {
+          id: "breaking-bad",
+          title: "BREAKING BAD",
+          category: "golds",
+          tag: "Gold • Serie de Culto",
+          img: "https://ragnarokmedia.blob.core.windows.net/0010010110110110/%F0%9F%96%BCGALERIAS/%F0%9F%8C%80NEOGROUNDS.PLO/S06.png?sp=r&st=2026-09-25T20:51:50Z&se=2027-09-26T05:06:50Z&sv=2026-02-06&sr=c&sig=6NCuDi%2FQRTymkk959lCGT9RHQbrS1HmVrayem5VU5Kg%3D",
+          desc: "Un profesor de química se transforma en Heisenberg, dominando el narcotráfico."
+        },
+        {
+          id: "los-sopranos",
+          title: "LOS SOPRANOS",
+          category: "golds",
+          tag: "Gold • Drama / Mafia",
+          img: "https://ragnarokmedia.blob.core.windows.net/0010010110110110/%F0%9F%96%BCGALERIAS/%F0%9F%8C%80NEOGROUNDS.PLO/S32.png?sp=r&st=2026-09-25T20:51:50Z&se=2027-09-26T05:06:50Z&sv=2026-02-06&sr=c&sig=6NCuDi%2FQRTymkk959lCGT9RHQbrS1HmVrayem5VU5Kg%3D",
+          desc: "Tony Soprano lidera la mafia de Nueva Jersey mientras acude a terapia secreta."
+        },
+        {
+          id: "game-of-thrones",
+          title: "GAME OF THRONES",
+          category: "golds",
+          tag: "Gold • Fantasía Épica",
+          img: "https://ragnarokmedia.blob.core.windows.net/0010010110110110/%F0%9F%96%BCGALERIAS/%F0%9F%8C%80NEOGROUNDS.PLO/S13.png?sp=r&st=2026-09-25T20:51:50Z&se=2027-09-26T05:06:50Z&sv=2026-02-06&sr=c&sig=6NCuDi%2FQRTymkk959lCGT9RHQbrS1HmVrayem5VU5Kg%3D",
+          desc: "Nueve familias nobles se disputan el Trono de Hierro de Poniente."
+        },
+        {
+          id: "la-casa-de-papel",
+          title: "LA CASA DE PAPEL",
+          category: "golds",
+          tag: "Gold • Acción / Crimen",
+          img: "https://ragnarokmedia.blob.core.windows.net/0010010110110110/%F0%9F%96%BCGALERIAS/%F0%9F%8C%80NEOGROUNDS.PLO/S15.png?sp=r&st=2026-09-25T20:51:50Z&se=2027-09-26T05:06:50Z&sv=2026-02-06&sr=c&sig=6NCuDi%2FQRTymkk959lCGT9RHQbrS1HmVrayem5VU5Kg%3D",
+          desc: "El atraco más perfecto de la historia ideado por El Profesor."
+        },
+        {
+          id: "cobra-kai",
+          title: "COBRA KAI",
+          category: "golds",
+          tag: "Gold • Artes Marciales",
+          img: "https://ragnarokmedia.blob.core.windows.net/0010010110110110/%F0%9F%96%BCGALERIAS/%F0%9F%8C%80NEOGROUNDS.PLO/S08.PNG?sp=r&st=2026-09-25T20:51:50Z&se=2027-09-26T05:06:50Z&sv=2026-02-06&sr=c&sig=6NCuDi%2FQRTymkk959lCGT9RHQbrS1HmVrayem5VU5Kg%3D",
+          desc: "La revancha de Karate Kid renace 30 años después en el dojo de Cobra Kai."
+        },
+        {
+          id: "lost",
+          title: "LOST",
+          category: "golds",
+          tag: "Gold • Misterio / Aventura",
+          img: "https://ragnarokmedia.blob.core.windows.net/0010010110110110/%F0%9F%96%BCGALERIAS/%F0%9F%8C%80NEOGROUNDS.PLO/S16.PNG?sp=r&st=2026-09-25T20:51:50Z&se=2027-09-26T05:06:50Z&sv=2026-02-06&sr=c&sig=6NCuDi%2FQRTymkk959lCGT9RHQbrS1HmVrayem5VU5Kg%3D",
+          desc: "Un avión cae en una isla misteriosa con secretos y peligros inexplicables."
+        },
+        {
+          id: "scarface",
+          title: "SCARFACE",
+          category: "golds",
+          tag: "Gold • Cine de Culto",
+          img: "https://ragnarokmedia.blob.core.windows.net/0010010110110110/%F0%9F%96%BCGALERIAS/%F0%9F%8C%80NEOGROUNDS.PLO/P20.PNG?sp=r&st=2026-09-25T20:51:50Z&se=2027-09-26T05:06:50Z&sv=2026-02-06&sr=c&sig=6NCuDi%2FQRTymkk959lCGT9RHQbrS1HmVrayem5VU5Kg%3D",
+          desc: "El auge y caída de Tony Montana en la Miami de los años 80."
+        },
+        {
+          id: "pangetyum",
+          title: "PANGETYUM 1996",
+          category: "originals",
+          tag: "Original • Próximamente",
+          img: "https://ragnarokmedia.blob.core.windows.net/0010010110110110/%F0%9F%96%BCGALERIAS/%F0%9F%8C%80NEOGROUNDS.PLO/1.png?sp=r&st=2026-09-25T20:51:50Z&se=2027-09-26T05:06:50Z&sv=2026-02-06&sr=c&sig=6NCuDi%2FQRTymkk959lCGT9RHQbrS1HmVrayem5VU5Kg%3D",
+          desc: "Obra cinematográfica cumbre de Universo BDH. Próximamente en Blazar."
+        }
+      ];
+
+      // Referencias del DOM
+      const chatScroll = document.getElementById('gx-chat-scroll');
+      const chatInput = document.getElementById('gx-chat-input');
+      const bottomSheet = document.getElementById('gx-bottom-sheet');
+      const sheetCards = document.getElementById('sheet-cards-container');
+      const sheetTitle = document.getElementById('sheet-title');
+      const tabAvatarImg = document.getElementById('tab-avatar-img');
+      const modalAvatarPrev = document.getElementById('modal-avatar-preview');
+      const modalPerfilName = document.getElementById('modal-perfil-name');
+      const modalPerfilTime = document.getElementById('modal-perfil-time');
+      const gxUserAlias = document.getElementById('gx-user-alias');
+      const gxBigTimer = document.getElementById('gx-big-timer');
+      const gxStarsCount = document.getElementById('gx-stars-count');
+
+      let lastTouchedTab = null;
+      let lastTouchTime = 0;
+      let deferredPWAEvent = null;
+
+      // Evento de instalación PWA
+      window.addEventListener('beforeinstallprompt', (e) => {
+        e.preventDefault();
+        deferredPWAEvent = e;
+      });
+
+      // -------------------------------------------------------
+      // MANEJO DE TOQUE TÁCTIL EN TAB NAV (1ER TOQUE = BURBUJA, 2DO TOQUE = ACCIÓN)
+      // -------------------------------------------------------
+      const handleTabTouch = (element, action) => {
+        const now = Date.now();
+        const isSameTab = (lastTouchedTab === element);
+        const isQuickDoubleTap = isSameTab && (now - lastTouchTime < 3500);
+
+        if (element.classList.contains('bubble-open') || isQuickDoubleTap) {
+          // Segundo toque: Ejecutar acción
+          element.classList.remove('bubble-open');
+          lastTouchedTab = null;
+          lastTouchTime = 0;
+          executeTabAction(action);
+        } else {
+          // Primer toque: Abrir burbuja flotante y cerrar otras
+          closeActiveBubbles();
+          element.classList.add('bubble-open');
+          lastTouchedTab = element;
+          lastTouchTime = now;
+          if (navigator.vibrate) navigator.vibrate(25);
+        }
+      };
+
+      const closeActiveBubbles = (e) => {
+        if (e && e.target.closest('.nav-tab-item')) return;
+        document.querySelectorAll('.nav-tab-item.bubble-open').forEach(tab => {
+          tab.classList.remove('bubble-open');
+        });
+        lastTouchedTab = null;
+      };
+
+      // -------------------------------------------------------
+      // EJECUCIÓN DE ACCIONES POR CADA TAB
+      // -------------------------------------------------------
+      const executeTabAction = (action) => {
+        closeSheet();
+
+        switch (action) {
+          case 'inicio':
+            openHistorialORecomendados();
+            break;
+
+          case 'originals':
+            addBotMsg("🔒 <b>BLAZAR ORIGINALS: PRÓXIMAMENTE</b><br>Nuestras superproducciones cinematográficas originales están en fase de renderizado. ¡Muy pronto disponibles!");
+            break;
+
+          case 'anime':
+            openCatalogSheet('anime', '⚔️ ANIME COLLECTOR');
+            break;
+
+          case 'golds':
+            openCatalogSheet('golds', '⭐ SERIES & PELÍCULAS GOLDS');
+            break;
+
+          case 'perfil':
+            openPerfilModal();
+            break;
+
+          case 'descarga':
+            openDescargaModal();
+            break;
+
+          case 'stars':
+            openStarsModal();
+            break;
+
+          case 'minifooter':
+            openMinifooterModal();
+            break;
+        }
+      };
+
+      // -------------------------------------------------------
+      // 1. INICIO: LEER HISTORIAL DE BLACK TUBE / KILLROG MEMORY
+      // -------------------------------------------------------
+      const openHistorialORecomendados = () => {
+        let history = {};
+        try {
+          history = JSON.parse(localStorage.getItem('bdh_blazar_playback_memory')) || {};
+        } catch (e) { history = {}; }
+
+        const historyKeys = Object.keys(history);
+        if (historyKeys.length > 0) {
+          historyKeys.sort((a, b) => (history[b].updatedAt || 0) - (history[a].updatedAt || 0));
+
+          sheetTitle.innerHTML = "⏳ ÚLTIMOS CONTENIDOS VISTOS";
+          sheetCards.innerHTML = "";
+
+          historyKeys.forEach(k => {
+            const item = history[k];
+            const matched = BDH_DB.find(c => c.title.toLowerCase().includes((item.title || item.series || '').toLowerCase()));
+            const imgUrl = matched ? matched.img : "https://ragnarokmedia.blob.core.windows.net/0010010110110110/%F0%9F%96%BCGALERIAS/%F0%9F%8C%80NEOGROUNDS.PLO/1.png?sp=r&st=2026-09-25T20:51:50Z&se=2027-09-26T05:06:50Z&sv=2026-02-06&sr=c&sig=6NCuDi%2FQRTymkk959lCGT9RHQbrS1HmVrayem5VU5Kg%3D";
+
+            const card = document.createElement('div');
+            card.className = "sheet-movie-card";
+            card.style.backgroundImage = `url('${imgUrl}')`;
+            card.innerHTML = `
+              <div class="sheet-card-overlay">
+                <span class="sheet-card-title">${item.title || item.series || 'Contenido'}</span>
+                <span class="sheet-card-tag">Reanudar en ${Math.floor((item.time || 0) / 60)} min</span>
+              </div>
+            `;
+            card.onclick = () => playContent(item.title || item.series);
+            sheetCards.appendChild(card);
+          });
+
+          bottomSheet.classList.add('open');
+          addBotMsg("Aquí están los <b>últimos contenidos que viste</b> en Black Tube. Toca cualquiera para reanudar al instante.");
+        } else {
+          openCatalogSheet('golds', '🏠 INICIO • RECOMENDADOS DE HOY');
+          addBotMsg("Aún no tienes historial de reproducción en este celular. ¡Mira estas joyas recomendadas para arrancar!");
+        }
+      };
+
+      // -------------------------------------------------------
+      // APERTURA DE CARRUSEL DE CONTENIDOS EN BOTTOM SHEET
+      // -------------------------------------------------------
+      const openCatalogSheet = (category, title) => {
+        sheetTitle.innerHTML = title;
+        sheetCards.innerHTML = "";
+
+        const filtered = BDH_DB.filter(c => c.category === category);
+        filtered.forEach(item => {
+          const card = document.createElement('div');
+          card.className = "sheet-movie-card";
+          card.style.backgroundImage = `url('${item.img}')`;
+          card.innerHTML = `
+            <div class="sheet-card-overlay">
+              <span class="sheet-card-title">${item.title}</span>
+              <span class="sheet-card-tag">${item.tag}</span>
+            </div>
+          `;
+          card.onclick = () => {
+            closeSheet();
+            showChatCard(item);
+          };
+          sheetCards.appendChild(card);
+        });
+
+        bottomSheet.classList.add('open');
+        addBotMsg(`Desplegando catálogo de <b>${title}</b>. Toca cualquier carátula para ver ficha o reproducir.`);
+      };
+
+      const closeSheet = () => {
+        bottomSheet.classList.remove('open');
+      };
+
+      // -------------------------------------------------------
+      // MODALES DEL SISTEMA
+      // -------------------------------------------------------
+      const openPerfilModal = () => {
+        const activeAvatar = localStorage.getItem('bdh_vip_avatar') || "https://ragnarokmedia.blob.core.windows.net/0010010110110110/%F0%9F%96%BCGALERIAS/%F0%9F%8C%80NEOGROUNDS.PLO/1.png?sp=r&st=2026-09-25T20:51:50Z&se=2027-09-26T05:06:50Z&sv=2026-02-06&sr=c&sig=6NCuDi%2FQRTymkk959lCGT9RHQbrS1HmVrayem5VU5Kg%3D";
+        const identity = localStorage.getItem('bdh_vip_identity') || "LORD_BDH";
+        if (modalAvatarPrev) modalAvatarPrev.src = activeAvatar;
+        if (modalPerfilName) modalPerfilName.innerText = identity.split('@')[0];
+        document.getElementById('modal-perfil').classList.add('active');
+      };
+
+      const selectAvatar = (url) => {
+        localStorage.setItem('bdh_vip_avatar', url);
+        if (tabAvatarImg) tabAvatarImg.src = url;
+        if (modalAvatarPrev) modalAvatarPrev.src = url;
+        document.getElementById('modal-perfil').classList.remove('active');
+        addBotMsg("✅ <b>Foto de perfil actualizada correctamente</b> en el ecosistema Universo BDH.");
+      };
+
+      const openStarsModal = () => {
+        const idGuardada = localStorage.getItem('bdh_vip_identity') || '';
+        const userInput = document.getElementById('stars-input-user');
+        if (userInput && idGuardada) userInput.value = idGuardada;
+        document.getElementById('modal-stars').classList.add('active');
+      };
+
+      const processStarsRedeem = () => {
+        const user = (document.getElementById('stars-input-user')?.value || '').trim();
+        const code = (document.getElementById('stars-input-code')?.value || '').trim();
+
+        if (!user && !code) {
+          alert("❌ Ingresa tu Usuario o Código VIP.");
+          return;
+        }
+
+        // Reconocer clave maestra BDH
+        if (user.toUpperCase() === 'BDH' || code.toUpperCase() === 'BDH') {
+          const tiempoActual = Date.now();
+          const expGuardada = parseInt(localStorage.getItem('bdh_vip_exp')) || 0;
+          const recarga = 30 * 86400000;
+          const expMs = (expGuardada > tiempoActual) ? (expGuardada + recarga) : (tiempoActual + recarga);
+
+          localStorage.setItem('bdh_vip_exp', expMs.toString());
+          localStorage.setItem('bdh_vip_identity', 'LORD_BDH');
+          localStorage.setItem('bdhActiveUser', JSON.stringify({ alias: 'LORD_BDH', token: '🔑', stars: 1500, vip: true }));
+
+          updateVipStatus();
+          document.getElementById('modal-stars').classList.remove('active');
+          alert("✅ ¡BIENVENIDO LORD BDH! 30 DÍAS ADICIONALES ASIGNADOS");
+          addBotMsg("👑 <b>¡Acceso VIP Recargado con Éxito!</b> Tiempo y Stars sincronizados para <b>LORD BDH</b>.");
+          return;
+        }
+
+        // Canje genérico
+        const tiempoActual = Date.now();
+        const expGuardada = parseInt(localStorage.getItem('bdh_vip_exp')) || 0;
+        const expMs = (expGuardada > tiempoActual) ? (expGuardada + 30 * 86400000) : (tiempoActual + 30 * 86400000);
+        const finalId = user ? (user.includes('@') ? user : `${user}@🔥🌸.gms`) : 'USUARIO_VIP@🔥🌸.gms';
+
+        localStorage.setItem('bdh_vip_exp', expMs.toString());
+        localStorage.setItem('bdh_vip_identity', finalId);
+        localStorage.setItem('bdhActiveUser', JSON.stringify({ alias: finalId, token: '🔑', stars: 1500, vip: true }));
+
+        updateVipStatus();
+        document.getElementById('modal-stars').classList.remove('active');
+        alert(`✅ ¡CÓDIGO CANJEADO EXITOSAMENTE!\n\nIdentidad: ${finalId}\nTiempo VIP sumado.`);
+        addBotMsg(`✅ Código VIP procesado. Tu suscripción se ha ampliado para <b>${finalId}</b>.`);
+      };
+
+      const openDescargaModal = () => {
+        document.getElementById('modal-instalar').classList.add('active');
+      };
+
+      const triggerPWAInstall = () => {
+        if (deferredPWAEvent) {
+          deferredPWAEvent.prompt();
+          deferredPWAEvent.userChoice.then(choice => {
+            if (choice.outcome === 'accepted') {
+              addBotMsg("🎉 ¡Excelente! Universo BDH se ha instalado en tu pantalla de inicio.");
+            }
+            deferredPWAEvent = null;
+          });
+          document.getElementById('modal-instalar').classList.remove('active');
+        } else {
+          alert("📱 Para instalar en la pantalla de inicio:\n\n• En Android: Toca el menú ⋮ de Chrome y pulsa 'Añadir a pantalla de inicio'.\n• En iPhone: Toca el botón Compartir ⎋ de Safari y pulsa 'Añadir a pantalla de inicio ➕'.");
+        }
+      };
+
+      const openMinifooterModal = () => {
+        document.getElementById('modal-minifooter').classList.add('active');
+      };
+
+      // -------------------------------------------------------
+      // MENSAJES Y CHIPS
+      // -------------------------------------------------------
+      const addBotMsg = (html) => {
+        const row = document.createElement('div');
+        row.className = "chat-msg-row";
+        row.innerHTML = `<div class="msg-bubble-bot">${html}</div>`;
+        chatScroll.appendChild(row);
+        chatScroll.scrollTop = chatScroll.scrollHeight;
+      };
+
+      const addUserMsg = (text) => {
+        const row = document.createElement('div');
+        row.className = "chat-msg-row";
+        row.innerHTML = `<div class="msg-bubble-user">${text}</div>`;
+        chatScroll.appendChild(row);
+        chatScroll.scrollTop = chatScroll.scrollHeight;
+      };
+
+      const showChatCard = (item) => {
+        const row = document.createElement('div');
+        row.className = "chat-msg-row";
+        row.innerHTML = `
+          <div class="msg-bubble-bot">
+            Aquí tienes <b>${item.title}</b>:
+            <div class="chat-card-preview">
+              <div class="chat-card-media" style="background-image:url('${item.img}')"></div>
+              <div class="chat-card-info">
+                <span class="chat-card-title">${item.title}</span>
+                <span class="chat-card-desc">${item.desc}</span>
+                <button class="chat-card-btn" onclick="VyoletaApp.playContent('${item.title}')">
+                  ▶ REPRODUCIR EN BLACK TUBE
+                </button>
+              </div>
+            </div>
+          </div>
+        `;
+        chatScroll.appendChild(row);
+        chatScroll.scrollTop = chatScroll.scrollHeight;
+      };
+
+      const triggerChip = (type) => {
+        if (type === 'que_ver') {
+          addUserMsg("¿Qué ver hoy?");
+          setTimeout(() => {
+            const random = BDH_DB[Math.floor(Math.random() * BDH_DB.length)];
+            addBotMsg("Te recomiendo esta joya para ver ahora mismo:");
+            showChatCard(random);
+          }, 350);
+        } else if (type === 'ultimos') {
+          addUserMsg("Ver últimos que vi");
+          setTimeout(() => openHistorialORecomendados(), 300);
+        } else if (type === 'anime') {
+          addUserMsg("Quiero ver Anime");
+          setTimeout(() => openCatalogSheet('anime', '⚔️ ANIME COLLECTOR'), 300);
+        } else if (type === 'golds') {
+          addUserMsg("Quiero ver Series Golds");
+          setTimeout(() => openCatalogSheet('golds', '⭐ SERIES & GOLDS'), 300);
+        } else if (type === 'canjear') {
+          addUserMsg("Canjear código / Stars");
+          setTimeout(() => openStarsModal(), 300);
+        } else if (type === 'instalar') {
+          addUserMsg("¿Cómo instalo la App?");
+          setTimeout(() => openDescargaModal(), 300);
+        }
+      };
+
+      const handleSend = () => {
+        const text = chatInput.value.trim();
+        if (!text) return;
+        addUserMsg(text);
+        chatInput.value = '';
+
+        setTimeout(() => {
+          const q = text.toLowerCase();
+
+          // Comando directo de prueba BDH
+          if (q === 'bdh') {
+            const tiempoActual = Date.now();
+            const expGuardada = parseInt(localStorage.getItem('bdh_vip_exp')) || 0;
+            const expMs = (expGuardada > tiempoActual) ? expGuardada : (tiempoActual + 30 * 86400000);
+            localStorage.setItem('bdh_vip_exp', expMs.toString());
+            localStorage.setItem('bdh_vip_identity', 'LORD_BDH');
+            localStorage.setItem('bdhActiveUser', JSON.stringify({ alias: 'LORD_BDH', token: '🔑', stars: 1500, vip: true }));
+            updateVipStatus();
+            addBotMsg("✅ <b>¡BIENVENIDO LORD BDH! ACCESO TOTAL CONCEDIDO</b><br>Identidad permanente y tiempo VIP sincronizados.");
+            return;
+          }
+
+          // Búsqueda en el catálogo
+          const match = BDH_DB.find(c => c.title.toLowerCase().includes(q) || q.includes(c.title.toLowerCase()) || (c.category && c.category.includes(q)));
+
+          if (match) {
+            addBotMsg(`Encontré este contenido para <b>«${text}»</b>:`);
+            showChatCard(match);
+          } else {
+            addBotMsg(`No encontré contenidos exactos para <b>«${text}»</b> en el catálogo actual.<br><br>💡 Toca <b>Anime</b> o <b>Golds</b> en la barra izquierda para explorar todo lo disponible.`);
+          }
+        }, 400);
+      };
+
+      // -------------------------------------------------------
+      // REPRODUCCIÓN EN BLACK TUBE (KILLROG)
+      // -------------------------------------------------------
+      const playContent = (title) => {
+        const expTime = parseInt(localStorage.getItem('bdh_vip_exp')) || 0;
+        const activeUser = localStorage.getItem('bdhActiveUser');
+        if (!activeUser || expTime <= Date.now()) {
+          alert('🔒 ACCESO RESTRINGIDO: Debes autenticarte antes de ingresar a Black Tube.');
+          addBotMsg("🔒 <b>Acceso Restringido</b>. Toca ⭐ Stars o escribe tu comando para desbloquear.");
+          openStarsModal();
+          return;
+        }
+
+        const url = `../OJO DE KILLROG/KILLROG.html?title=${encodeURIComponent(title)}`;
+        window.location.href = url;
+      };
+
+      // -------------------------------------------------------
+      // ACTUALIZAR CRONÓMETRO Y ESTADO VIP
+      // -------------------------------------------------------
+      const updateVipStatus = () => {
+        const exp = parseInt(localStorage.getItem('bdh_vip_exp')) || 0;
+        const identity = localStorage.getItem('bdh_vip_identity') || "LORD_BDH";
+        const ahora = Date.now();
+
+        if (gxUserAlias) gxUserAlias.innerText = identity.split('@')[0];
+
+        if (exp > ahora) {
+          const segs = Math.floor((exp - ahora) / 1000);
+          const d = Math.floor(segs / 86400);
+          const h = Math.floor((segs % 86400) / 3600);
+          const m = Math.floor((segs % 3600) / 60);
+          const s = segs % 60;
+          const hStr = h < 10 ? '0' + h : h;
+          const mStr = m < 10 ? '0' + m : m;
+          const sStr = s < 10 ? '0' + s : s;
+          const fullTime = `${d} Días ${hStr}:${mStr}:${sStr}`;
+
+          if (gxBigTimer) gxBigTimer.innerText = fullTime;
+          if (modalPerfilTime) modalPerfilTime.innerText = `TIEMPO VIP: ${fullTime}`;
+        } else {
+          if (gxBigTimer) gxBigTimer.innerText = `ACCESO BLOQUEADO`;
+          if (modalPerfilTime) modalPerfilTime.innerText = `ACCESO CADUCADO`;
+        }
+
+        const activeAvatar = localStorage.getItem('bdh_vip_avatar');
+        if (activeAvatar) {
+          if (tabAvatarImg) tabAvatarImg.src = activeAvatar;
+          if (modalAvatarPrev) modalAvatarPrev.src = activeAvatar;
+        }
+      };
+
+      // -------------------------------------------------------
+      // INICIO
+      // -------------------------------------------------------
+      const init = () => {
+        updateVipStatus();
+        setInterval(updateVipStatus, 1000);
+
+        const user = localStorage.getItem('bdh_vip_identity') || 'LORD_BDH';
+        const cleanName = user.split('@')[0];
+
+        setTimeout(() => {
+          addBotMsg(
+            `AQUÍ GALAXY VYOLETA OS, NÚCLEO BDH.<br>` +
+            `¡Hola, <b>${cleanName}</b>! Ecosistema móvil sincronizado.<br><br>` +
+            `Toca los iconos de la barra lateral o elige una opción para comenzar:`
+          );
+        }, 300);
+      };
+
+      return {
+        init,
+        handleTabTouch,
+        closeActiveBubbles,
+        triggerChip,
+        handleSend,
+        playContent,
+        selectAvatar,
+        openStarsModal,
+        processStarsRedeem,
+        openMinifooterModal,
+        triggerPWAInstall,
+        closeSheet
+      };
+    })();
+
+    window.addEventListener('DOMContentLoaded', VyoletaApp.init);
+  </script>
+
+</body>
+</SQR>
+</🐍🕸️🖤🔥🚀>
