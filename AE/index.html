@@ -3,14 +3,14 @@
 </🕷🕸>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BDH Entertainment - Blazar OneDrive Framebuffer Node V2</title>
-    <meta name="description" content="Reproductor de video local avanzado y portal OneDrive por BDH Entertainment, con galería dinámica, framebuffer contextual y controles Black Hole."/>
+    <title>BDH Entertainment - Blazar Blob Framebuffer Node V2</title>
+    <meta name="description" content="Reproductor de video local avanzado y portal Blob por BDH Entertainment, con galería dinámica, framebuffer contextual y controles Black Hole."/>
     
     <!-- Fuentes y Estilos Externos -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Uncial+Antiqua&family=Segoe+UI:wght@400;600;700&display=swap" rel="stylesheet">
-    <link rel="Rous stylesheet" href="🌹.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </🕷🕸>
   </🛸>
  </🌹></🐛🦇><body style="background-color: rgba(0, 0, 0, 0); background-image: url('5.PLO'); background-size: cover; background-position: 85% 30%; background-repeat: no-repeat;">
@@ -22,7 +22,6 @@
             --color-primary-gold: #D4AF37;
             --color-secondary-gold: #7c6107;
 
-            /* Temas iniciales, serán sobrescritos por los inputs de radio */
             --color-primary: var(--color-primary-pink);
             --color-secondary: var(--color-secondary-pink);
             --color-text: #ffffff;
@@ -34,7 +33,6 @@
             --info-blue: rgba(0, 191, 255, 0.7);
         }
 
-        /* TEMA 🐉 ROSA ELÉCTRICO */
         #theme-pink:checked ~ .sqr-wrapper {
             --color-primary: var(--color-primary-pink);
             --color-secondary: var(--color-secondary-pink);
@@ -46,7 +44,6 @@
             --border-subtle: rgba(250, 0, 167, 0.459);
         }
 
-        /* TEMA 🐎 DORADO */
         #theme-gold:checked ~ .sqr-wrapper {
             --color-primary: var(--color-primary-gold);
             --color-secondary: var(--color-secondary-gold);
@@ -58,32 +55,20 @@
             --border-subtle: rgba(212, 175, 55, 0.459);
         }
 
-        /* BASE SQR y Body general */
         html, body {
             height: 100%;
             margin: 0;
             padding: 0;
         }
-        /*body {
-            font-family: 'Segoe UI', sans-serif; 
-            background-image: url('3.png');
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
-            background-color: #1e222b; 
-            color: var(--color-text);
-            display: flex; 
-            flex-direction: column;
-            overflow-x: hidden;
-        }*/
+
         @media (max-width: 900px) {
             body {
-    background-size: 300% 300%; /* Ajuste drástico para que se note el recorte */
-    background-position: 85% 30%; /* Mantenemos tu valor original */
-    background-attachment: fixed; /* Opcional, pero mantiene la posición fija */
-    background-repeat: no-repeat;
+                background-size: 300% 300%;
+                background-position: 85% 30%;
+                background-attachment: fixed;
+                background-repeat: no-repeat;
+            }
         }
-    }
 
         .sqr-wrapper {
             flex-grow: 1; 
@@ -94,7 +79,6 @@
             width: 100%;
         }
 
-        /* Navbar */
         .navbar {
             position: sticky; top: 0; left: 0; right: 0;
             background: rgba(0, 0, 0, 0.551); 
@@ -162,7 +146,6 @@
             text-shadow: 0 0 10px var(--glow);
         }
 
-        /* DROPDOWN */
         .dropdown-container { position: relative; display: inline-block; }
         .dropdown-toggle {
             cursor: pointer; padding: 8px 15px; background: rgba(0,0,0,0.6);
@@ -200,11 +183,9 @@
         }
         .dropdown-item:hover { background: var(--color-secondary); color: #000; }
 
-        /* TTS Controls */
         .tts-controls {
            display: flex; gap: 6px; margin-left: auto; 
         }
-
         .tts-controls button {
            background: linear-gradient(180deg, #934581, #9d1086);
            color: #fff;
@@ -217,14 +198,12 @@
            justify-content: center;
            transition: all 0.3s ease;
         }
-
         .tts-controls button:hover {
            transform: scale(1.08);
            box-shadow: 0 0 12px rgba(157, 16, 134, 0.6);
            border-color: var(--color-secondary-gold); 
         }
 
-        /* Contenedor principal de la página */
         .main-container {
             flex-grow: 1; 
             display: flex;
@@ -242,7 +221,6 @@
             -webkit-text-stroke: 1px #000;
         }
         
-        /* Marco del reproductor Blazar */
         .video-frame {
             position: relative; width: 85%; max-width: 1100px; padding: 5px;
             background: var(--gradient-frame); border-radius: 10px;
@@ -255,7 +233,6 @@
             color: var(--color-text);
         }
 
-        /* LÓGICA DE ESTADOS Y CONTROL DE Z-INDEX MODO CINE */
         .cinema-overlay { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.98); z-index: 9000; pointer-events: all; }
         
         #view-cinema:checked ~ .sqr-wrapper .cinema-overlay { display: block; }
@@ -270,7 +247,6 @@
         #view-cinema:checked ~ .sqr-wrapper .navbar .view-btn { border-bottom: none !important; } 
         #view-cinema:checked ~ .sqr-wrapper .navbar { background: transparent; border-bottom: none; box-shadow: none; }
 
-
         #view-mini:checked ~ .sqr-wrapper .video-frame {
             position: fixed; right: 20px; bottom: 20px; width: 400px; height: 225px; 
             z-index: 3000; padding: 3px;
@@ -279,7 +255,6 @@
             min-height: auto; 
         }
 
-        /* Contenido de la página (galería y carga de archivos) */
         .content-panel {
             width: 85%; max-width: 1100px; margin: 0 auto 40px auto;
             background: rgba(0,0,0,0.7); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
@@ -293,52 +268,6 @@
             -webkit-text-stroke: 0.5px #000;
         }
 
-        /* Panel Doble de carga (JSONL + Videos) */
-        .upload-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-            margin-bottom: 30px;
-        }
-
-        /* Área de carga de archivos */
-        .file-upload-area {
-            text-align: center;
-            border: 2px dashed var(--color-primary);
-            border-radius: 8px; padding: 25px;
-            background: rgba(0,0,0,0.4);
-            transition: all 0.3s ease;
-            position: relative;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-        }
-        .file-upload-area:hover {
-            background: rgba(0,0,0,0.6);
-            border-color: var(--color-secondary);
-        }
-        .upload-button {
-            display: inline-block; padding: 12px 20px;
-            background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
-            color: #000; font-weight: bold; border-radius: 25px;
-            cursor: pointer; font-size: 1rem;
-            box-shadow: 0 0 15px var(--glow);
-            transition: all 0.3s ease;
-            border: none;
-            text-shadow: 1px 1px 2px rgba(255,255,255,0.3);
-            margin-bottom: 10px;
-        }
-        .upload-button:hover {
-            transform: scale(1.05);
-            box-shadow: 0 0 25px var(--glow);
-        }
-        .upload-hint {
-            color: var(--color-text); font-size: 0.85rem; margin-top: 5px; opacity: 0.85;
-            line-height: 1.4;
-        }
-
-        /* Panel de Control de Azure Credentials */
         .azure-config-panel {
             background: rgba(0,0,0,0.8);
             border: 1px solid var(--border-subtle);
@@ -362,31 +291,12 @@
             align-items: center;
             gap: 6px;
         }
-        .status-badge.disconnected {
-            background: rgba(255, 0, 0, 0.2);
-            border: 1px solid #ff3333;
-            color: #ff9999;
-        }
         .status-badge.connected {
             background: rgba(0, 255, 0, 0.2);
             border: 1px solid #33ff33;
             color: #99ff99;
         }
-        .azure-btn {
-            background: #0078d4;
-            color: white;
-            border: none;
-            padding: 8px 16px;
-            border-radius: 4px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: background 0.3s ease;
-        }
-        .azure-btn:hover {
-            background: #005a9e;
-        }
 
-        /* Pantalla de carga / Progreso del Buffer */
         .buffer-status {
             display: none;
             margin-top: 15px;
@@ -398,7 +308,6 @@
             width: 100%;
         }
 
-        /* Galería de videos */
         .video-gallery-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
@@ -458,7 +367,6 @@
             justify-content: center;
         }
 
-        /* Badge para saber el origen del video */
         .origin-badge {
             position: absolute;
             top: 5px;
@@ -472,39 +380,7 @@
             z-index: 15;
             font-weight: bold;
         }
-        .origin-badge.local {
-            background: rgba(255, 0, 212, 0.85);
-            border-color: #ff00d4;
-        }
 
-        /* Botón de eliminar del buffer */
-        .delete-btn {
-            position: absolute;
-            top: 5px;
-            right: 5px;
-            background: rgba(255, 0, 0, 0.8);
-            border: 1px solid #ff3333;
-            color: white;
-            border-radius: 50%;
-            width: 26px;
-            height: 26px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.8rem;
-            cursor: pointer;
-            z-index: 15;
-            transition: all 0.2s ease;
-        }
-        .delete-btn:hover {
-            background: #ff0000;
-            transform: scale(1.1);
-            box-shadow: 0 0 10px rgba(255, 0, 0, 0.8);
-        }
-
-        /* =========================================================
-           BLAZAR PLAYER - ESTILOS INYECTADOS ADAPTADOS
-           ========================================================= */
         .blazar-player-wrapper {
             position: relative; width: 100%; height: 0; padding-bottom: 56.25%; 
             background: #000;
@@ -534,10 +410,6 @@
             appearance: none; width: 15px; height: 15px; border-radius: 50%;
             background: var(--color-primary); box-shadow: 0 0 10px var(--glow);
         }
-        .blazar-progress::-moz-range-thumb {
-            width: 15px; height: 15px; border-radius: 50%; border: none;
-            background: var(--color-primary); box-shadow: 0 0 10px var(--glow);
-        }
         .blazar-btn {
             background: transparent; border: none; font-size: 1.2rem; cursor: pointer; font-weight: bold;
             color: var(--color-text); -webkit-text-stroke: 1px #000; text-shadow: 0 0 8px var(--glow);
@@ -553,7 +425,6 @@
             display: none !important;
         }
         
-        /* ESTILOS DEL BLACK HOLE (WARM HOLE) */
         .black-hole-menu {
             position: fixed; background: #050505; border: 1px solid var(--color-primary);
             box-shadow: 0 0 25px var(--glow), inset 0 0 15px rgba(0,0,0,1);
@@ -584,9 +455,6 @@
             100% { transform: translate(-50%, -50%) scale(1); opacity: 0; }
         }
 
-        /* =========================================================
-           UNIVERSO BDH - MINI FOOTER · TRANSPARENT GLASS
-           ========================================================= */
         .bdh-minifooter {
             position: relative;
             width: 100%;
@@ -602,7 +470,6 @@
             overflow: hidden;
             flex-shrink: 0; 
         }
-
         .bdh-minifooter::before {
             content: "";
             position: absolute;
@@ -613,7 +480,6 @@
             background: linear-gradient(90deg, transparent, rgba(255, 0, 212, 0.75), rgba(255, 215, 0, 0.55), rgba(255, 0, 212, 0.75), transparent);
             box-shadow: 0 0 10px rgba(255, 0, 212, 0.45);
         }
-
         .bdh-footer-inner {
             width: min(1050px, 90%);
             margin: auto;
@@ -622,13 +488,11 @@
             align-items: center;
             gap: 3rem;
         }
-
         .footer-brand {
             display: flex;
             flex-direction: column;
             justify-content: center;
         }
-
         .footer-brand-title {
             font-family: "Uncial Antiqua", serif; 
             font-size: 1.35rem;
@@ -639,7 +503,6 @@
             -webkit-text-fill-color: transparent;
             text-shadow: 0 0 15px rgba(255, 0, 212, 0.15);
         }
-
         .footer-brand-subtitle {
             margin-top: 0.2rem;
             font-family: "Segoe UI", sans-serif;
@@ -647,19 +510,16 @@
             letter-spacing: 0.22em;
             color: rgba(255, 255, 255, 0.45);
         }
-
         .footer-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 2.5rem;
         }
-
         .footer-column {
             display: flex;
             flex-direction: column;
             gap: 0.3rem;
         }
-
         .footer-column b {
             margin-bottom: 0.3rem;
             font-family: "Segoe UI", sans-serif;
@@ -668,7 +528,6 @@
             color: #ffd700;
             font-weight: 600;
         }
-
         .footer-column a {
             width: fit-content;
             font-family: "Segoe UI", sans-serif;
@@ -677,20 +536,17 @@
             text-decoration: none;
             transition: color 0.2s ease, transform 0.2s ease, text-shadow 0.2s ease;
         }
-
         .footer-column a:hover {
             color: #ff00d4;
             transform: translateX(3px);
             text-shadow: 0 0 10px rgba(255, 0, 212, 0.65);
         }
-
         .footer-divider {
             width: min(1050px, 90%);
             height: 1px;
             margin: 1rem auto 0.7rem;
             background: linear-gradient(90deg, transparent, rgba(255, 0, 212, 0.28), rgba(255, 215, 0, 0.22), transparent);
         }
-
         .footer-bottom {
             width: min(1050px, 90%);
             margin: auto;
@@ -703,18 +559,15 @@
             font-size: 0.58rem;
             color: rgba(255, 255, 255, 0.38);
         }
-
         .footer-copy {
             display: flex;
             gap: 0.5rem;
             flex-wrap: wrap;
             align-items: center;
         }
-
         .footer-copy span {
             color: rgba(255, 215, 0, 0.55);
         }
-
         .footer-motto {
             font-family: "Uncial Antiqua", serif; 
             font-size: 0.68rem;
@@ -722,7 +575,6 @@
             text-shadow: 0 0 10px rgba(255, 0, 212, 0.18);
         }
 
-        /* RESPONSIVE */
         @media (max-width: 900px) {
             .navbar-content {
                 flex-direction: column;
@@ -743,48 +595,6 @@
                 order: 3;
                 width: 100%;
                 justify-content: center;
-            }
-            .dropdown-container {
-                margin-top: 10px; 
-            }
-            .upload-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        @media (max-width: 700px) {
-            .bdh-footer-inner {
-                grid-template-columns: 1fr;
-                gap: 1.2rem;
-                text-align: center;
-            }
-            .footer-brand {
-                align-items: center;
-            }
-            .footer-grid {
-                justify-content: center;
-                gap: 2rem;
-            }
-            .footer-column {
-                align-items: center;
-            }
-            .footer-bottom {
-                justify-content: center;
-                text-align: center;
-            }
-            .page-title {
-                font-size: 2rem;
-            }
-            .video-frame {
-                width: 95%;
-            }
-            .content-panel {
-                width: 95%;
-            }
-            .tts-controls {
-                position: static;
-                justify-content: center;
-                margin-top: 10px;
             }
         }
     </style>
@@ -830,7 +640,6 @@
                         </div>
                     </div>
 
-                    <!-- TTS Controls -->
                     <div class="tts-controls">
                         <button title="Reproducir audio"><i class="fas fa-volume-up"></i></button>
                         <button title="Pausar audio"><i class="fas fa-pause"></i></button>
@@ -846,56 +655,30 @@
             <div class="video-frame">
                 <div id="reproductor-blazar">
                     <p style="text-align: center; color: var(--color-muted); padding: 20px; font-size: 1.2rem;">
-                        Selecciona o importa un video de tu PC o carga tu lista JSONL para comenzar a reproducir.
+                        Sincronizando sesión y catálogo desde Blob Storage...
                     </p>
                 </div>
             </div>
         
             <div class="content-panel">
-                <!-- Azure Integration Section -->
                 <div class="azure-config-panel">
                     <div class="azure-status-bar">
                         <div>
                             <span style="font-weight: bold; color: var(--color-primary); font-family: 'Uncial Antiqua'; font-size: 1.1rem; display: block;">
-                                BLAZAR ONEDRIVE FRAMEBUFFER NODE V2
+                                BLAZAR BLOB FRAMEBUFFER NODE V2
                             </span>
-                            <span id="azure-user-info" style="font-size: 0.85rem; color: #aaa;">Inicia sesión con tu cuenta de Microsoft Azure para sincronizar tus enlaces directos.</span>
+                            <span id="azure-user-info" style="font-size: 0.85rem; color: #aaa;">Conectado automáticamente a la sesión y catálogo de direcciones en Blob Storage.</span>
                         </div>
                         <div style="display: flex; gap: 10px; align-items: center;">
-                            <div id="azure-status" class="status-badge disconnected">
-                                <i class="fas fa-circle"></i> Desconectado de OneDrive
+                            <div id="azure-status" class="status-badge connected">
+                                <i class="fas fa-check-circle"></i> Sincronizado con Blob
                             </div>
-                            <button id="btn-azure-login" class="azure-btn">Conectar Azure</button>
                         </div>
-                    </div>
-                </div>
-
-                <div class="upload-grid">
-                    <!-- Importar desde PC -->
-                    <div class="file-upload-area">
-                        <label for="video-input" class="upload-button">
-                            <i class="fas fa-folder-open me-2"></i> Importar Videos locales
-                        </label>
-                        <input type="file" id="video-input" multiple accept="video/*" style="display: none;">
-                        <p class="upload-hint">
-                            Se guardarán en el framebuffer local de tu navegador (IndexedDB). Permanente hasta que desees quitarlos.
-                        </p>
-                    </div>
-
-                    <!-- Importar JSONL -->
-                    <div class="file-upload-area">
-                        <label for="jsonl-input" class="upload-button" style="background: linear-gradient(135deg, #0078d4, #00bfff);">
-                            <i class="fas fa-file-code me-2"></i> Importar Catálogo JSONL
-                        </label>
-                        <input type="file" id="jsonl-input" accept=".jsonl, .txt" style="display: none;">
-                        <p class="upload-hint">
-                            Importa archivos indexados de OneDrive. Se incorporarán automáticamente a tu librería contextual de BDH.
-                        </p>
                     </div>
                 </div>
 
                 <div class="buffer-status" id="buffer-status">
-                    <i class="fas fa-circle-notch fa-spin"></i> Procesando buffer de datos... <span id="buffer-percentage">0%</span>
+                    <i class="fas fa-circle-notch fa-spin"></i> Cargando recursos... <span id="buffer-percentage">0%</span>
                 </div>
 
                 <h2>Tu Galería Persistente (Memory Contextual)</h2>
@@ -905,7 +688,6 @@
             </div>
         </div>
         
-        <!-- Footer BDH Entertainment -->
         <footer class="bdh-minifooter">
             <div class="bdh-footer-inner">
                 <div class="footer-brand">
@@ -931,7 +713,7 @@
             <div class="footer-bottom">
                 <div class="footer-copy">
                     <span>BDH Entertainment</span>
-                    © 2016 - 2024. Todos los derechos reservados
+                    © 2016 - 2026. Todos los derechos reservados
                 </div>
                 <p class="footer-motto">"Tu entretenimiento, nuestra pasión."</p>
             </div>
@@ -943,32 +725,13 @@
     <script>
         /**
          * ====================================================================
-         * CONFIGURACIÓN MASTER DE AZURE / MICROSOFT ONEDRIVE
+         * CONFIGURACIÓN BLOB STORAGE DIRECTA (Sesión y Catálogo JSONL)
          * ====================================================================
-                      
-        const AZURE_CONFIG = {
-            appName: "BLAZAR ONEDRIVE FRAMEBUFFER NODE V2",
-            clientId: "086679a9-80fa-48f3-9b00-054cdbb19137",
-            tenantId: "aedcdc69-8afa-4a23-955d-e88416dc8b3f",
-            scopes: ["User.Read", "Files.Read", "offline_access"],
-            redirectUri: `http://localhost:3000/callback`
-        };
-        const AZURE_CONFIG = {
-            appName: "BLAZAR ONEDRIVE FRAMEBUFFER NODE V2",
-            clientId: "086679a9-80fa-48f3-9b00-054cdbb19137",
-            tenantId: "common", // ← Cambio vital para habilitar cuentas personales
-            scopes: ["User.Read", "Files.Read", "offline_access"],
-            redirectUri: "http://localhost:8000/INDEX.HTML"
-        };*/
-        const AZURE_CONFIG = {
-        appName: "BLAZAR ONEDRIVE FRAMEBUFFER NODE V2",
-        clientId: "086679a9-80fa-48f3-9b00-054cdbb19137",
-        tenantId: "common",
-        scopes: ["User.Read", "Files.Read", "offline_access"],
-        redirectUri: "https://ent.universobdh.me/AE/" // ← Ruta exacta de producción
-        };
+         */
+        const BLOB_SESSION_URL = "https://ragnarokmedia.blob.core.windows.net/0010010110110110/RAGNAROK%E2%96%B6MEDIA/PJS/session_onedrive.json?sp=r&st=2026-09-25T20:51:50Z&se=2027-09-26T05:06:50Z&sv=2026-02-06&sr=c&sig=6NCuDi%2FQRTymkk959lCGT9RHQbrS1HmVrayem5VU5Kg%3D";
+        const BLOB_JSONL_URL = "https://ragnarokmedia.blob.core.windows.net/0010010110110110/RAGNAROK%E2%96%B6MEDIA/PJS/porky.jsonl?sp=r&st=2026-09-25T20:51:50Z&se=2027-09-26T05:06:50Z&sv=2026-02-06&sr=c&sig=6NCuDi%2FQRTymkk959lCGT9RHQbrS1HmVrayem5VU5Kg%3D";
 
-        let azureToken = localStorage.getItem('azure_access_token') || null;
+        let sessionData = null;
 
         /**
          * ====================================================================
@@ -994,44 +757,21 @@
                 });
             }
 
-            static async saveLocalVideo(file, thumbnailDataURL) {
+            static async saveBlobVideo(meta) {
                 const db = await this.init();
                 return new Promise((resolve, reject) => {
                     const transaction = db.transaction(STORE_NAME, "readwrite");
                     const store = transaction.objectStore(STORE_NAME);
                     
                     const videoRecord = {
-                        id: "local_" + Date.now() + "_" + Math.random().toString(36).substr(2, 9),
-                        name: file.name,
-                        type: file.type,
-                        size: file.size,
-                        blob: file, // Guardamos el blob binario de forma nativa en IndexedDB
-                        thumbnail: thumbnailDataURL || null,
-                        origin: "local",
-                        addedAt: Date.now()
-                    };
-
-                    const request = store.put(videoRecord);
-                    request.onsuccess = () => resolve();
-                    request.onerror = (e) => reject(e.target.error);
-                });
-            }
-
-            static async saveOneDriveVideo(meta) {
-                const db = await this.init();
-                return new Promise((resolve, reject) => {
-                    const transaction = db.transaction(STORE_NAME, "readwrite");
-                    const store = transaction.objectStore(STORE_NAME);
-                    
-                    const videoRecord = {
-                        id: meta.id,
+                        id: meta.id || meta.name,
                         name: meta.name,
                         type: meta.mime || "video/mp4",
-                        size: meta.size,
-                        blob: null, // No guardamos el binario para ahorrar almacenamiento
-                        path: meta.path || "",
-                        thumbnail: null, 
-                        origin: "onedrive",
+                        size: meta.size || 0,
+                        blob: null, 
+                        url: meta.url || meta.path || "",
+                        thumbnail: meta.thumbnail || null, 
+                        origin: "blob",
                         addedAt: Date.now()
                     };
 
@@ -1052,12 +792,12 @@
                 });
             }
 
-            static async deleteVideo(id) {
+            static async clearStore() {
                 const db = await this.init();
                 return new Promise((resolve, reject) => {
                     const transaction = db.transaction(STORE_NAME, "readwrite");
                     const store = transaction.objectStore(STORE_NAME);
-                    const request = store.delete(id);
+                    const request = store.clear();
                     request.onsuccess = () => resolve();
                     request.onerror = (e) => reject(e.target.error);
                 });
@@ -1070,12 +810,10 @@
          * ====================================================================
          */
         class BlazarPlayer {
-            constructor(containerSelector, videoSource, titleName, isLocal = true) {
+            constructor(containerSelector, videoSource, titleName) {
                 this.container = document.querySelector(containerSelector);
                 this.videoSource = videoSource;
-                this.isLocal = isLocal;
                 this.titleName = titleName;
-                this.objectURL = null;
 
                 this.renderUI();
                 this.video = this.container.querySelector('video');
@@ -1112,18 +850,7 @@
             }
 
             loadVideoSource(source) {
-                if (this.objectURL) {
-                    URL.revokeObjectURL(this.objectURL);
-                }
-
-                if (this.isLocal) {
-                    this.objectURL = URL.createObjectURL(source);
-                    this.video.src = this.objectURL;
-                } else {
-                    // Carga directa de la URL temporal firmada de Azure/OneDrive
-                    this.video.src = source;
-                }
-
+                this.video.src = source;
                 this.video.play().then(() => {
                     this.btnPlay.innerText = "❚❚ Pausar";
                 }).catch(() => {
@@ -1260,106 +987,53 @@
             }
         }
 
-        /**
-         * ====================================================================
-         * INTERFAZ DE GESTIÓN Y PARSEO JSONL / ONEDRIVE AZURE GATEWAY
-         * ====================================================================
-         */
         let blazarPlayerInstance = null;
-        const videoInput = document.getElementById('video-input');
-        const jsonlInput = document.getElementById('jsonl-input');
         const videoGallery = document.getElementById('video-gallery');
         const reproductorBlazarDiv = document.getElementById('reproductor-blazar');
         const bufferStatus = document.getElementById('buffer-status');
         const bufferPercentage = document.getElementById('buffer-percentage');
 
-        const btnAzureLogin = document.getElementById('btn-azure-login');
-        const azureStatusBadge = document.getElementById('azure-status');
-        const azureUserInfo = document.getElementById('azure-user-info');
-
-        // Mapeador de recursos dinámicos activos
-        const activeBlobURLs = new Map();
-
         window.addEventListener('DOMContentLoaded', async () => {
-            handleAzureAuthCallback();
-            updateAzureUI();
-            await renderGalleryFromBuffer();
+            await initializeFromBlob();
         });
 
-        // 1. AUTENTICACIÓN AZURE OAUTH GATEWAY
-        btnAzureLogin.addEventListener('click', () => {
-            if (azureToken) {
-                // Desconectar
-                azureToken = null;
-                localStorage.removeItem('azure_access_token');
-                updateAzureUI();
-                return;
-            }
-            const authUrl = `https://login.microsoftonline.com/${AZURE_CONFIG.tenantId}/oauth2/v2.0/authorize` + 
-                            `?client_id=${AZURE_CONFIG.clientId}` +
-                            `&response_type=token` +
-                            `&redirect_uri=${encodeURIComponent(AZURE_CONFIG.redirectUri)}` +
-                            `&scope=${encodeURIComponent(AZURE_CONFIG.scopes.join(' '))}`;
-            window.location.href = authUrl;
-        });
-
-        function handleAzureAuthCallback() {
-            const hash = window.location.hash;
-            if (hash) {
-                const params = new URLSearchParams(hash.substring(1));
-                const token = params.get('access_token');
-                if (token) {
-                    azureToken = token;
-                    localStorage.setItem('azure_access_token', token);
-                    window.history.pushState("", document.title, window.location.pathname + window.location.search);
-                }
-            }
-        }
-
-        function updateAzureUI() {
-            if (azureToken) {
-                azureStatusBadge.className = "status-badge connected";
-                azureStatusBadge.innerHTML = `<i class="fas fa-check-circle"></i> Sincronizado`;
-                azureUserInfo.textContent = "Conexión a OneDrive activa. Los videos remotos se cargarán al instante.";
-                btnAzureLogin.textContent = "Cerrar Sesión";
-                btnAzureLogin.style.background = "#d11a2a";
-            } else {
-                azureStatusBadge.className = "status-badge disconnected";
-                azureStatusBadge.innerHTML = `<i class="fas fa-times-circle"></i> Desconectado`;
-                azureUserInfo.textContent = "Inicia sesión con tu cuenta de Microsoft Azure para sincronizar tus enlaces directos.";
-                btnAzureLogin.textContent = "Conectar Azure";
-                btnAzureLogin.style.background = "#0078d4";
-            }
-        }
-
-        // 2. PARSEADOR DE DOCUMENTO JSONL
-        jsonlInput.addEventListener('change', async function(e) {
-            const file = e.target.files[0];
-            if (!file) return;
-
+        async function initializeFromBlob() {
             bufferStatus.style.display = 'block';
-            bufferPercentage.textContent = 'Procesando catálogo...';
+            bufferPercentage.textContent = 'Conectando a Blob Storage...';
 
-            const reader = new FileReader();
-            reader.onload = async function(evt) {
-                const lines = evt.target.result.split('\n');
-                let count = 0;
+            try {
+                // 1. Cargar la sesión desde el Blob
+                const sessionRes = await fetch(BLOB_SESSION_URL);
+                if (sessionRes.ok) {
+                    sessionData = await sessionRes.json();
+                    console.info("Sesión cargada desde Blob:", sessionData);
+                } else {
+                    console.warn("No se pudo cargar la sesión, usando valores por defecto.");
+                }
+
+                bufferPercentage.textContent = 'Descargando catálogo JSONL...';
+
+                // 2. Cargar el catálogo JSONL desde el Blob
+                const jsonlRes = await fetch(BLOB_JSONL_URL);
+                if (!jsonlRes.ok) throw new Error("Error al descargar el catálogo JSONL.");
+
+                const jsonlText = await jsonlRes.text();
+                const lines = jsonlText.split('\n');
                 
+                await BDHMemory.clearStore();
+                let count = 0;
+
                 for (let i = 0; i < lines.length; i++) {
                     const line = lines[i].trim();
                     if (!line) continue;
                     try {
                         const meta = JSON.parse(line);
-                        if (meta.id && meta.name) {
-                            await BDHMemory.saveOneDriveVideo(meta);
+                        if (meta.name) {
+                            await BDHMemory.saveBlobVideo(meta);
                             count++;
                         }
                     } catch (err) {
-                        console.error("Error interpretando línea JSONL:", err);
-                    }
-                    if (i % 20 === 0) {
-                        const progress = Math.round((i / lines.length) * 100);
-                        bufferPercentage.textContent = `${progress}%`;
+                        console.error("Error parseando línea JSONL:", err);
                     }
                 }
 
@@ -1368,51 +1042,35 @@
                     bufferStatus.style.display = 'none';
                 }, 1500);
 
-                jsonlInput.value = '';
                 await renderGalleryFromBuffer();
-            };
-            reader.readAsText(file);
-        });
 
-        // 3. GESTIÓN DE GALERÍA E INDEXEDDB
+            } catch (err) {
+                console.error("Error crítico al inicializar desde Blob:", err);
+                bufferPercentage.textContent = 'Error de conexión con Blob Storage';
+            }
+        }
+
         async function renderGalleryFromBuffer() {
-            activeBlobURLs.forEach(url => URL.revokeObjectURL(url));
-            activeBlobURLs.clear();
-
             videoGallery.innerHTML = '';
             const list = await BDHMemory.getAllVideos();
 
             if (list.length === 0) {
                 videoGallery.innerHTML = `
                     <p style="text-align: center; color: var(--color-muted); margin-top: 20px; grid-column: 1 / -1;">
-                        Ningún elemento en el framebuffer local. Importa tus videos o un catálogo JSONL.
+                        No se encontraron elementos en el catálogo sincronizado.
                     </p>
                 `;
                 return;
             }
 
-            list.forEach((item, index) => {
+            list.forEach((item) => {
                 const card = document.createElement('div');
                 card.className = 'gallery-item';
 
-                // Badge de origen
                 const origin = document.createElement('span');
-                origin.className = `origin-badge ${item.origin}`;
-                origin.textContent = item.origin === "local" ? "LOCAL BUFFER" : "ONEDRIVE";
+                origin.className = 'origin-badge';
+                origin.textContent = "BLOB CATALOG";
                 card.appendChild(origin);
-
-                // Botón de eliminar
-                const delBtn = document.createElement('button');
-                delBtn.className = 'delete-btn';
-                delBtn.innerHTML = '<i class="fas fa-trash"></i>';
-                delBtn.addEventListener('click', async (e) => {
-                    e.stopPropagation();
-                    if (confirm(`¿Deseas remover "${item.name}" del framebuffer contextual?`)) {
-                        await BDHMemory.deleteVideo(item.id);
-                        await renderGalleryFromBuffer();
-                    }
-                });
-                card.appendChild(delBtn);
 
                 const thumbContainer = document.createElement('div');
                 thumbContainer.className = 'gallery-item-thumbnail-container';
@@ -1441,133 +1099,29 @@
             });
         }
 
-        async function executePlayback(item) {
-            if (item.origin === "local") {
-                playBufferedVideo(item.blob, item.name, true);
-            } else {
-                // Es un video de OneDrive Azure
-                if (!azureToken) {
-                    alert("Por favor, inicia sesión con Azure en el panel superior para obtener la URL de streaming segura.");
-                    return;
-                }
-                
-                bufferStatus.style.display = 'block';
-                bufferPercentage.textContent = 'Resolviendo ruta de OneDrive...';
-
-                try {
-                    // LLamada directa a Microsoft Graph para obtener enlace firmado del id de OneDrive
-                    const response = await fetch(`https://graph.microsoft.com/v1.0/me/drive/items/${item.id}`, {
-                        headers: { 'Authorization': `Bearer ${azureToken}` }
-                    });
-                    
-                    if (!response.ok) {
-                        throw new Error("Token vencido o error de comunicación");
-                    }
-                    
-                    const data = await response.json();
-                    const downloadUrl = data["@microsoft.graph.downloadUrl"];
-                    
-                    if (downloadUrl) {
-                        playBufferedVideo(downloadUrl, item.name, false);
-                    } else {
-                        alert("No se pudo obtener el stream directo de Microsoft OneDrive.");
-                    }
-                } catch (err) {
-                    console.error("Error en Gateway de Azure:", err);
-                    alert("Error al comunicar con Microsoft Graph. Prueba iniciando sesión nuevamente.");
-                } finally {
-                    bufferStatus.style.display = 'none';
-                }
+        function executePlayback(item) {
+            const videoUrl = item.url || item.path;
+            if (!videoUrl) {
+                alert("El elemento seleccionado no cuenta con una dirección de streaming válida.");
+                return;
             }
-        }
 
-        function playBufferedVideo(source, name, isLocal) {
             if (!blazarPlayerInstance) {
                 reproductorBlazarDiv.innerHTML = '';
-                blazarPlayerInstance = new BlazarPlayer('#reproductor-blazar', source, name, isLocal);
+                blazarPlayerInstance = new BlazarPlayer('#reproductor-blazar', videoUrl, item.name);
             } else {
-                blazarPlayerInstance.isLocal = isLocal;
-                blazarPlayerInstance.titleName = name;
+                blazarPlayerInstance.titleName = item.name;
                 blazarPlayerInstance.renderUI();
                 blazarPlayerInstance.video = blazarPlayerInstance.container.querySelector('video');
                 blazarPlayerInstance.progressBar = blazarPlayerInstance.container.querySelector('.blazar-progress');
                 blazarPlayerInstance.btnPlay = blazarPlayerInstance.container.querySelector('.btn-play');
                 blazarPlayerInstance.shield = blazarPlayerInstance.container.querySelector('.anti-piracy-shield');
                 
-                blazarPlayerInstance.loadVideoSource(source);
+                blazarPlayerInstance.loadVideoSource(videoUrl);
                 blazarPlayerInstance.buildBlackHole();
                 blazarPlayerInstance.attachHardwareEvents();
                 blazarPlayerInstance.attachMediaEvents();
             }
-        }
-
-        // Manejar importación de nuevos archivos de video locales
-        videoInput.addEventListener('change', async function(event) {
-            const files = Array.from(event.target.files);
-            if (files.length === 0) return;
-
-            bufferStatus.style.display = 'block';
-            
-            for (let i = 0; i < files.length; i++) {
-                const file = files[i];
-                const percentage = Math.round(((i) / files.length) * 100);
-                bufferPercentage.textContent = `${percentage}%`;
-
-                try {
-                    const thumbnail = await generateThumbnail(file);
-                    await BDHMemory.saveLocalVideo(file, thumbnail);
-                } catch (error) {
-                    console.error("Error cargando video al buffer:", error);
-                }
-            }
-
-            bufferPercentage.textContent = '100%';
-            setTimeout(() => {
-                bufferStatus.style.display = 'none';
-            }, 1000);
-
-            videoInput.value = '';
-            await renderGalleryFromBuffer();
-        });
-
-        // Generador de miniaturas asíncronas para videos locales
-        function generateThumbnail(file) {
-            return new Promise((resolve) => {
-                const video = document.createElement('video');
-                video.preload = 'metadata';
-                video.muted = true;
-                video.playsInline = true;
-                
-                const url = URL.createObjectURL(file);
-                video.src = url;
-
-                video.addEventListener('loadeddata', () => {
-                    video.currentTime = Math.min(2, video.duration / 2);
-                });
-
-                video.addEventListener('seeked', () => {
-                    try {
-                        const canvas = document.createElement('canvas');
-                        canvas.width = 320;
-                        canvas.height = 180;
-                        const ctx = canvas.getContext('2d');
-                        ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-                        const dataURL = canvas.toDataURL('image/jpeg', 0.7);
-                        
-                        URL.revokeObjectURL(url);
-                        video.remove();
-                        resolve(dataURL);
-                    } catch (e) {
-                        resolve(null);
-                    }
-                });
-
-                video.addEventListener('error', () => {
-                    URL.revokeObjectURL(url);
-                    video.remove();
-                    resolve(null);
-                });
-            });
         }
     </script>
  </🛸>
